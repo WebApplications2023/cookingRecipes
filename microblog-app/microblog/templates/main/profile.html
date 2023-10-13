@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section>
+        <div class="profileDescription">
+            <img src="static/resources/sophia.png" alt="Avatar" class="avatar">
+            <div class="name">
+                <h1>{{user.name}}</h1>
+                <h2><em>@{{user.handle}}</em></h2>
+            </div>
+            <button class="button" href="#">Follow</button>
+        </div>
+        <br>
+        {% include 'posts_template.html' %}
+    </section>
+{% endblock %}
