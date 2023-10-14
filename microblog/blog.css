@@ -14,12 +14,12 @@
 }
 
 .navbar{
+    margin: 0;
+    padding: 0;
     width: 20%;
     height: 100%;
     position: fixed;
     background-color: #f1f1f1;
-    padding-left: 0.5%;
-    padding-right: 0.5%;
 }
 
 .navbar h1{
@@ -59,8 +59,8 @@ li a:hover{
     font-size: 25px;
     display: block;
     margin-left: 5%;
-    margin-right: 5%;
     margin-top: 1%;
+    width: 90%;
     text-align: center;
 }
 
@@ -86,28 +86,22 @@ li a:hover{
     border-style: none none solid none;
 }
 
-.posts{
-    margin-top: 2%;
-}
-
 .posts h1{
     font-size: 135%;
     display: inline-block;
-    vertical-align: middle;
+    margin-top: 2%;
 }
 
 .posts h2{
     font-size: 110%;
     display: inline-block;
     color:#555;
-    vertical-align: middle;
 }
 
 .posts h3{
     font-size: 100%;
     display: inline-block;
     color:#555;
-    vertical-align: middle;
 }
 
 .posts img{
@@ -115,7 +109,6 @@ li a:hover{
     height: 50px;
     border-radius: 50%;
     display: inline-block;
-    vertical-align: middle;
 }
 
 
@@ -171,59 +164,11 @@ li a:hover{
     background-color:  #f1f1f1;
     color: black;
     border: 2px solid #555;
-    font-size: 15px;
-    display: block;
-    text-align: center;
 }
 
 .replyButton:hover{
     background-color: #555;
     color: white;
 }
-
-.postResponse{
-    margin-left: 5%;
-}
-
-.login{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    height: 50%;
-    width: 30%;
-    transform: translate(-50%, -50%);
-    padding: 10px;
-    box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    text-align: center;
-    font-size: 120%; 
-    overflow: scroll;
-}
-
-.loginButton{
-    display: inline-block; 
-    margin-top: 5%;
-    width: 80%;
-    padding-bottom: 8px;
-    text-decoration: none;
-    font-size: 120%;
-}
-
-.formInput{
-    margin-top: 3%;
-    width: 80%;
-
-}
-
-.loginHeader{
-    font-size: 30px;
-}
-
-.form{
-    padding-top: 5%;
-    padding-bottom: 5%;
-}
-
-
-
 
 
