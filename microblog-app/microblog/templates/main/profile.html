@@ -3,12 +3,11 @@
 {% block content %}
     <section>
         <div class="profileDescription">
-            <img src="data:image/png;base64,{{ current_user.img|base64_encode }}" alt="Avatar" class="avatar">
+            <img src="data:image/png;base64,{{ user.img|base64_encode }}" alt="Avatar" class="avatar">
             <div class="name">
-                <h1>{{current_user.name}}</h1>
-                <h2><em>@{{current_user.handle}}</em></h2>
+                <h1>{{user.name}}</h1>
+                <h2><em>@{{user.handle}}</em></h2>
             </div>
-            <button class="button" href="#">Follow</button>
         </div>
         <br>
         <section>

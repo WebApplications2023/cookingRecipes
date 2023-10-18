@@ -18,8 +18,8 @@
             
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="post.html">New Post</a></li>
+                    <li><a href="/profile/{{ current_user.id }}">Profile</a></li>
+                    <li><a href="/newPost">New Post</a></li>
                     <li><a href="/logout">Log Out</a></li>
                 </ul>
             {% endif %}

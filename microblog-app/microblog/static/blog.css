@@ -223,6 +223,22 @@ li a:hover{
     padding-bottom: 5%;
 }
 
+.postButton{
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    display: block;
+    margin-right: 5%;
+    margin-top: 1%;
+    text-align: center;
+    width:100%;
+}
+
+.postLink{
+    text-decoration: none;
+}
+
 
 
 
