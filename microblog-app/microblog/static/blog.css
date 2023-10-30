@@ -239,6 +239,39 @@ li a:hover{
     text-decoration: none;
 }
 
+.following{
+    display: inline-block;
+    position: absolute;
+    right: 5%;
+    top: 3%;
+}
+
+.numFollowers{
+    display: inline-block;
+    margin-left: 2%;
+    font-size: 130%;
+    position: absolute;
+    right: 20%;
+    top: 2%;
+    text-align: center;
+}
+
+.numFollowing{
+    display: inline-block;
+    margin-left: 2%;
+    font-size: 130%;
+    position: absolute;
+    right: 30%;
+    top: 2%;
+    text-align: center;
+}
+
+.followerButton{
+    text-decoration: none;
+    font-size: 80%;
+}
+
+
 
 
 

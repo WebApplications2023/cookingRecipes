@@ -1,22 +1,13 @@
-"""class Message:
-    def __init__(self, message_id, user, text, timestamp):
-        self.message_id = message_id
-        self.user = user
-        self.text = text
-        self.timestamp = timestamp
-
-
-class User:
-    def __init__(self, user_id, email, name, handle, img):
-        self.user_id = user_id
-        self.email = email
-        self.name = name
-        self.handle = handle
-        self.img = img
-"""
-
 from . import db
 import flask_login
+
+class FollowingAssociation(db.Model):
+    follower_id = db.Column(
+        db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
+    )
+    followed_id = db.Column(
+        db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
+    )
 
 class User(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +17,20 @@ class User(flask_login.UserMixin, db.Model):
     img = db.Column(db.LargeBinary, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     messages = db.relationship('Message', back_populates='user')
+    following = db.relationship(
+        "User",
+        secondary=FollowingAssociation.__table__,
+        primaryjoin=FollowingAssociation.follower_id == id,
+        secondaryjoin=FollowingAssociation.followed_id == id,
+        back_populates="followers",
+    )
+    followers = db.relationship(
+        "User",
+        secondary=FollowingAssociation.__table__,
+        primaryjoin=FollowingAssociation.followed_id == id,
+        secondaryjoin=FollowingAssociation.follower_id == id,
+        back_populates="following",
+    )
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)

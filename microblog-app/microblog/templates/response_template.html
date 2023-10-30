@@ -1,7 +1,7 @@
 <div class="multiplePosts postResponse">
     <div class="posts">
         <span>
-            <img src="static/resources/{{response.user.img}}" alt="Avatar" class="avatar">
+            <img src="data:image/png;base64,{{ response.user.img|base64_encode }}" alt="Avatar" class="avatar">
             <h1><b>{{response.user.name}}</b></h1>
             <h2><em>@{{response.user.handle}}</em></h2>
             <h3>{{response.timestamp}}</h3>
