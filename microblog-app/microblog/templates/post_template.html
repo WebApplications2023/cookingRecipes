@@ -1,5 +1,5 @@
 <div class="multiplePosts">
-    <div class="posts">
+    <div class="posts message original" data-message-id="{{ post.id }}" postResponseTo="{{ post.response_to }}">
         <span>
             <img src="data:image/png;base64,{{ post.user.img|base64_encode }}" alt="Avatar" class="avatar">
             <h1><b><a href="/profile/{{ post.user.id }}" class="postLink">{{post.user.name}} </a></b></h1>
@@ -7,9 +7,5 @@
             <h3>{{post.timestamp}}</h3>
         </span>
         <p class="postContent">{{post.text}}</p>
-        {% if post.response_to is none %}
-            <a class="replyButton" href="/postReply/{{ post.id }}">reply</a>
-            <a class="replyButton" href="/post/{{ post.id }}">view post</a>
-        {% endif %}
     </div>
 </div>
