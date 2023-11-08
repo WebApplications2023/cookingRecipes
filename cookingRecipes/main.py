@@ -28,7 +28,7 @@ def index():
 
     return render_template("main/index.html", posts=posts)
 
-#THIS CAN BECOME THE DISPLAY FOR THE RECIPE
+#SAVE FOR VIEWING ONE RECIPE
 @bp.route("/post/<int:messageID>")
 @flask_login.login_required
 def post(messageID):
@@ -42,7 +42,7 @@ def post(messageID):
     responses = db.session.execute(query).scalars().all()
     return render_template("main/postResponse.html", posts=[message], responses = responses)
 
-#THIS CAN STAY FOR THE PROFILE
+#SAVE FOR PROFILE PATH
 @bp.route("/profile/<int:userID>")
 @flask_login.login_required
 def profile(userID):
@@ -68,13 +68,14 @@ def profile(userID):
 
     return render_template("main/profile.html", posts=posts, user=user, followButton = following, numFollowers=numFollowers, numFollowing=numFollowing )
 
-#THESE CAN BE CHANGED FOR THE CREATE RECIPE ROUTE
+#SAVE FOR NEW RECIPE
 @bp.route("/newPost")
 @flask_login.login_required
 def renderPost():
     return render_template("main/post.html")
 
 
+#SAVE FOR NEW RECIPE
 @bp.route("/newPost", methods=["POST"])
 @flask_login.login_required
 def newPost():
@@ -106,4 +107,7 @@ def newPost():
         return render_template("main/postResponse.html", posts=[message], responses=responses)
     
     return redirect(url_for("main.index"))
+
+
+
 
