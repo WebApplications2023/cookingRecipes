@@ -1,0 +1,319 @@
+.navbar{
+    min-width: 260px;
+    height: 100%;
+    position: fixed;
+    background-color: #f1f1f1;
+    
+    padding-right: 0.5%;
+}
+
+.navbar h1{
+    font-size: 200%;
+    line-height: 50%;
+    margin-top: 30px;
+    margin-left: 10px;
+    display: block;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li a{
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+li a:hover{
+    background-color: #555;
+    color: white;
+}
+
+.button{
+    padding: 8px 16px ;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 1%;
+    text-align: center;
+}
+
+.button:hover{
+    background-color: #555;
+    color: white;
+}
+
+.profileDescription button{
+    width: 20%;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.login{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 350px;
+    width: 350px;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    font-size: 120%; 
+    overflow: scroll;
+}
+
+.loginButton{
+    display: inline-block; 
+    margin-top: 5%;
+    width: 80%;
+    padding-bottom: 8px;
+    text-decoration: none;
+    font-size: 120%;
+}
+
+.formInput{
+    margin-top: 3%;
+    width: 80%;
+}
+
+.loginHeader{
+    font-size: 30px;
+}
+
+.home{
+    margin-left: 290px;
+    padding-top: 25px;
+}
+
+.home h1{
+    font-size: 150%;
+    color:#555;
+    margin-top: 0px;
+}
+
+.recipeCard{
+    margin: 15px;
+    height: 250px;
+    width: 250px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: transform 0.2s ease-in-out; 
+}
+
+.recipeCard h1{
+    font-size: 120%;
+    margin-left: 2%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipeCard h2{
+    font-size: 90%;
+    margin-left: 2%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipePhoto{
+    height: 70%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.recipeCardHref{
+    text-decoration: none;
+}
+
+.recipeCard:hover{
+    transform: scale(1.01); 
+}
+
+.multipleCards {
+    margin-left: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+
+
+/*
+.posts{
+    margin-left: 25%;
+    margin-right: 5%;
+    
+}
+
+.multiplePosts .posts{
+    border-color: #928f8f;
+    border-style: none none solid none;
+}
+
+.posts{
+    margin-top: 2%;
+}
+
+.posts h1{
+    font-size: 135%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.posts h2{
+    font-size: 110%;
+    display: inline-block;
+    color:#555;
+    vertical-align: middle;
+}
+
+.posts h3{
+    font-size: 100%;
+    display: inline-block;
+    color:#555;
+    vertical-align: middle;
+}
+
+.posts img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.profileDescription img{
+    margin-left: 5%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-top: 2%;
+}
+
+.profileDescription{
+    margin-left: 25%;
+    margin-right: 5%;
+}
+
+.profileDescription h1{
+    font-size: 175%;
+    line-height: 75%;
+}
+
+.profileDescription h2{
+    font-size: 110%;
+    color:#555;
+}
+
+
+
+.postText{
+    margin-top: 3%;
+    width: 100%;
+    height: 100px;
+}
+
+.posts button{
+    width: 100%;
+    font-size: 100%;
+    margin-left: 0%;
+}
+
+.replyButton{
+    margin-bottom: 2%;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 15px;
+    display: block;
+    text-align: center;
+}
+
+.replyButton:hover{
+    background-color: #555;
+    color: white;
+}
+
+.postResponse{
+    margin-left: 5%;
+}
+
+
+.form{
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.postButton{
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    display: block;
+    margin-right: 5%;
+    margin-top: 1%;
+    text-align: center;
+    width:100%;
+    margin-bottom: 2%;
+}
+
+.postLink{
+    text-decoration: none;
+}
+
+.following{
+    display: inline-block;
+    position: absolute;
+    right: 5%;
+    top: 3%;
+}
+
+.numFollowers{
+    display: inline-block;
+    margin-left: 2%;
+    font-size: 130%;
+    position: absolute;
+    right: 20%;
+    top: 2%;
+    text-align: center;
+}
+
+.numFollowing{
+    display: inline-block;
+    margin-left: 2%;
+    font-size: 130%;
+    position: absolute;
+    right: 30%;
+    top: 2%;
+    text-align: center;
+}
+
+.followerButton{
+    text-decoration: none;
+    font-size: 80%;
+}
+
+*/
+
+
+
+
+
+
+
+
+

@@ -11,10 +11,9 @@ bp = Blueprint("main", __name__)
 
 
 @bp.route("/")
-@flask_login.login_required
 def index():
 
-    followers = db.aliased(model.User)
+    """followers = db.aliased(model.User)
     query = (
         db.select(model.Message)
         .join(model.User)
@@ -25,8 +24,8 @@ def index():
         .limit(10)
     )
     posts = db.session.execute(query).scalars().all()
-
-    return render_template("main/index.html", posts=posts)
+    """
+    return render_template("main/index.html")
 
 #SAVE FOR VIEWING ONE RECIPE
 
