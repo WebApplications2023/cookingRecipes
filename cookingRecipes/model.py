@@ -19,6 +19,7 @@ class Recipe(db.Model):
     num_people = db.Column(db.Integer, nullable=False)
     cooking_time = db.Column(db.Integer, nullable=False) #number of minutes
     img = db.Column(db.LargeBinary, nullable=False)
+    bookmarked = db.Column(db.Integer, nullable=False) #1 is bookmarked, 0 is not bookmarked
     steps = db.relationship('Steps', back_populates='recipe')
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
 
