@@ -12,21 +12,13 @@ bp = Blueprint("main", __name__)
 #HOMEPAGE
 @bp.route("/")
 def index():
-
-    """followers = db.aliased(model.User)
     query = (
-        db.select(model.Message)
-        .join(model.User)
-        .join(followers, model.User.followers)
-        .where(followers.id == flask_login.current_user.id)
-        .where(model.Message.response_to == None)
+        db.select(model.Recipes)
         .order_by(model.Message.timestamp.desc())
         .limit(10)
     )
-    posts = db.session.execute(query).scalars().all()
-    """
-
-    return render_template("main/index.html")
+    recipes = db.session.execute(query).scalars().all()
+    return render_template("main/index.html", recipes=recipes)
 
 #SAVE FOR VIEWING ONE RECIPE
 @bp.route("/recipe/<int:recipeID>")
