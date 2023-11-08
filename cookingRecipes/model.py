@@ -8,40 +8,54 @@ class User(flask_login.UserMixin, db.Model):
     name = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     recipes = db.relationship('Recipe', back_populates='user')
+    """messages = db.relationship('Message', back_populates='user')
+    following = db.relationship(
+        "User",
+        secondary=FollowingAssociation.__table__,
+        primaryjoin=FollowingAssociation.follower_id == id,
+        secondaryjoin=FollowingAssociation.followed_id == id,
+        back_populates="followers",
+    )
+    followers = db.relationship(
+        "User",
+        secondary=FollowingAssociation.__table__,
+        primaryjoin=FollowingAssociation.followed_id == id,
+        secondaryjoin=FollowingAssociation.follower_id == id,
+        back_populates="following",
+    )
+
+    
 
 
-class Recipe(db.Model):
+class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', back_populates='recipes')
+    user = db.relationship('User', back_populates='messages')
+    text = db.Column(db.String(512), nullable=False)
+    timestamp = db.Column(db.DateTime(), nullable=False)
+    response_to_id = db.Column(db.Integer, db.ForeignKey('message.id'))
+    response_to = db.relationship('Message', back_populates='responses', remote_side=[id])
+    responses = db.relationship('Message', back_populates='response_to', remote_side=[response_to_id])
+
+    
+
+class FollowingAssociation(db.Model):
+    follower_id = db.Column(
+        db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
+    )
+    followed_id = db.Column(
+        db.Integer, db.ForeignKey("user.id"), primary_key=True, nullable=False
+    )
+      """
+    
+class Recipe(flask_login.UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(512), nullable = False)
-    num_people = db.Column(db.Integer, nullable=False)
-    cooking_time = db.Column(db.Integer, nullable=False) #number of minutes
+    user = db.relationship('User', back_populates='recipes')
+    numPeople = db.Column(db.Integer, nullable=False)
+    cookingTime = db.Column(db.Integer, nullable=False) #number of minutes
     img = db.Column(db.LargeBinary, nullable=False)
-    steps = db.relationship('Steps', back_populates='recipe')
-    quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
 
-class Steps(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    recipe = db.relationship('Recipe', back_populates='steps')
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
-    sequence_num = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String(512), nullable=False)
-
-# Ingredients holds just the names of common ingredients
-# while Quantified ingredients holds the specific quantities of those per recipe.
-# To query, get all quantified ingredients from recipe and from there get the 
-# ingedient values from ingredients table
-class Ingredients(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='ingredients')
-    ingredient = db.Column(db.String(64), nullable=False)
-
-class QuantifiedIngredients(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    ingredients = db.relationship('Ingredients', back_populates='quantified_ingredients')
-    recipe = db.relationship('Recipe', back_populates='quantified_ingredients')
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
-    quantity = db.Column(db.String(64), nullable=False)
+    
