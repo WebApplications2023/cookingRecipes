@@ -29,6 +29,7 @@ def index():
     return render_template("main/index.html", posts=posts)
 
 #SAVE FOR VIEWING ONE RECIPE
+
 @bp.route("/post/<int:messageID>")
 @flask_login.login_required
 def post(messageID):
@@ -41,6 +42,7 @@ def post(messageID):
     query = db.select(model.Message).where(model.Message.response_to == message).order_by(model.Message.timestamp.desc())
     responses = db.session.execute(query).scalars().all()
     return render_template("main/postResponse.html", posts=[message], responses = responses)
+
 
 #SAVE FOR PROFILE PATH
 @bp.route("/profile/<int:userID>")
@@ -107,7 +109,4 @@ def newPost():
         return render_template("main/postResponse.html", posts=[message], responses=responses)
     
     return redirect(url_for("main.index"))
-
-
-
 
