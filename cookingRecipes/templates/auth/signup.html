@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Microblogging app</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='blog.css') }}">    
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
+    <body>
+        <div class="login">
+            <h2>Sign Up</h2>
+            <form action="{{ url_for('auth.signup') }}" method="post" enctype="multipart/form-data">
+                <div><input class="formInput" type="email" name="email" placeholder="Email" required/></label></div>
+                <div><input class="formInput" type="text" name="name" placeholder="Name" required/></label></div>
+                <div><input class="formInput" type="password" name="password" placeholder="Password" required/></label></div>
+                <div><input class="formInput" type="password" name="password_repeat" placeholder="Repeat Password" required/></label></div>
+                <div><input class="button loginButton" type="submit" value="Sign Up"/></div>
+            </form>
+            {% with messages = get_flashed_messages() %}
+                {% for message in messages %}
+                    <div class="notification">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+        </div>
+    </body>
+</html>

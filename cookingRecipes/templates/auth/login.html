@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Microblogging app</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='blog.css') }}">    
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
+    <body>
+        <div class="login">
+            <h2 class="loginHeader">Login</h2>
+            <form class="form" action="{{ url_for('auth.login') }}" method="post">
+                <div><input class="formInput" type="email" name="email" placeholder="Email" required/></div>
+                <div><input class="formInput" type="password" name="password" placeholder="Password" required/></div>
+                <div><input class = "button loginButton" type="submit" value="Login"/></div>
+                <div><a class = "button loginButton" href="/signup">Sign up</a></div>
+            </form>
+        </div>
+    </body>
+</html>
