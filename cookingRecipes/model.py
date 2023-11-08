@@ -7,7 +7,7 @@ class User(flask_login.UserMixin, db.Model):
     email = db.Column(db.String(128), unique=True, nullable=False)
     name = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    recipes = db.relationship('Recipes', back_populates='user')
+    recipes = db.relationship('Recipe', back_populates='user')
     """messages = db.relationship('Message', back_populates='user')
     following = db.relationship(
         "User",
@@ -50,6 +50,7 @@ class FollowingAssociation(db.Model):
     
 class Recipe(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(512), nullable = False)
     user = db.relationship('User', back_populates='recipes')
