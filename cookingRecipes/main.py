@@ -28,6 +28,7 @@ def index():
 
     return render_template("main/index.html", posts=posts)
 
+#SAVE FOR VIEWING ONE RECIPE
 @bp.route("/post/<int:messageID>")
 @flask_login.login_required
 def post(messageID):
@@ -41,7 +42,7 @@ def post(messageID):
     responses = db.session.execute(query).scalars().all()
     return render_template("main/postResponse.html", posts=[message], responses = responses)
 
-
+#SAVE FOR PROFILE PATH
 @bp.route("/profile/<int:userID>")
 @flask_login.login_required
 def profile(userID):
@@ -67,22 +68,14 @@ def profile(userID):
 
     return render_template("main/profile.html", posts=posts, user=user, followButton = following, numFollowers=numFollowers, numFollowing=numFollowing )
 
+#SAVE FOR NEW RECIPE
 @bp.route("/newPost")
 @flask_login.login_required
 def renderPost():
     return render_template("main/post.html")
 
-@bp.route("/postReply/<int:postId>")
-@flask_login.login_required
-def postReply(postId):
-    return render_template("main/postReply.html", id=postId)
 
-@bp.route("/postResponse")
-@flask_login.login_required
-def postResponse():
-    return render_template("main/postResponse.html")
-
-
+#SAVE FOR NEW RECIPE
 @bp.route("/newPost", methods=["POST"])
 @flask_login.login_required
 def newPost():
@@ -115,63 +108,6 @@ def newPost():
     
     return redirect(url_for("main.index"))
 
-@bp.route("/follow/<int:userID>", methods=["POST"])
-@flask_login.login_required
-def follow(userID):
-    #get user from the db
-    userQuery = db.select(model.User).where(model.User.id == userID)
-    user = db.session.execute(userQuery).scalar()
-    
-    if user is None:
-        abort(404, "User id {} doesn't exist.".format(userID))
-    #check that they aren't the same user
-    if flask_login.current_user.id == userID:
-        abort(403, "You can't follow yourself.")
-    #check that they don't already follow them
-    if flask_login.current_user in user.followers:
-        abort(403, "You already follow them")
-    else:
-        user.followers.append(flask_login.current_user)
-        db.session.commit()
-    
-    return redirect(url_for("main.profile", userID = user.id))
 
-@bp.route("/unfollow/<int:userID>", methods=["POST"])
-@flask_login.login_required
-def unfollow(userID):
-    #get user from the db
-    userQuery = db.select(model.User).where(model.User.id == userID)
-    user = db.session.execute(userQuery).scalar()
 
-    if not user:
-        abort(404, "User id {} doesn't exist.".format(userID))
-    #check that they aren't the same user
-    if flask_login.current_user.id == userID:
-        abort(403, "You can't follow yourself.")
-    #check that they don't already follow them
-    if flask_login.current_user not in user.followers:
-        abort(403, "You don't already follow them")
-    else:
-        user.followers.remove(flask_login.current_user)
-        db.session.commit()
-    
-    return redirect(url_for("main.profile", userID = user.id))
 
-@bp.route("/profile/<int:userID>/<string:follow>")
-@flask_login.login_required
-def listFollow(userID, follow):
-    userQuery = db.select(model.User).where(model.User.id == userID)
-    user = db.session.execute(userQuery).scalar()
-
-    if not user:
-        abort(404, "User id {} doesn't exist.".format(userID))
-    
-    if follow == "following":
-        follows = user.following
-        followType = "Following"
-    elif follow == "followers":
-        follows = user.followers
-        followType = "Followers"
-    else:
-        abort(404, "Not a valid command")
-    
