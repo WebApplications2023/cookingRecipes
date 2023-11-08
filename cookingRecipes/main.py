@@ -9,7 +9,7 @@ from . import model, db
 
 bp = Blueprint("main", __name__)
 
-
+#HOMEPAGE
 @bp.route("/")
 def index():
 
@@ -25,22 +25,19 @@ def index():
     )
     posts = db.session.execute(query).scalars().all()
     """
+
     return render_template("main/index.html")
 
 #SAVE FOR VIEWING ONE RECIPE
-
-@bp.route("/post/<int:messageID>")
+@bp.route("/recipe/<int:recipeID>")
 @flask_login.login_required
-def post(messageID):
-    message = db.session.get(model.Message, messageID)
-    if not message:
-        abort(404, "Post id {} doesn't exist.".format(messageID))
-    if message.response_to:
+def post(recipeID):
+    recipe = db.session.get(model.Recipe, recipeID)
+    if not recipe:
+        abort(404, "Recipe id {} doesn't exist.".format(recipeID))
+    if recipe.response_to:
         abort(403, "You can not view a response message in this form")
-    
-    query = db.select(model.Message).where(model.Message.response_to == message).order_by(model.Message.timestamp.desc())
-    responses = db.session.execute(query).scalars().all()
-    return render_template("main/postResponse.html", posts=[message], responses = responses)
+    return render_template("main/recipeCard_template.html", recipe=recipe)
 
 
 #SAVE FOR PROFILE PATH
@@ -49,25 +46,31 @@ def post(messageID):
 def profile(userID):
     userQuery = db.select(model.User).where(model.User.id == userID)
     user = db.session.execute(userQuery).scalar()
-    query = db.select(model.Message).where(model.Message.user_id == userID).where(model.Message.response_to == None).order_by(model.Message.timestamp.desc())
-    posts = db.session.execute(query).scalars().all()
+    query = (
+        db.select(model.Recipes)
+        .where(model.Recipes.user_id == userID)
+        .order_by(model.Message.timestamp.desc())
+        .limit(10)
+    )
+    recipes = db.session.execute(query).scalars().all()
 
-    if user is not None:
-        numFollowers = len(user.followers)
-        numFollowing = len(user.following)
-    else:
-        numFollowers = 0
-        numFollowing = 0
+    #USE IF IMPLEMENTING FOLLOW FEATURE
+    # if user is not None:
+    #     numFollowers = len(user.followers)
+    #     numFollowing = len(user.following)
+    # else:
+    #     numFollowers = 0
+    #     numFollowing = 0
     
     
-    if userID == flask_login.current_user.id:
-        following = "none"
-    elif user in flask_login.current_user.following:
-        following = "unfollow"
-    else:
-        following = "follow"
+    # if userID == flask_login.current_user.id:
+    #     following = "none"
+    # elif user in flask_login.current_user.following:
+    #     following = "unfollow"
+    # else:
+    #     following = "follow"
 
-    return render_template("main/profile.html", posts=posts, user=user, followButton = following, numFollowers=numFollowers, numFollowing=numFollowing )
+    return render_template("main/profile.html", recipes=recipes )
 
 #SAVE FOR NEW RECIPE
 @bp.route("/newPost")
