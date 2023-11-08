@@ -72,31 +72,32 @@ def renderPost():
 
 
 #SAVE FOR NEW RECIPE
-@bp.route("/newPost", methods=["POST"])
+@bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
 def newPost():
-    text = request.form.get("text")
+    title = request.form.get("text")
     user = flask_login.current_user
-    time = datetime.datetime.now()
-    responseTo = request.form.get("response_to")
+    description = request.form.get("description")
+    num_people = request.form.get("num_people")
+    cooking_time = request.form.get("cooking_time")
+    img = request.form.get("img")
+    steps = request.form.get("steps") #need to figure out to format these to seperate steps
+    # ingredients will be dropdown menu, will have to be the same 
+    # length as quantified ingredients
+    quantified_ingredients = request.form.get("quantified_ingredients")
+    ingredients = request.form.get("ingredients")
 
-    
-    if responseTo:
-        message = db.session.get(model.Message, responseTo)
-        #messageQuery = db.select(model.Message).where(model.Message.id == responseTo)
-        #message = db.session.execute(messageQuery).scalar()
-        if message is None:
-            abort(404, "Post id {} doesn't exist.".format(responseTo))
-    else:
-        message = None
-        
-    
-    newMessage = model.Message(user=user, text=text, timestamp=time, response_to = message)
-    db.session.add(newMessage)
+    newRecipe = model.Message(
+        title=title, user=user, description=description, 
+        num_people=num_people, cooking_time=cooking_time, img=img, 
+        steps=steps, quantified_ingredients=quantified_ingredients,
+        ingredients=ingredients
+    )
+    db.session.add(newRecipe)
     db.session.commit()
 
-
-    query = db.select(model.Message).where(model.Message.response_to == message).order_by(model.Message.timestamp.desc())
+    #TODO
+    query = db.select(model.Message).where(model.Message == message).order_by(model.Message.timestamp.desc())
     responses = db.session.execute(query).scalars().all()
     
     if responseTo:
