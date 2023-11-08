@@ -58,4 +58,4 @@ def signup_post():
 @bp.route("/logout")
 def logout():
     flask_login.logout_user()
-    return render_template("auth/login.html")
+    return redirect(url_for("main.index"))
