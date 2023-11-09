@@ -20,12 +20,12 @@ def index():
     return render_template("main/index.html", recipes=recipes)
 
 #SAVE FOR VIEWING ONE RECIPE
-@bp.route("/recipe/<int:recipeID>")
+@bp.route("/recipe/<int:recipe_id>")
 @flask_login.login_required
-def post(recipeID):
-    recipe = db.session.get(model.Recipe, recipeID)
+def recipe(recipe_id):
+    recipe = db.session.get(model.Recipe, recipe_id)
     if not recipe:
-        abort(404, "Recipe id {} doesn't exist.".format(recipeID))
+        abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
     if recipe.response_to:
         abort(403, "You can not view a response message in this form")
     return render_template("main/recipeCard_template.html", recipe=recipe)
