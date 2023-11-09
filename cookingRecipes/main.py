@@ -4,7 +4,6 @@ import dateutil.tz
 from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
 import flask_login
 
-
 from . import model, db
 
 bp = Blueprint("main", __name__)
@@ -65,10 +64,10 @@ def profile(userID):
     return render_template("main/profile.html", recipes=recipes )
 
 #SAVE FOR NEW RECIPE
-@bp.route("/newPost")
-@flask_login.login_required
-def renderPost():
-    return render_template("main/post.html")
+# @bp.route("/newPost")
+# @flask_login.login_required
+# def renderPost():
+#     return render_template("main/post.html")
 
 
 #SAVE FOR NEW RECIPE
@@ -96,12 +95,5 @@ def newPost():
     db.session.add(newRecipe)
     db.session.commit()
 
-    #TODO
-    query = db.select(model.Message).where(model.Message == message).order_by(model.Message.timestamp.desc())
-    responses = db.session.execute(query).scalars().all()
-    
-    if responseTo:
-        return render_template("main/postResponse.html", posts=[message], responses=responses)
-    
     return redirect(url_for("main.index"))
 
