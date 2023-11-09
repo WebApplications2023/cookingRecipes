@@ -345,178 +345,71 @@ li a:hover{
     font-size: 100%; 
 }
 
+
+
 .checked {
     color: #ffc700;
 }
 
+/* Checkmark for recipe ingredients code comes from: https://www.w3schools.com/howto/howto_css_custom_checkbox.asp*/
 
-
-
-
-/*
-.posts{
-    margin-left: 25%;
-    margin-right: 5%;
-    
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
 }
 
-.multiplePosts .posts{
-    border-color: #928f8f;
-    border-style: none none solid none;
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
 }
 
-.posts{
-    margin-top: 2%;
+.container input:checked ~ .checkmark {
+    background-color:#555;
 }
 
-.posts h1{
-    font-size: 135%;
-    display: inline-block;
-    vertical-align: middle;
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
 }
 
-.posts h2{
-    font-size: 110%;
-    display: inline-block;
-    color:#555;
-    vertical-align: middle;
-}
-
-.posts h3{
-    font-size: 100%;
-    display: inline-block;
-    color:#555;
-    vertical-align: middle;
-}
-
-.posts img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-
-.profileDescription img{
-    margin-left: 5%;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-top: 2%;
-}
-
-.profileDescription{
-    margin-left: 25%;
-    margin-right: 5%;
-}
-
-.profileDescription h1{
-    font-size: 175%;
-    line-height: 75%;
-}
-
-.profileDescription h2{
-    font-size: 110%;
-    color:#555;
-}
-
-
-
-.postText{
-    margin-top: 3%;
-    width: 100%;
-    height: 100px;
-}
-
-.posts button{
-    width: 100%;
-    font-size: 100%;
-    margin-left: 0%;
-}
-
-.replyButton{
-    margin-bottom: 2%;
-    background-color:  #f1f1f1;
-    color: black;
-    border: 2px solid #555;
-    font-size: 15px;
+.container input:checked ~ .checkmark:after {
     display: block;
-    text-align: center;
 }
 
-.replyButton:hover{
-    background-color: #555;
-    color: white;
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
-.postResponse{
-    margin-left: 5%;
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
-
-.form{
-    padding-top: 5%;
-    padding-bottom: 5%;
-}
-
-.postButton{
-    background-color:  #f1f1f1;
-    color: black;
-    border: 2px solid #555;
-    font-size: 25px;
+.container {
     display: block;
-    margin-right: 5%;
-    margin-top: 1%;
-    text-align: center;
-    width:100%;
-    margin-bottom: 2%;
-}
-
-.postLink{
-    text-decoration: none;
-}
-
-.following{
-    display: inline-block;
-    position: absolute;
-    right: 5%;
-    top: 3%;
-}
-
-.numFollowers{
-    display: inline-block;
-    margin-left: 2%;
-    font-size: 130%;
-    position: absolute;
-    right: 20%;
-    top: 2%;
-    text-align: center;
-}
-
-.numFollowing{
-    display: inline-block;
-    margin-left: 2%;
-    font-size: 130%;
-    position: absolute;
-    right: 30%;
-    top: 2%;
-    text-align: center;
-}
-
-.followerButton{
-    text-decoration: none;
-    font-size: 80%;
-}
-
-*/
-
-
-
-
-
-
-
-
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
