@@ -51,6 +51,8 @@ li a:hover{
     color: white;
 }
 
+
+
 .profileDescription button{
     width: 20%;
     font-size: 15px;
@@ -150,6 +152,7 @@ li a:hover{
 
 .recipePage{
     margin-left: 260px;
+    padding-bottom: 50px;
 }
 
 .recipeCoverPhoto{
@@ -176,9 +179,43 @@ li a:hover{
 .recipePage h4{
     font-size: 90%;
 }
+.recipePage p{
+    font-size: 80%;
+    text-align: center;
+}
 
 .rating{
     margin-left: 30px;
+}
+
+.recipeButton{
+    text-decoration: none;
+    font-size: 100%;
+    margin-right: 50px;
+    margin-left: 50px;
+
+}
+
+.uploadPhoto{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}   
+
+.photoCarousel{
+    height: 350px;
+    margin-left: 50px;
+    margin-right: 50px;
+    overflow: scroll;
+    display: flex;
+    overflow-x: auto;
+}
+
+.carouselItem{
+    width: 350px;
+    object-fit: cover;
+    flex: 0 0 auto; 
+    padding-right: 10px;
 }
 
 
@@ -276,6 +313,10 @@ li a:hover{
     text-decoration: none;
 }
 
+.bookmarkHover:hover{
+    background-color: #555;
+    color: white;
+}
 
 .recipeInfo{
     border: 1px solid #000; 
@@ -306,7 +347,7 @@ li a:hover{
 
 .checked {
     color: #ffc700;
-  }
+}
 
 
 
