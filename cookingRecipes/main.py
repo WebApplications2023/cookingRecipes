@@ -1,5 +1,6 @@
 import datetime
 import dateutil.tz
+from werkzeug.utils import secure_filename 
 
 from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
 import flask_login
@@ -13,7 +14,7 @@ bp = Blueprint("main", __name__)
 def index():
     query = (
         db.select(model.Recipes)
-        .order_by(model.Message.timestamp.desc())
+        .order_by(model.Recipes.timestamp.desc())
         .limit(10)
     )
     recipes = db.session.execute(query).scalars().all()
@@ -21,13 +22,10 @@ def index():
 
 #SAVE FOR VIEWING ONE RECIPE
 @bp.route("/recipe/<int:recipe_id>")
-@flask_login.login_required
 def recipe(recipe_id):
     recipe = db.session.get(model.Recipe, recipe_id)
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
-    if recipe.response_to:
-        abort(403, "You can not view a response message in this form")
     return render_template("main/recipeCard_template.html", recipe=recipe)
 
 
@@ -40,7 +38,7 @@ def profile(userID):
     query = (
         db.select(model.Recipes)
         .where(model.Recipes.user_id == userID)
-        .order_by(model.Message.timestamp.desc())
+        .order_by(model.Recipes.timestamp.desc())
         .limit(10)
     )
     recipes = db.session.execute(query).scalars().all()
@@ -73,22 +71,26 @@ def profile(userID):
 #SAVE FOR NEW RECIPE
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
-def newPost():
+def newRecipe():
     title = request.form.get("text")
     user = flask_login.current_user
     description = request.form.get("description")
     num_people = request.form.get("num_people")
     cooking_time = request.form.get("cooking_time")
-    img = request.form.get("img")
+    img = request.files["img"]  # Get the uploaded image file
+    if img:
+        # Ensure the image file has a safe filename
+        img_filename = secure_filename(img.filename)
+        img_data = img.read()  # Read the image data as binary
     steps = request.form.get("steps") #need to figure out to format these to seperate steps
     # ingredients will be dropdown menu, will have to be the same 
     # length as quantified ingredients
     quantified_ingredients = request.form.get("quantified_ingredients")
     ingredients = request.form.get("ingredients")
 
-    newRecipe = model.Message(
+    newRecipe = model.Recipe(
         title=title, user=user, description=description, 
-        num_people=num_people, cooking_time=cooking_time, img=img, 
+        num_people=num_people, cooking_time=cooking_time, img=img_data, 
         steps=steps, quantified_ingredients=quantified_ingredients,
         ingredients=ingredients
     )

@@ -21,6 +21,7 @@ class Recipe(db.Model):
     img = db.Column(db.LargeBinary, nullable=False)
     steps = db.relationship('Steps', back_populates='recipe')
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
+    timestamp = db.Column(db.DateTime(), nullable=False)
 
 class Steps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
