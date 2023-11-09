@@ -174,18 +174,67 @@ li a:hover{
 }
 
 .recipePage h4{
-    margin-left: 30px;
     font-size: 90%;
+}
+
+.rating{
+    margin-left: 30px;
 }
 
 
 /* The following code is taken from: hhttps://codepen.io/hesguru/pen/BaybqXv*/
+/*
+.rate {
+    height: 46px;
+    padding: 0 10px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float: left;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:20px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+.rating-value {
+    margin-left: 10px;
+    font-size: 100%; 
+}
+*/
 
 .rate {
     float: left;
     height: 46px;
     padding: 0 10px;
-    margin-left: 20px;
+    margin-left: 25px;
+    vertical-align:auto;
 }
 .rate:not(:checked) > input {
     position:absolute;
@@ -220,7 +269,48 @@ li a:hover{
 
 .bookmarkButton{
     font-size: 100%;
+    margin-left: 10px; 
 }
+
+.bookmark{
+    text-decoration: none;
+}
+
+
+.recipeInfo{
+    border: 1px solid #000; 
+    padding: 5px; 
+    display: inline-flex;
+    align-items: center;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    margin-left: 5px;
+}
+
+.cookingInfo{
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeList{
+    margin-left: 40px;
+}
+
+.rating-value {
+    margin-left: 5px;
+    font-size: 100%; 
+}
+
+.checked {
+    color: #ffc700;
+  }
+
+
+
+
 
 /*
 .posts{
