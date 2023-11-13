@@ -26,7 +26,18 @@ def recipe(recipe_id):
     recipe = db.session.get(model.Recipe, recipe_id)
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
-    return render_template("main/recipeCard_template.html", recipe=recipe)
+    query_steps = (
+        db.select(model.Steps.sequence_num, model.Steps.description)
+        .where(model.Steps.recipe_id == recipe.id)
+        .order_by(model.Steps.sequence_num)
+    )
+    steps = db.session.execute(query_steps).scalars().all()
+    query_ingredients = (
+        db.select(model.QuantifiedIngredients.quantity, model.QuantifiedIngredients.ingredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipe.id)
+    )
+    ingredients = db.session.execute(query_ingredients).scalars().all()
+    return render_template("main/recipeCard_template.html", recipe=recipe, steps=steps, ingredients=ingredients)
 
 
 #SAVE FOR PROFILE PATH
