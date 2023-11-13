@@ -38,8 +38,7 @@ def recipe(recipeID):
     else:
         rating = 0 #TODO change if we want to represent ratings in another way
     if not recipe:
-
-        abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
+        abort(404, "Recipe id {} doesn't exist.".format(recipeID))
     query_steps = (
         db.select(model.Steps.sequence_num, model.Steps.description)
         .where(model.Steps.recipe_id == recipe.id)
