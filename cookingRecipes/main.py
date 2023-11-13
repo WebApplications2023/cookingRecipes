@@ -1,7 +1,7 @@
 import datetime
 import dateutil.tz
 from werkzeug.utils import secure_filename 
-
+from sqlalchemy.sql import func
 from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
 import flask_login
 
@@ -13,18 +13,32 @@ bp = Blueprint("main", __name__)
 @bp.route("/")
 def index():
     query = (
-        db.select(model.Recipes)
-        .order_by(model.Recipes.timestamp.desc())
+        db.select(model.Recipe)
+        .order_by(model.Recipe.timestamp.desc())
         .limit(10)
     )
     recipes = db.session.execute(query).scalars().all()
     return render_template("main/index.html", recipes=recipes)
 
+#TEMP
+@bp.route("/recipe")
+def example():
+    return render_template("recipe.html")
+
 #SAVE FOR VIEWING ONE RECIPE
-@bp.route("/recipe/<int:recipe_id>")
-def recipe(recipe_id):
-    recipe = db.session.get(model.Recipe, recipe_id)
+@bp.route("/recipe/<int:recipeID>")
+def recipe(recipeID):
+    recipe = db.session.get(model.Recipe, recipeID)
+    query = (
+        db.select(model.Ratings.rating)
+        .where(model.Ratings.recipe_id == recipeID)
+    )
+    if query:
+        rating = db.session.execute(func.avg(query)) #TODO test once we have ratings in database
+    else:
+        rating = 0 #TODO change if we want to represent ratings in another way
     if not recipe:
+
         abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
     query_steps = (
         db.select(model.Steps.sequence_num, model.Steps.description)
@@ -47,9 +61,9 @@ def profile(userID):
     userQuery = db.select(model.User).where(model.User.id == userID)
     user = db.session.execute(userQuery).scalar()
     query = (
-        db.select(model.Recipes)
-        .where(model.Recipes.user_id == userID)
-        .order_by(model.Recipes.timestamp.desc())
+        db.select(model.Recipe)
+        .where(model.Recipe.user_id == userID)
+        .order_by(model.Recipe.timestamp.desc())
         .limit(10)
     )
     recipes = db.session.execute(query).scalars().all()
@@ -110,3 +124,14 @@ def newRecipe():
 
     return redirect(url_for("main.index"))
 
+@bp.route("/addRating", methods=["POST"])
+@flask_login.login_required
+def addRating():
+    rating = request.form.get("rating")
+    user = flask_login.current_user
+    recipe_id = request.form.get("recipe_id") #hidden area of form?
+    newRating = model.Rating(rating=rating, user_id=user.id, recipe_id=recipe_id)
+    db.session.add(newRating)
+    db.session.commit()
+    return redirect("/recipe", recipeID=recipe_id) #TODO make sure this fits with view_recipe function
+    #forward to recipe view
