@@ -38,8 +38,20 @@ def recipe(recipeID):
     else:
         rating = 0 #TODO change if we want to represent ratings in another way
     if not recipe:
-        abort(404, "Recipe id {} doesn't exist.".format(recipeID))
-    return render_template("main/recipeCard_template.html", recipe=recipe, rating=rating)
+
+        abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
+    query_steps = (
+        db.select(model.Steps.sequence_num, model.Steps.description)
+        .where(model.Steps.recipe_id == recipe.id)
+        .order_by(model.Steps.sequence_num)
+    )
+    steps = db.session.execute(query_steps).scalars().all()
+    query_ingredients = (
+        db.select(model.QuantifiedIngredients.quantity, model.QuantifiedIngredients.ingredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipe.id)
+    )
+    ingredients = db.session.execute(query_ingredients).scalars().all()
+    return render_template("main/recipeCard_template.html", recipe=recipe, steps=steps, ingredients=ingredients)
 
 
 #SAVE FOR PROFILE PATH
