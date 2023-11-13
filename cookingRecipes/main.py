@@ -34,9 +34,9 @@ def recipe(recipeID):
         .where(model.Ratings.recipe_id == recipeID)
     )
     if query:
-        rating = db.session.execute(func.avg(query)) #TODO test once we have ratings in database
+        rating = db.session.execute(func.avg(query)) #TODO: test once we have ratings in database
     else:
-        rating = 0 #TODO change if we want to represent ratings in another way
+        rating = 0 #TODO: change if we want to represent ratings in another way
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
     query_steps = (
@@ -96,7 +96,7 @@ def profile(userID):
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
 def newRecipe():
-    title = request.form.get("text")
+    title = request.form.get("text") #TODO: update text identitiers to reflect frontend forms
     user = flask_login.current_user
     description = request.form.get("description")
     num_people = request.form.get("num_people")
@@ -106,21 +106,36 @@ def newRecipe():
         # Ensure the image file has a safe filename
         img_filename = secure_filename(img.filename)
         img_data = img.read()  # Read the image data as binary
-    steps = request.form.get("steps") #TODO find out how to retrieve lists
-    # ingredients will be dropdown menu, will have to be the same 
-    # length as quantified ingredients
-    quantified_ingredients = request.form.get("quantified_ingredients") #TODO
-    ingredients = request.form.get("ingredients") #TODO
-
-    #TODO this needs to be updated to reflect new recipe creation format
+    steps = request.form.getlist("steps")
     newRecipe = model.Recipe(
-        title=title, user=user, description=description, 
-        num_people=num_people, cooking_time=cooking_time, img=img_data, 
-        quantified_ingredients=quantified_ingredients,
-        ingredients=ingredients
+        title=title, user=user, description=description,
+        num_people=num_people, cooking_time=cooking_time, img=img_data
     )
+    #TODO: does adding user also add user_id?
+
     db.session.add(newRecipe)
     db.session.commit() #should now be able to access newRecipe.id
+
+    # ingredients will be dropdown menu, will have to be the same 
+    # length as quantified ingredients
+    quantified_ingredients_list = request.form.getlist("quantified_ingredients")
+    ingredients_list = request.form.getlist("ingredients")
+    for i in range(len(quantified_ingredients_list)):
+        newQuantIngredient = model.QuantifiedIngredients(
+            recipe_id=newRecipe.id, quantity=quantified_ingredients_list[i]
+        )
+        ingr_id = db.session.query(db.select(model.Ingredients.id).where(model.Ingredients == ingredients_list[i]))
+        if ingr_id is None:
+            newIngredient = model.Ingredients(ingredient=ingredients_list[i])
+            db.session.add(newIngredient)
+            newQuantIngredient.ingredient_id = newIngredient.id
+        else:
+            newQuantIngredient.ingredient_id = ingr_id
+        db.session.add(newQuantIngredient)
+        #TODO: need to check whether this also adds to recipe quantified ingredients list
+        # or if I also need to append/if its better to just append
+        #TODO: do I need a commit here?
+
     for i in range(len(steps)):
         newStep = model.Steps(
             recipe_id=newRecipe.id, sequence_num=i+1,
@@ -129,7 +144,7 @@ def newRecipe():
         db.session.add(newStep)
     db.session.commit()
 
-    return redirect(url_for("main.index"))
+    return redirect("/recipe", recipeID=newRecipe.id)
 
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
@@ -140,5 +155,5 @@ def addRating():
     newRating = model.Rating(rating=rating, user_id=user.id, recipe_id=recipe_id)
     db.session.add(newRating)
     db.session.commit()
-    return redirect("/recipe", recipeID=recipe_id) #TODO make sure this fits with view_recipe function
+    return redirect("/recipe", recipeID=recipe_id) #TODO: check if this works with query parameters
     #forward to recipe view
