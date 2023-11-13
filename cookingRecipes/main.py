@@ -106,19 +106,27 @@ def newRecipe():
         # Ensure the image file has a safe filename
         img_filename = secure_filename(img.filename)
         img_data = img.read()  # Read the image data as binary
-    steps = request.form.get("steps") #need to figure out to format these to seperate steps
+    steps = request.form.get("steps") #TODO find out how to retrieve lists
     # ingredients will be dropdown menu, will have to be the same 
     # length as quantified ingredients
-    quantified_ingredients = request.form.get("quantified_ingredients")
-    ingredients = request.form.get("ingredients")
+    quantified_ingredients = request.form.get("quantified_ingredients") #TODO
+    ingredients = request.form.get("ingredients") #TODO
 
+    #TODO this needs to be updated to reflect new recipe creation format
     newRecipe = model.Recipe(
         title=title, user=user, description=description, 
         num_people=num_people, cooking_time=cooking_time, img=img_data, 
-        steps=steps, quantified_ingredients=quantified_ingredients,
+        quantified_ingredients=quantified_ingredients,
         ingredients=ingredients
     )
     db.session.add(newRecipe)
+    db.session.commit() #should now be able to access newRecipe.id
+    for i in range(len(steps)):
+        newStep = model.Steps(
+            recipe_id=newRecipe.id, sequence_num=i+1,
+            description=steps[i]
+        )
+        db.session.add(newStep)
     db.session.commit()
 
     return redirect(url_for("main.index"))
