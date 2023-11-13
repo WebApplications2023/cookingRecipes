@@ -156,3 +156,28 @@ def addRating():
     db.session.commit()
     return redirect("/recipe", recipeID=recipe_id) #TODO: check if this works with query parameters
     #forward to recipe view
+
+@bp.route("/suggested")
+@flask_login.login_required
+def suggestedRecipes():
+    user = flask_login.current_user
+    #need to find the most common quantified ingredients from the current user
+    #help with query: https://stackoverflow.com/questions/5973553/sqlalchemy-ordering-by-count-on-a-many-to-many-relationship
+    query = (
+        db.select(model.QuantifiedIngredients.ingredient_id, func.count(model.QuantifiedIngredients.ingredient_id).label("ingr_count"))
+        .join(model.Recipe).on(recipe_id=model.Recipe.id) #joins recipe table onto quantified ingredients
+        .where(model.Recipe.user == user) #selects only those recipes created by user
+        .order_by("ingr_count DESC") #orders by most to least used
+    )
+    #most_common = db.session.execute(query).scalars().all()
+    #or
+    most_common = db.session.execute(query).scalars().first()
+    query2 = (
+        db.select(model.Recipe)
+        .join(model.QuantifiedIngredients).on(id=model.QuantifiedIngredients.recipe_id)
+        .where(model.QuantifiedIngredients.ingredient_id == most_common.ingredient_id)
+        .limit(10)
+    )
+    #TODO: need to check if queries actually join correctly
+    suggested_recipes = db.session.execute(query2).scalars().all()
+    return render_template("main/index.html", recipes=suggested_recipes)
