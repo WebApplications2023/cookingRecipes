@@ -96,7 +96,7 @@ def profile(userID):
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
 def newRecipe():
-    title = request.form.get("text") #TODO: update text identitiers to reflect frontend forms
+    title = request.form.get("title") #TODO: update text identitiers to reflect frontend forms
     user = flask_login.current_user
     description = request.form.get("description")
     num_people = request.form.get("num_people")
@@ -111,7 +111,6 @@ def newRecipe():
         title=title, user=user, description=description,
         num_people=num_people, cooking_time=cooking_time, img=img_data
     )
-    #TODO: does adding user also add user_id?
 
     db.session.add(newRecipe)
     db.session.commit() #should now be able to access newRecipe.id
