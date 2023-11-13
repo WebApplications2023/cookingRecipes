@@ -8,6 +8,7 @@ class User(flask_login.UserMixin, db.Model):
     name = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     recipes = db.relationship('Recipe', back_populates='user')
+    bookmarks = db.relationship('Bookmarks', back_populates='user')
 
 
 class Recipe(db.Model):
@@ -21,7 +22,9 @@ class Recipe(db.Model):
     img = db.Column(db.LargeBinary, nullable=False)
     steps = db.relationship('Steps', back_populates='recipe')
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
+    bookmarks = db.relationship('Bookmarks', back_populates='recipe')
     timestamp = db.Column(db.DateTime(), nullable=False)
+
 
 class Steps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,3 +49,10 @@ class QuantifiedIngredients(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
     quantity = db.Column(db.String(64), nullable=False)
+
+class Bookmarks(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipe = db.relationship('Recipe', back_populates='bookmarks')
+    user = db.relationship('User', back_populates='bookmarks')
