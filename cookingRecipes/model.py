@@ -8,6 +8,7 @@ class User(flask_login.UserMixin, db.Model):
     name = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     recipes = db.relationship('Recipe', back_populates='user')
+    ratings = db.relationship('Ratings', back_populates='user')
     bookmarks = db.relationship('Bookmarks', back_populates='user')
 
 
@@ -24,6 +25,7 @@ class Recipe(db.Model):
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
     bookmarks = db.relationship('Bookmarks', back_populates='recipe')
     timestamp = db.Column(db.DateTime(), nullable=False)
+    ratings = db.relationship('Ratings', back_populates='recipe')
 
 
 class Steps(db.Model):
@@ -50,9 +52,19 @@ class QuantifiedIngredients(db.Model):
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
     quantity = db.Column(db.String(64), nullable=False)
 
+
+class Ratings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False) # 0 to 5 scale
+    recipe = db.relationship('Recipe', back_populates='ratings')
+    user = db.relationship('User', back_populates='ratings')
+
 class Bookmarks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     recipe = db.relationship('Recipe', back_populates='bookmarks')
     user = db.relationship('User', back_populates='bookmarks')
+
