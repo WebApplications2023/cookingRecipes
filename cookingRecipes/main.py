@@ -32,11 +32,11 @@ def recipe(recipeID):
     query = (
         db.select(model.Ratings.rating)
         .where(model.Ratings.recipe_id == recipeID)
-    ) #TODO unfinished - need to find average of all of these
+    )
     if query:
-        rating = db.session.execute(func.avg(query))
+        rating = db.session.execute(func.avg(query)) #TODO test once we have ratings in database
     else:
-        rating = 0
+        rating = 0 #TODO change if we want to represent ratings in another way
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
     return render_template("main/recipeCard_template.html", recipe=recipe, rating=rating)
@@ -90,11 +90,11 @@ def newRecipe():
     description = request.form.get("description")
     num_people = request.form.get("num_people")
     cooking_time = request.form.get("cooking_time")
-    # img = request.files["img"]  # Get the uploaded image file
-    # if img:
-    #     # Ensure the image file has a safe filename
-    #     img_filename = secure_filename(img.filename)
-    #     img_data = img.read()  # Read the image data as binary
+    img = request.files["img"]  # Get the uploaded image file
+    if img:
+        # Ensure the image file has a safe filename
+        img_filename = secure_filename(img.filename)
+        img_data = img.read()  # Read the image data as binary
     steps = request.form.get("steps") #need to figure out to format these to seperate steps
     # ingredients will be dropdown menu, will have to be the same 
     # length as quantified ingredients
