@@ -51,6 +51,8 @@ li a:hover{
     color: white;
 }
 
+
+
 .profileDescription button{
     width: 20%;
     font-size: 15px;
@@ -147,6 +149,207 @@ li a:hover{
     flex-wrap: wrap;
     justify-content: flex-start;
 }
+
+.recipePage{
+    margin-left: 260px;
+    padding-bottom: 50px;
+}
+
+.recipeCoverPhoto{
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.recipePage h1{
+    margin-left: 30px;
+    font-size: 250%;
+}
+
+.recipePage h2{
+    margin-left: 30px;
+    font-size: 125%;
+}
+
+.recipePage h3{
+    margin-left: 30px;
+    font-size: 150%;
+}
+
+.recipePage h4{
+    font-size: 90%;
+}
+.recipePage p{
+    font-size: 80%;
+    text-align: center;
+}
+
+.rating{
+    margin-left: 30px;
+}
+
+.recipeButton{
+    text-decoration: none;
+    font-size: 100%;
+    margin-right: 50px;
+    margin-left: 50px;
+
+}
+
+.uploadPhoto{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}   
+
+.photoCarousel{
+    height: 350px;
+    margin-left: 50px;
+    margin-right: 50px;
+    overflow: scroll;
+    display: flex;
+    overflow-x: auto;
+}
+
+.carouselItem{
+    width: 350px;
+    object-fit: cover;
+    flex: 0 0 auto; 
+    padding-right: 10px;
+}
+
+
+/* The following code is taken from: hhttps://codepen.io/hesguru/pen/BaybqXv*/
+/*
+.rate {
+    height: 46px;
+    padding: 0 10px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float: left;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:20px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+.rating-value {
+    margin-left: 10px;
+    font-size: 100%; 
+}
+*/
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+    margin-left: 25px;
+    vertical-align:auto;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:20px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+.bookmarkButton{
+    font-size: 100%;
+    margin-left: 10px; 
+}
+
+.bookmark{
+    text-decoration: none;
+}
+
+.bookmarkHover:hover{
+    background-color: #555;
+    color: white;
+}
+
+.recipeInfo{
+    border: 1px solid #000; 
+    padding: 5px; 
+    display: inline-flex;
+    align-items: center;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    margin-left: 5px;
+}
+
+.cookingInfo{
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeList{
+    margin-left: 40px;
+}
+
+.rating-value {
+    margin-left: 5px;
+    font-size: 100%; 
+}
+
+.checked {
+    color: #ffc700;
+}
+
+
 
 
 

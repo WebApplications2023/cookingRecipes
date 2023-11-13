@@ -23,6 +23,8 @@ class Recipe(db.Model):
     steps = db.relationship('Steps', back_populates='recipe')
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
     bookmarks = db.relationship('Bookmarks', back_populates='recipe')
+    timestamp = db.Column(db.DateTime(), nullable=False)
+
 
 class Steps(db.Model):
     id = db.Column(db.Integer, primary_key=True)
