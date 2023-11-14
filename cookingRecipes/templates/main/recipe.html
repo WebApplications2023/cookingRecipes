@@ -30,7 +30,13 @@
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star"></span>
-        <span class="rating-value">{{ rating }}</span>
+        <span class="rating-value">
+            {% if rating is none %}
+                No Ratings Yet
+            {% else %}
+                {{ rating }}
+            {% endif %}
+        </span>
     </div>
 
     <br>

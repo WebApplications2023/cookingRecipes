@@ -34,8 +34,6 @@ def recipe(recipeID):
         .where(model.Ratings.recipe_id == recipeID)
     )
     rating = db.session.query(func.avg(model.Ratings.rating)).filter(model.Ratings.recipe_id == recipeID).scalar()
-    if rating is None:
-        rating = 0 #TODO: change if we want to represent ratings in another way
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
     query_steps = (
