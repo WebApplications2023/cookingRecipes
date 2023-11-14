@@ -23,7 +23,7 @@ def index():
 #TEMP
 @bp.route("/recipe")
 def example():
-    return render_template("recipe.html")
+    return render_template("main/recipe.html")
 
 #SAVE FOR VIEWING ONE RECIPE
 @bp.route("/recipe/<int:recipeID>")
@@ -33,9 +33,8 @@ def recipe(recipeID):
         db.select(model.Ratings.rating)
         .where(model.Ratings.recipe_id == recipeID)
     )
-    if query:
-        rating = db.session.execute(func.avg(query)) #TODO: test once we have ratings in database
-    else:
+    rating = db.session.query(func.avg(model.Ratings.rating)).filter(model.Ratings.recipe_id == recipeID).scalar()
+    if rating is None:
         rating = 0 #TODO: change if we want to represent ratings in another way
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
@@ -44,13 +43,14 @@ def recipe(recipeID):
         .where(model.Steps.recipe_id == recipe.id)
         .order_by(model.Steps.sequence_num)
     )
-    steps = db.session.execute(query_steps).scalars().all()
+    steps = db.session.execute(query_steps).all()
     query_ingredients = (
-        db.select(model.QuantifiedIngredients.quantity, model.QuantifiedIngredients.ingredients)
-        .where(model.QuantifiedIngredients.recipe_id == recipe.id)
+        db.select(model.QuantifiedIngredients.quantity, model.Ingredients.ingredient)
+        .join(model.Ingredients, model.QuantifiedIngredients.ingredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipeID)
     )
-    ingredients = db.session.execute(query_ingredients).scalars().all()
-    return render_template("main/recipeCard_template.html", recipe=recipe, steps=steps, ingredients=ingredients)
+    ingredients = db.session.execute(query_ingredients).all()
+    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating)
 
 
 #SAVE FOR PROFILE PATH
@@ -86,10 +86,10 @@ def profile(userID):
     return render_template("main/profile.html", recipes=recipes )
 
 #SAVE FOR NEW RECIPE
-# @bp.route("/newPost")
+# @bp.route("/newRecipe")
 # @flask_login.login_required
-# def renderPost():
-#     return render_template("main/post.html")
+# def createRecipe():
+#     return render_template("main/newRecipe.html")
 
 
 #SAVE FOR NEW RECIPE
@@ -123,7 +123,7 @@ def newRecipe():
         newQuantIngredient = model.QuantifiedIngredients(
             recipe_id=newRecipe.id, quantity=quantified_ingredients_list[i]
         )
-        ingr_id = db.session.query(db.select(model.Ingredients.id).where(model.Ingredients == ingredients_list[i]))
+        ingr_id = db.session.query(model.Ingredients.id).where(model.Ingredients == ingredients_list[i]).first()
         if ingr_id is None:
             newIngredient = model.Ingredients(ingredient=ingredients_list[i])
             db.session.add(newIngredient)
@@ -156,3 +156,32 @@ def addRating():
     db.session.commit()
     return redirect("/recipe", recipeID=recipe_id) #TODO: check if this works with query parameters
     #forward to recipe view
+
+@bp.route("/addBookmark", methods=["POST"])
+@flask_login.login_required
+def addBookmark():
+    user = flask_login.current_user
+    recipe_id = request.form.get("recipe_id")
+    check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user).first()
+    if check is None:
+        newBookmark = model.Bookmarks(recipe_id=recipe_id, user=user)
+        db.session.add(newBookmark)
+        db.session.commit()
+        flash("Bookmark added!")
+    else:
+        delete = db.delete(model.Bookmarks).where(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user)
+        db.session.execute(delete)
+        db.session.commit()
+        flash("Bookmark removed!")
+    return redirect(url_for('main.recipe', recipeID=recipe_id))
+
+@bp.route("/bookmarks")
+@flask_login.login_required
+def bookmarks():
+    user = flask_login.current_user
+    query = (
+        db.select(model.Bookmarks)
+        .where(model.Bookmarks.user == user)
+    )
+    recipes = db.session.execute(query).scalars().all()
+    return render_template("main/bookmarks.html", recipes=recipes)
