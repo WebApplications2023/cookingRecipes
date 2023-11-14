@@ -1,6 +1,82 @@
-Unstaged changes after reset:
-M	cookingRecipes/main.py
-M	cookingRecipes/static/cooking.css
-M	cookingRecipes/templates/base.html
-M	cookingRecipes/templates/main/recipe.html
-D	cookingRecipes/templates/recipe.html
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="recipePage">
+    <img src="../static/potato.jpg" alt="Avatar" class="recipeCoverPhoto">
+    <h1 class><b>{{ recipe.title }}</b></h1>
+    <h2><em>{{ recipe.description }}</em></h2> 
+
+    <span class="cookingInfo">
+        <h4 class="recipeInfo"><i class="material-icons">timer</i>{{ recipe.cooking_time }} minutes</h4>
+        <h4 class="recipeInfo"><i class="material-icons">person</i>{{ recipe.num_people }} people</h4>
+        <!--   ADD AUTHENTICATION FOR THIS  -->
+        <form action="/addBookmark" method="post">
+            <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
+            <a class="bookmark" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>Bookmark</h4></a>
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+        </form>
+    </span>
+    <span class="cookingInfo">
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <div class="notification">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+    </span>
+
+    <div class="rating">
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="rating-value">{{ rating }}</span>
+    </div>
+
+    <br>
+
+   
+
+
+    <h3>Ingredients</h3>
+    <div class="recipeList">
+        {% for row in ingredients %}
+        <label class="container">
+            {{  row.quantity }} {{ row.ingredient }}
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        {% endfor %}
+    </div>
+
+    <h3>Steps</h3>
+    <ol class="recipeList">
+        {% for step in steps %}
+        <li>{{ step.description }}</li>
+        {% endfor %}
+    </ol>
+
+
+    <h3>Photos</h3>
+    <!--   CONDITIONAL IF THERE IS PHOTOS IF NOT DISPLAY <p> ELEMENT BELOW  -->
+    <div class="photoCarousel">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+    </div>
+
+    <!-- TO BE DISPLAYED IF NO PHOTOS 
+        <p><em>No photos uploaded yet</em></p>
+    -->
+
+    <!--   ADD AUTHENTICATION FOR THIS  -->
+    
+    <a class="recipeButton button" href="/">Upload Photo</a>
+    <a class="recipeButton button" href="/">Add a rating</a>
+
+</div>
+
+{% endblock %}
+
