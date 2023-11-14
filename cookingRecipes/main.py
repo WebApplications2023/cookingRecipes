@@ -88,10 +88,10 @@ def profile(userID):
     return render_template("main/profile.html", recipes=recipes )
 
 #SAVE FOR NEW RECIPE
-# @bp.route("/newPost")
+# @bp.route("/newRecipe")
 # @flask_login.login_required
-# def renderPost():
-#     return render_template("main/post.html")
+# def createRecipe():
+#     return render_template("main/newRecipe.html")
 
 
 #SAVE FOR NEW RECIPE
@@ -176,3 +176,14 @@ def addBookmark():
         db.session.commit()
         flash("Bookmark removed!")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
+
+@bp.route("/bookmarks")
+@flask_login.login_required
+def bookmarks():
+    user = flask_login.current_user
+    query = (
+        db.select(model.Bookmarks)
+        .where(model.Bookmarks.user == user)
+    )
+    recipes = db.session.execute(query).scalars().all()
+    return render_template("main/bookmarks.html", recipes=recipes)
