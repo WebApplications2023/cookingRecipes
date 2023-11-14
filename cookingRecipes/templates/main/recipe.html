@@ -10,7 +10,18 @@
         <h4 class="recipeInfo"><i class="material-icons">timer</i>{{ recipe.cooking_time }} minutes</h4>
         <h4 class="recipeInfo"><i class="material-icons">person</i>{{ recipe.num_people }} people</h4>
         <!--   ADD AUTHENTICATION FOR THIS  -->
-        <a href="/" class="bookmark"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>Bookmark</h4></a>
+        <form action="/addBookmark" method="post">
+            <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
+            <a class="bookmark" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>Bookmark</h4></a>
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+        </form>
+    </span>
+    <span class="cookingInfo">
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <div class="notification">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
     </span>
 
     <div class="rating">

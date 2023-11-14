@@ -125,7 +125,7 @@ def newRecipe():
         newQuantIngredient = model.QuantifiedIngredients(
             recipe_id=newRecipe.id, quantity=quantified_ingredients_list[i]
         )
-        ingr_id = db.session.query(db.select(model.Ingredients.id).where(model.Ingredients == ingredients_list[i]))
+        ingr_id = db.session.query(model.Ingredients.id).where(model.Ingredients == ingredients_list[i]).first()
         if ingr_id is None:
             newIngredient = model.Ingredients(ingredient=ingredients_list[i])
             db.session.add(newIngredient)
@@ -158,3 +158,21 @@ def addRating():
     db.session.commit()
     return redirect("/recipe", recipeID=recipe_id) #TODO: check if this works with query parameters
     #forward to recipe view
+
+@bp.route("/addBookmark", methods=["POST"])
+@flask_login.login_required
+def addBookmark():
+    user = flask_login.current_user
+    recipe_id = request.form.get("recipe_id")
+    check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user).first()
+    if check is None:
+        newBookmark = model.Bookmarks(recipe_id=recipe_id, user=user)
+        db.session.add(newBookmark)
+        db.session.commit()
+        flash("Bookmark added!")
+    else:
+        delete = db.delete(model.Bookmarks).where(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user)
+        db.session.execute(delete)
+        db.session.commit()
+        flash("Bookmark removed!")
+    return redirect(url_for('main.recipe', recipeID=recipe_id))
