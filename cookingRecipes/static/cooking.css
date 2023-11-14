@@ -349,8 +349,15 @@ li a:hover{
     color: #ffc700;
 }
 
+.recipeForm{
+    margin-left: 270px;
+    padding-top: 50px;
+}
 
-
+.recipeForm > input {
+    width: 80%;
+    margin-top: 5px;
+}
 
 
 /*
