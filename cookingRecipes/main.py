@@ -23,7 +23,7 @@ def index():
 #TEMP
 @bp.route("/recipe")
 def example():
-    return render_template("recipe.html")
+    return render_template("main/recipe.html")
 
 #SAVE FOR VIEWING ONE RECIPE
 @bp.route("/recipe/<int:recipeID>")
@@ -33,8 +33,9 @@ def recipe(recipeID):
         db.select(model.Ratings.rating)
         .where(model.Ratings.recipe_id == recipeID)
     )
-    if query:
-        rating = db.session.execute(func.avg(query)) #TODO: test once we have ratings in database
+    result = db.session.execute(func.avg(query)).first()
+    if result is not None:
+        rating = result #TODO: This necessitates having a rating already there
     else:
         rating = 0 #TODO: change if we want to represent ratings in another way
     if not recipe:
@@ -44,13 +45,14 @@ def recipe(recipeID):
         .where(model.Steps.recipe_id == recipe.id)
         .order_by(model.Steps.sequence_num)
     )
-    steps = db.session.execute(query_steps).scalars().all()
+    steps = db.session.execute(query_steps).all()
     query_ingredients = (
-        db.select(model.QuantifiedIngredients.quantity, model.QuantifiedIngredients.ingredients)
-        .where(model.QuantifiedIngredients.recipe_id == recipe.id)
+        db.select(model.QuantifiedIngredients.quantity, model.Ingredients.ingredient)
+        .join(model.Ingredients, model.QuantifiedIngredients.ingredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipeID)
     )
-    ingredients = db.session.execute(query_ingredients).scalars().all()
-    return render_template("main/recipeCard_template.html", recipe=recipe, steps=steps, ingredients=ingredients)
+    ingredients = db.session.execute(query_ingredients).all()
+    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating)
 
 
 #SAVE FOR PROFILE PATH

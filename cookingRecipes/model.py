@@ -20,7 +20,7 @@ class Recipe(db.Model):
     description = db.Column(db.String(512), nullable = False)
     num_people = db.Column(db.Integer, nullable=False)
     cooking_time = db.Column(db.Integer, nullable=False) #number of minutes
-    img = db.Column(db.LargeBinary, nullable=False)
+    img = db.Column(db.LargeBinary, nullable=True)
     steps = db.relationship('Steps', back_populates='recipe')
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
     bookmarks = db.relationship('Bookmarks', back_populates='recipe')

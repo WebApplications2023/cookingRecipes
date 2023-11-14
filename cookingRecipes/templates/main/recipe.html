@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="recipePage">
-    <img src="static/potato.jpg" alt="Avatar" class="recipeCoverPhoto">
-    <h1 class><b>Potatoes</b></h1>
-    <h2><em>Yummy rustic poatoes for any occasion, made with a whole bunch of delicious stuff</em></h2> 
+    <img src="../static/potato.jpg" alt="Avatar" class="recipeCoverPhoto">
+    <h1 class><b>{{ recipe.title }}</b></h1>
+    <h2><em>{{ recipe.description }}</em></h2> 
 
     <span class="cookingInfo">
-        <h4 class="recipeInfo"><i class="material-icons">timer</i>60 minutes</h4>
-        <h4 class="recipeInfo"><i class="material-icons">person</i>4 people</h4>
+        <h4 class="recipeInfo"><i class="material-icons">timer</i>{{ recipe.cooking_time }} minutes</h4>
+        <h4 class="recipeInfo"><i class="material-icons">person</i>{{ recipe.num_people }} people</h4>
         <!--   ADD AUTHENTICATION FOR THIS  -->
         <a href="/" class="bookmark"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>Bookmark</h4></a>
     </span>
@@ -29,52 +29,31 @@
 
     <h3>Ingredients</h3>
     <div class="recipeList">
-        <label class="container">10 Potatoes
+        {% for row in ingredients %}
+        <label class="container">
+            {{  row.quantity }} {{ row.ingredient }}
             <input type="checkbox">
             <span class="checkmark"></span>
         </label>
-        <label class="container">1/2 tsp Salt
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">1/2 tsp Pepper
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">2 bunches Rosemary
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">2 bunches Rosemary
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">2 tsp Olive Oil
-            <input type="checkbox">
-            <span class="checkmark"></span>
-        </label>
+        {% endfor %}
     </div>
-  
-    
 
     <h3>Steps</h3>
     <ol class="recipeList">
-        <li>Preheat oven to 400 degrees F</li>
-        <li>Wash potatoes and dice them to be small.</li>
-        <li>Mince the garlic and mix into the potatoes with the salt and pepper.</li>
-        <li>Add the rosemary and the olive oil and mix thourouly.</li>
-        <li>Put the potatoes in the oven and bake for 40 minutes</li>
+        {% for step in steps %}
+        <li>{{ step.description }}</li>
+        {% endfor %}
     </ol>
 
 
     <h3>Photos</h3>
     <!--   CONDITIONAL IF THERE IS PHOTOS IF NOT DISPLAY <p> ELEMENT BELOW  -->
     <div class="photoCarousel">
-        <img src="static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
     </div>
 
     <!-- TO BE DISPLAYED IF NO PHOTOS 
