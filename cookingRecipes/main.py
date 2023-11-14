@@ -33,10 +33,8 @@ def recipe(recipeID):
         db.select(model.Ratings.rating)
         .where(model.Ratings.recipe_id == recipeID)
     )
-    result = db.session.execute(func.avg(query)).first()
-    if result is not None:
-        rating = result #TODO: This necessitates having a rating already there
-    else:
+    rating = db.session.query(func.avg(model.Ratings.rating)).filter(model.Ratings.recipe_id == recipeID).scalar()
+    if rating is None:
         rating = 0 #TODO: change if we want to represent ratings in another way
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
