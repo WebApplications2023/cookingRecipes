@@ -218,54 +218,6 @@ li a:hover{
     padding-right: 10px;
 }
 
-
-/* The following code is taken from: hhttps://codepen.io/hesguru/pen/BaybqXv*/
-/*
-.rate {
-    height: 46px;
-    padding: 0 10px;
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.rate:not(:checked) > label {
-    float: left;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:20px;
-    color:#ccc;
-}
-.rate:not(:checked) > label:before {
-    content: '★';
-}
-.rate > input:checked ~ label {
-    color: #ffc700;    
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;  
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: #c59b08;
-}
-
-.rating-value {
-    margin-left: 10px;
-    font-size: 100%; 
-}
-*/
-
 .rate {
     float: left;
     height: 46px;
@@ -351,179 +303,79 @@ li a:hover{
 
 .recipeForm{
     margin-left: 270px;
-    padding-top: 50px;
+    padding-top: 10px;
+    padding-left: 5%;
 }
 
 .recipeForm > input {
-    width: 80%;
+    width: 90%;
     margin-top: 5px;
 }
 
-
-/*
-.posts{
-    margin-left: 25%;
-    margin-right: 5%;
-    
+.ingredientList{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 90%;
 }
 
-.multiplePosts .posts{
-    border-color: #928f8f;
-    border-style: none none solid none;
+.ingredientQuant{
+    margin-right: 10px;
+    width: 35%;
+
 }
 
-.posts{
-    margin-top: 2%;
+.ingredientItem{
+    margin-right:20px;
+    width: 35%;
 }
 
-.posts h1{
-    font-size: 135%;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.posts h2{
-    font-size: 110%;
-    display: inline-block;
-    color:#555;
-    vertical-align: middle;
-}
-
-.posts h3{
-    font-size: 100%;
-    display: inline-block;
-    color:#555;
-    vertical-align: middle;
-}
-
-.posts img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-
-.profileDescription img{
-    margin-left: 5%;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-top: 2%;
-}
-
-.profileDescription{
-    margin-left: 25%;
-    margin-right: 5%;
-}
-
-.profileDescription h1{
-    font-size: 175%;
-    line-height: 75%;
-}
-
-.profileDescription h2{
-    font-size: 110%;
-    color:#555;
-}
-
-
-
-.postText{
-    margin-top: 3%;
-    width: 100%;
-    height: 100px;
-}
-
-.posts button{
-    width: 100%;
-    font-size: 100%;
-    margin-left: 0%;
-}
-
-.replyButton{
-    margin-bottom: 2%;
+.remove{
+    padding: 2px 4px;
     background-color:  #f1f1f1;
     color: black;
     border: 2px solid #555;
-    font-size: 15px;
-    display: block;
     text-align: center;
+    align-items: right;
 }
 
-.replyButton:hover{
+.remove:hover{
     background-color: #555;
     color: white;
 }
 
-.postResponse{
-    margin-left: 5%;
+.otherQuant{
+
+
 }
 
+.otherIngredient{
 
-.form{
-    padding-top: 5%;
-    padding-bottom: 5%;
 }
 
-.postButton{
+.stepList{
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.step{
+    margin-right: 30px;
+    width: 70%;
+}
+
+.addIngredient, .addStep , .submitButton{
+    padding: 2px 4px;
     background-color:  #f1f1f1;
     color: black;
     border: 2px solid #555;
-    font-size: 25px;
-    display: block;
-    margin-right: 5%;
-    margin-top: 1%;
     text-align: center;
-    width:100%;
-    margin-bottom: 2%;
+    margin-bottom: 10px;
 }
 
-.postLink{
-    text-decoration: none;
+.addIngredient:hover, .addStep:hover , .submitButton:hover{
+    background-color: #555;
+    color: white;
 }
-
-.following{
-    display: inline-block;
-    position: absolute;
-    right: 5%;
-    top: 3%;
-}
-
-.numFollowers{
-    display: inline-block;
-    margin-left: 2%;
-    font-size: 130%;
-    position: absolute;
-    right: 20%;
-    top: 2%;
-    text-align: center;
-}
-
-.numFollowing{
-    display: inline-block;
-    margin-left: 2%;
-    font-size: 130%;
-    position: absolute;
-    right: 30%;
-    top: 2%;
-    text-align: center;
-}
-
-.followerButton{
-    text-decoration: none;
-    font-size: 80%;
-}
-
-*/
-
-
-
-
-
-
 
 
 
