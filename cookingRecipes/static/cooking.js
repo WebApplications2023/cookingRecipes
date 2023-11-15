@@ -34,9 +34,16 @@ var addIngredient = function(){
     }
 
     val.append('<option value="other">Other</option>')
+
+    var button = $("<button>")
+        .addClass("removeIngredient")
+        .text("Remove")
+        .click(remove);
         
     $(div).append(quant);
     $(div).append(val);
+    $(div).append(button);
+    
     $(".addIngredient").before(div);
 
     quant.on('change', function() {
@@ -73,6 +80,12 @@ var getList = function(type){
     return returnVal;
 }
 
+var remove = function(){
+    $(document).on("click", ".removeIngredient", function() {
+        $(this).closest(".ingredientList").remove();
+    });
+}
+
 $(document).ready(function() {
     $(".addIngredient").click(addIngredient)
     $(".recipeForm").submit(function(event){
@@ -83,4 +96,6 @@ $(document).ready(function() {
         console.log("Ingredients: " + ingredient);
     })
 });
+
+
 
