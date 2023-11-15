@@ -42,7 +42,7 @@ class Steps(db.Model):
 class Ingredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='ingredients')
-    ingredient = db.Column(db.String(64), nullable=False)
+    ingredient = db.Column(db.String(64), nullable=False, unique=True)
 
 class QuantifiedIngredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)

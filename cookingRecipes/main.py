@@ -55,8 +55,6 @@ def recipe(recipeID):
 @bp.route("/profile/<int:userID>")
 @flask_login.login_required
 def profile(userID):
-    userQuery = db.select(model.User).where(model.User.id == userID)
-    user = db.session.execute(userQuery).scalar()
     query = (
         db.select(model.Recipe)
         .where(model.Recipe.user_id == userID)
@@ -81,13 +79,18 @@ def profile(userID):
     # else:
     #     following = "follow"
 
-    return render_template("main/profile.html", recipes=recipes )
+    return render_template("main/profile.html", recipes=recipes)
 
-#SAVE FOR NEW RECIPE
-# @bp.route("/newRecipe")
-# @flask_login.login_required
-# def createRecipe():
-#     return render_template("main/newRecipe.html")
+
+@bp.route("/newRecipe")
+@flask_login.login_required
+def createRecipe():
+    query = (
+        db.select(model.Ingredients.ingredient)
+        .order_by(model.Ingredients.ingredient.desc())
+    )
+    ingredients = db.session.execute(query).scalars().all()
+    return render_template("main/newRecipe.html", ingredients=ingredients)
 
 
 #SAVE FOR NEW RECIPE
