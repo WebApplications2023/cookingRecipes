@@ -54,6 +54,7 @@ var addIngredient = function(){
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Quantity");
             
+
             $(div).append(newInput);
         }
         else{
