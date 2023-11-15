@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="/newRecipe" method="POST" class="recipeForm">
+    <form action="{{ url_for('main.newRecipe') }}" method="POST" class="recipeForm" enctype="multipart/form-data">
         <h1>General</h1>
         <input type="text" name="title" placeholder="Title">
         <input type="text" name="description" placeholder="Description">
-        <input type="number" name="cookingTime" placeholder="Cooking Duration (in minutes)" min="0">
+        <input type="number" name="cooking_time" placeholder="Cooking Duration (in minutes)" min="0">
         <input type="number" name="num_people" placeholder="Number of People" min="0">
+        <input type="file" name="img" accept="image/jpeg,image/png">
         <h1>Ingredients</h1>
         <input type="button" class="addIngredient" value="Add Ingredient" id="addIngredient">
+        <h1>Steps</h1>
+        <input type="button" class="addStep" value="Add Step" id="addStep">
         <input type="submit">
     </form>
 
