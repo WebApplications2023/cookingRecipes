@@ -218,54 +218,6 @@ li a:hover{
     padding-right: 10px;
 }
 
-
-/* The following code is taken from: hhttps://codepen.io/hesguru/pen/BaybqXv*/
-/*
-.rate {
-    height: 46px;
-    padding: 0 10px;
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.rate:not(:checked) > input {
-    position:absolute;
-    top:-9999px;
-}
-.rate:not(:checked) > label {
-    float: left;
-    width:1em;
-    overflow:hidden;
-    white-space:nowrap;
-    cursor:pointer;
-    font-size:20px;
-    color:#ccc;
-}
-.rate:not(:checked) > label:before {
-    content: '★';
-}
-.rate > input:checked ~ label {
-    color: #ffc700;    
-}
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-    color: #deb217;  
-}
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-    color: #c59b08;
-}
-
-.rating-value {
-    margin-left: 10px;
-    font-size: 100%; 
-}
-*/
-
 .rate {
     float: left;
     height: 46px;
@@ -345,71 +297,85 @@ li a:hover{
     font-size: 100%; 
 }
 
-
-
 .checked {
     color: #ffc700;
 }
 
-/* Checkmark for recipe ingredients code comes from: https://www.w3schools.com/howto/howto_css_custom_checkbox.asp*/
-
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
+.recipeForm{
+    margin-left: 270px;
+    padding-top: 10px;
+    padding-left: 5%;
 }
 
-.container:hover input ~ .checkmark {
-    background-color: #ccc;
+.recipeForm > input {
+    width: 90%;
+    margin-top: 5px;
 }
 
-.container input:checked ~ .checkmark {
-    background-color:#555;
+.ingredientList{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 90%;
 }
 
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
+.ingredientQuant{
+    margin-right: 10px;
+    width: 35%;
+
 }
 
-.container input:checked ~ .checkmark:after {
-    display: block;
+.ingredientItem{
+    margin-right:20px;
+    width: 35%;
 }
 
-.container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+.remove{
+    padding: 2px 4px;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    text-align: center;
+    align-items: right;
 }
 
-.container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+.remove:hover{
+    background-color: #555;
+    color: white;
 }
 
-.container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 100%;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
+.otherQuant{
+
+
+}
+
+.otherIngredient{
+
+}
+
+.stepList{
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.step{
+    margin-right: 30px;
+    width: 70%;
+}
+
+.addIngredient, .addStep , .submitButton{
+    padding: 2px 4px;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.addIngredient:hover, .addStep:hover , .submitButton:hover{
+    background-color: #555;
+    color: white;
+}
+
+
 
