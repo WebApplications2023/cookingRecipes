@@ -1,14 +1,3 @@
-/*
-create new form component??
-
-When button is clicked, add a form component for ingredient that has two boxes
-    --> both of dropdown type to select or other if not found
-
-when form submitted, submit list of all the values 
-    --> one list for ingredient name, one for quantity
- */
-
-
 var addIngredient = function(){
     var ingredientList = ["milk", "sugar", "eggs", "butter"]
     var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
@@ -53,11 +42,11 @@ var addIngredient = function(){
                 .addClass("otherQuant")
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Quantity");
-            
+
             $(div).append(newInput);
         }
         else{
-            $(".otherQuant").remove();
+            $(this).closest(".ingredientList").find(".otherQuant").remove();
         }
     });
 
@@ -72,7 +61,7 @@ var addIngredient = function(){
             $(div).append(newInput);
         }
         else{
-            $(".otherIngredient").remove();
+            $(this).closest(".ingredientList").find(".otherIngredient").remove();
         }
     });
 }
@@ -122,24 +111,25 @@ $(document).ready(function() {
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
         var steps = getList(".step");
-        console.log("Quantity: " + quant);
-        console.log("Ingredients: " + ingredient);
-        console.log("Steps: " + steps);
+
         var hiddenQuant = $("<input>")
             .attr("type", "hidden")
             .attr("name", "quantified_ingredients")
-            .attr("value", quant);
+            .attr("value", JSON.stringify(quant));
         var hiddenIngredient = $("<input>")
             .attr("type", "hidden")
             .attr("name", "ingredients")
-            .attr("value", ingredient);
+            .attr("value", JSON.stringify(ingredient));
         var hiddenSteps = $("<input>")
             .attr("type", "hidden")
             .attr("name", "steps")
-            .attr("value", steps);
+            .attr("value", JSON.stringify(steps));
+
         $(".recipeForm").append(hiddenIngredient);
         $(".recipeForm").append(hiddenQuant);
         $(".recipeForm").append(hiddenSteps);
+
+        $(this).off('submit').submit();
     })
 });
 

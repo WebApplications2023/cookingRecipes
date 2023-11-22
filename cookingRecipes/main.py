@@ -1,9 +1,11 @@
 import datetime
+import json
 import dateutil.tz
 from werkzeug.utils import secure_filename 
 from sqlalchemy.sql import func
 from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
 import flask_login
+from sqlalchemy.orm.exc import NoResultFound
 
 from . import model, db
 
@@ -19,6 +21,7 @@ def index():
     )
     recipes = db.session.execute(query).scalars().all()
     return render_template("main/index.html", recipes=recipes)
+
 
 #TEMP
 @bp.route("/recipe")
@@ -106,6 +109,7 @@ def newRecipe():
     else:
         img_data = None
     steps = request.form.getlist("steps")
+    time = datetime.datetime.now()
     newRecipe = model.Recipe(
         title=title, user=user, description=description,
         num_people=num_people, cooking_time=cooking_time, img=img_data,
@@ -116,17 +120,20 @@ def newRecipe():
     db.session.commit() #should now be able to access newRecipe.id
 
     # ingredients will be dropdown menu, will have to be the same 
-    # length as quantified ingredients
-    quantified_ingredients_list = request.form.getlist("quantified_ingredients")
-    ingredients_list = request.form.getlist("ingredients")
+    # length as quantified ingredient
+    quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
+    ingredients_list = json.loads(request.form.get("ingredients"))
+
     for i in range(len(quantified_ingredients_list)):
-        ingr_id = db.session.query(model.Ingredients.id).where(model.Ingredients.ingredient == ingredients_list[i]).first()
-        if ingr_id is None:
-            newIngredient = model.Ingredients(ingredient=ingredients_list[i])
-            db.session.add(newIngredient)
-            ingr_id = newIngredient.id
+        try:
+            ingredient =  db.session.query(model.Ingredients).filter(model.Ingredients.ingredient==ingredients_list[i]).one()
+        except NoResultFound:
+            ingredient = model.Ingredients(ingredient=ingredients_list[i])
+            db.session.add(ingredient)
+            db.session.flush()
+           
         newQuantIngredient = model.QuantifiedIngredients(
-            recipe_id=newRecipe.id, quantity=quantified_ingredients_list[i], ingredient_id=ingr_id
+            recipe_id=newRecipe.id, ingredient_id = ingredient.id, quantity=quantified_ingredients_list[i]
         )
         db.session.add(newQuantIngredient)
         #TODO: need to check whether this also adds to recipe quantified ingredients list
