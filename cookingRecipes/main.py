@@ -108,7 +108,6 @@ def newRecipe():
         img_data = img.read()  # Read the image data as binary
     else:
         img_data = None
-    steps = request.form.getlist("steps")
     newRecipe = model.Recipe(
         title=title, user=user, description=description,
         num_people=num_people, cooking_time=cooking_time, img=img_data,
@@ -138,7 +137,7 @@ def newRecipe():
         #TODO: need to check whether this also adds to recipe quantified ingredients list
         # or if I also need to append/if its better to just append
         #TODO: do I need a commit here?
-
+    steps = json.loads(request.form.get("steps"))
     for i in range(len(steps)):
         newStep = model.Steps(
             recipe_id=newRecipe.id, sequence_num=i+1,
