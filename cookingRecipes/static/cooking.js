@@ -1,14 +1,3 @@
-/*
-create new form component??
-
-When button is clicked, add a form component for ingredient that has two boxes
-    --> both of dropdown type to select or other if not found
-
-when form submitted, submit list of all the values 
-    --> one list for ingredient name, one for quantity
- */
-
-
 var addIngredient = function(){
     var ingredientList = ["milk", "sugar", "eggs", "butter"]
     var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
@@ -122,17 +111,6 @@ $(document).ready(function() {
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
         var steps = getList(".step");
-
-        
-        console.log("QUANT: ", JSON.stringify(quant));
-        console.log("INGREDIENT: ", JSON.stringify(ingredient));
-        console.log("STEPS: ", JSON.stringify(steps));
-        
-
-        console.log("Quantity: " + quant);
-        console.log("Ingredients: " + ingredient);
-        console.log("Steps: " + steps);
-
 
         var hiddenQuant = $("<input>")
             .attr("type", "hidden")
