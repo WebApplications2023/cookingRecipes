@@ -3,26 +3,34 @@ var addIngredient = function(){
     var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
     var div = $("<div>")
         .addClass("ingredientList");
-    var quant = $("<select>")
-        .addClass("ingredientQuant")
-        .attr("name", "quant")
-        .append('<option value="" selected disabled>Select Quantity</option>');
+    var quant = $("<div>")
+        .addClass("ingredientQuantContainer")
+        .append(
+            $("<select>")
+            .addClass("ingredientQuant")
+            .attr("name", "quant")
+            .append('<option value="" selected disabled>Select Quantity</option>')
+        );
 
     for (var i = 0; i < quantList.length; i++) {
-        quant.append('<option value="' + quantList[i] + '">' + quantList[i] + '</option>');
+        quant.find(".ingredientQuant").append('<option value="' + quantList[i] + '">' + quantList[i] + '</option>');
     }
-    quant.append('<option value="other">Other</option>')
+    quant.find(".ingredientQuant").append('<option value="other">Other</option>')
 
-    var val = $("<select>")
-        .addClass("ingredientItem")
-        .attr("name", "ingredient")
-        .append('<option value="" selected disabled>Select Ingredient</option>');
+    var val = $("<div>")
+        .addClass("ingredientItemContainer")
+        .append(
+            $("<select>")
+            .addClass("ingredientItem")
+            .attr("name", "ingredient")
+            .append('<option value="" selected disabled>Select Ingredient</option>')
+        );
 
     for (var i = 0; i < ingredientList.length; i++) {
-        val.append('<option value="' + ingredientList[i] + '">' + ingredientList[i] + '</option>');
+        val.find(".ingredientItem").append('<option value="' + ingredientList[i] + '">' + ingredientList[i] + '</option>');
     }
 
-    val.append('<option value="other">Other</option>')
+    val.find(".ingredientItem").append('<option value="other">Other</option>')
 
     var button = $("<button>")
         .addClass("remove")
@@ -35,7 +43,7 @@ var addIngredient = function(){
     
     $(".addIngredient").before(div);
 
-    quant.on('change', function() {
+    quant.find(".ingredientQuant").on('change', function() {
         if ($(this).val() === 'other') {
             var newInput = $("<input>")
                 .addClass("ingredientQuant")
@@ -43,14 +51,15 @@ var addIngredient = function(){
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Quantity");
 
-            $(div).append(newInput);
+            //$(div).append(newInput);
+            $(this).closest(".ingredientQuantContainer").append(newInput);
         }
         else{
-            $(this).closest(".ingredientList").find(".otherQuant").remove();
+            $(this).closest(".ingredientQuantContainer").find(".otherQuant").remove();
         }
     });
 
-    val.on('change', function() {
+    val.find(".ingredientItem").on('change', function() {
         if ($(this).val() === 'other') {
             var newInput = $("<input>")
                 .addClass("ingredientItem")
@@ -58,10 +67,11 @@ var addIngredient = function(){
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Ingredient");
             
-            $(div).append(newInput);
+            //$(div).append(newInput);
+            $(this).closest(".ingredientItemContainer").append(newInput);
         }
         else{
-            $(this).closest(".ingredientList").find(".otherIngredient").remove();
+            $(this).closest(".ingredientItemContainer").find(".otherIngredient").remove();
         }
     });
 }

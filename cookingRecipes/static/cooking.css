@@ -316,16 +316,24 @@ li a:hover{
     margin-top: 10px;
     margin-bottom: 20px;
     width: 90%;
+    display: flex;
 }
 
 .ingredientQuant{
-    margin-right: 10px;
-    width: 35%;
-
+    width: 100%;
 }
 
 .ingredientItem{
-    margin-right:20px;
+    width: 100%;
+}
+
+.ingredientQuantContainer{
+    margin-right: 10px;
+    width: 35%;
+}
+
+.ingredientItemContainer{
+    margin-right: 20px;
     width: 35%;
 }
 
@@ -336,20 +344,12 @@ li a:hover{
     border: 2px solid #555;
     text-align: center;
     align-items: right;
+    height: 30px;
 }
 
 .remove:hover{
     background-color: #555;
     color: white;
-}
-
-.otherQuant{
-
-
-}
-
-.otherIngredient{
-
 }
 
 .stepList{
