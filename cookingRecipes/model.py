@@ -10,6 +10,7 @@ class User(flask_login.UserMixin, db.Model):
     recipes = db.relationship('Recipe', back_populates='user')
     ratings = db.relationship('Ratings', back_populates='user')
     bookmarks = db.relationship('Bookmarks', back_populates='user')
+    photos = db.relationship('Photos', back_populates='user')
 
 
 class Recipe(db.Model):
@@ -20,12 +21,13 @@ class Recipe(db.Model):
     description = db.Column(db.String(512), nullable = False)
     num_people = db.Column(db.Integer, nullable=False)
     cooking_time = db.Column(db.Integer, nullable=False) #number of minutes
-    img = db.Column(db.LargeBinary, nullable=True)
+    img = db.Column(db.LargeBinary, nullable=False)
     steps = db.relationship('Steps', back_populates='recipe')
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='recipe')
     bookmarks = db.relationship('Bookmarks', back_populates='recipe')
     timestamp = db.Column(db.DateTime(), nullable=False)
     ratings = db.relationship('Ratings', back_populates='recipe')
+    photos = db.relationship('Photos', back_populates='recipe')
 
 
 class Steps(db.Model):
@@ -67,4 +69,15 @@ class Bookmarks(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     recipe = db.relationship('Recipe', back_populates='bookmarks')
     user = db.relationship('User', back_populates='bookmarks')
+
+#TODO: see if this works, if not do the file extension stuff he wrote in suggestions
+#this should work better tho: storing in DB instead of static
+class Photos(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    img = db.Column(db.LargeBinary, nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipe = db.relationship('Recipe', back_populates='photos')
+    user = db.relationship('User', back_populates='photos')
+
 

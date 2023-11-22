@@ -47,7 +47,12 @@ def recipe(recipeID):
         .where(model.QuantifiedIngredients.recipe_id == recipeID)
     )
     ingredients = db.session.execute(query_ingredients).all()
-    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating)
+    query_images = (
+        db.select(model.Photos.img)
+        .where(model.Photos.recipe_id == recipe.id)
+    )
+    photos = db.session.execute(query_images).scalars().all()
+    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos)
 
 
 #SAVE FOR PROFILE PATH

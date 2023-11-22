@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="recipePage">
-    <img src="../static/potato.jpg" alt="Avatar" class="recipeCoverPhoto">
+    <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto">
     <h1 class><b>{{ recipe.title }}</b></h1>
     <h2><em>{{ recipe.description }}</em></h2> 
 
@@ -66,11 +66,9 @@
     <h3>Photos</h3>
     <!--   CONDITIONAL IF THERE IS PHOTOS IF NOT DISPLAY <p> ELEMENT BELOW  -->
     <div class="photoCarousel">
-        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
-        <img src="../static/potato.jpg" alt="Avatar" class="carouselItem">
+        {% for photo in photos %}
+            <img src="data:image/{{ recipe.img_format }};base64,{{ photo|base64_encode }}" alt="Avatar" class="carouselItem">
+        {% endfor %}
     </div>
 
     <!-- TO BE DISPLAYED IF NO PHOTOS 
