@@ -109,7 +109,6 @@ def newRecipe():
     else:
         img_data = None
     steps = request.form.getlist("steps")
-    time = datetime.datetime.now()
     newRecipe = model.Recipe(
         title=title, user=user, description=description,
         num_people=num_people, cooking_time=cooking_time, img=img_data,
