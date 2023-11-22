@@ -48,9 +48,9 @@
     <div class="recipeList">
         {% for row in ingredients %}
         <label class="container">
-            {{  row.quantity }} {{ row.ingredient }}
             <input type="checkbox">
             <span class="checkmark"></span>
+            {{  row.quantity }} {{ row.ingredient }}
         </label>
         {% endfor %}
     </div>
