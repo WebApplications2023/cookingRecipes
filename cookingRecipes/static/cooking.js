@@ -53,11 +53,11 @@ var addIngredient = function(){
                 .addClass("otherQuant")
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Quantity");
-            
+
             $(div).append(newInput);
         }
         else{
-            $(".otherQuant").remove();
+            $(this).closest(".ingredientList").find(".otherQuant").remove();
         }
     });
 
@@ -72,7 +72,7 @@ var addIngredient = function(){
             $(div).append(newInput);
         }
         else{
-            $(".otherIngredient").remove();
+            $(this).closest(".ingredientList").find(".otherIngredient").remove();
         }
     });
 }
@@ -122,24 +122,36 @@ $(document).ready(function() {
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
         var steps = getList(".step");
+
+        
+        console.log("QUANT: ", JSON.stringify(quant));
+        console.log("INGREDIENT: ", JSON.stringify(ingredient));
+        console.log("STEPS: ", JSON.stringify(steps));
+        
+
         console.log("Quantity: " + quant);
         console.log("Ingredients: " + ingredient);
         console.log("Steps: " + steps);
+
+
         var hiddenQuant = $("<input>")
             .attr("type", "hidden")
             .attr("name", "quantified_ingredients")
-            .attr("value", quant);
+            .attr("value", JSON.stringify(quant));
         var hiddenIngredient = $("<input>")
             .attr("type", "hidden")
             .attr("name", "ingredients")
-            .attr("value", ingredient);
+            .attr("value", JSON.stringify(ingredient));
         var hiddenSteps = $("<input>")
             .attr("type", "hidden")
             .attr("name", "steps")
-            .attr("value", steps);
+            .attr("value", JSON.stringify(steps));
+
         $(".recipeForm").append(hiddenIngredient);
         $(".recipeForm").append(hiddenQuant);
         $(".recipeForm").append(hiddenSteps);
+
+        $(this).off('submit').submit();
     })
 });
 
