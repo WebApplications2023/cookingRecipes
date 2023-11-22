@@ -29,15 +29,11 @@ def example():
 @bp.route("/recipe/<int:recipeID>")
 def recipe(recipeID):
     recipe = db.session.get(model.Recipe, recipeID)
-    query = (
-        db.select(model.Ratings.rating)
-        .where(model.Ratings.recipe_id == recipeID)
-    )
     rating = db.session.query(func.avg(model.Ratings.rating)).filter(model.Ratings.recipe_id == recipeID).scalar()
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
     query_steps = (
-        db.select(model.Steps.sequence_num, model.Steps.description)
+        db.select(model.Steps.description)
         .where(model.Steps.recipe_id == recipe.id)
         .order_by(model.Steps.sequence_num)
     )
@@ -90,7 +86,7 @@ def createRecipe():
         .order_by(model.Ingredients.ingredient.desc())
     )
     ingredients = db.session.execute(query).scalars().all()
-    return render_template("main/newRecipe.html", ingredients=ingredients)
+    return render_template("main/recipeForm.html", ingredients=ingredients)
 
 
 #SAVE FOR NEW RECIPE
@@ -107,10 +103,13 @@ def newRecipe():
         # Ensure the image file has a safe filename
         img_filename = secure_filename(img.filename)
         img_data = img.read()  # Read the image data as binary
+    else:
+        img_data = None
     steps = request.form.getlist("steps")
     newRecipe = model.Recipe(
         title=title, user=user, description=description,
-        num_people=num_people, cooking_time=cooking_time, img=img_data
+        num_people=num_people, cooking_time=cooking_time, img=img_data,
+        timestamp=datetime.datetime.now(dateutil.tz.tzlocal())
     )
 
     db.session.add(newRecipe)
@@ -121,16 +120,14 @@ def newRecipe():
     quantified_ingredients_list = request.form.getlist("quantified_ingredients")
     ingredients_list = request.form.getlist("ingredients")
     for i in range(len(quantified_ingredients_list)):
-        newQuantIngredient = model.QuantifiedIngredients(
-            recipe_id=newRecipe.id, quantity=quantified_ingredients_list[i]
-        )
-        ingr_id = db.session.query(model.Ingredients.id).where(model.Ingredients == ingredients_list[i]).first()
+        ingr_id = db.session.query(model.Ingredients.id).where(model.Ingredients.ingredient == ingredients_list[i]).first()
         if ingr_id is None:
             newIngredient = model.Ingredients(ingredient=ingredients_list[i])
             db.session.add(newIngredient)
-            newQuantIngredient.ingredient_id = newIngredient.id
-        else:
-            newQuantIngredient.ingredient_id = ingr_id
+            ingr_id = newIngredient.id
+        newQuantIngredient = model.QuantifiedIngredients(
+            recipe_id=newRecipe.id, quantity=quantified_ingredients_list[i], ingredient_id=ingr_id
+        )
         db.session.add(newQuantIngredient)
         #TODO: need to check whether this also adds to recipe quantified ingredients list
         # or if I also need to append/if its better to just append
@@ -144,7 +141,7 @@ def newRecipe():
         db.session.add(newStep)
     db.session.commit()
 
-    return redirect("/recipe", recipeID=newRecipe.id)
+    return redirect(url_for("main.recipe", recipeID=newRecipe.id))
 
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
@@ -155,7 +152,7 @@ def addRating():
     newRating = model.Rating(rating=rating, user_id=user.id, recipe_id=recipe_id)
     db.session.add(newRating)
     db.session.commit()
-    return redirect("/recipe", recipeID=recipe_id) #TODO: check if this works with query parameters
+    return redirect(url_for("main.recipe", recipeID=recipe_id)) #TODO: check if this works with query parameters
     #forward to recipe view
 
 @bp.route("/addBookmark", methods=["POST"])
