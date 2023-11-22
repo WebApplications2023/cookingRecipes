@@ -30,13 +30,7 @@
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star"></span>
-        <span class="rating-value">
-            {% if rating is none %}
-                No Ratings Yet
-            {% else %}
-                {{ rating }}
-            {% endif %}
-        </span>
+        <span class="rating-value">{{ rating }}</span>
     </div>
 
     <br>
@@ -48,9 +42,9 @@
     <div class="recipeList">
         {% for row in ingredients %}
         <label class="container">
-            {{  row.quantity }} {{ row.ingredient }}
             <input type="checkbox">
             <span class="checkmark"></span>
+            {{  row.quantity }} {{ row.ingredient }}
         </label>
         {% endfor %}
     </div>
