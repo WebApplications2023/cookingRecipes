@@ -77,7 +77,16 @@
 
     <!--   ADD AUTHENTICATION FOR THIS  -->
     
-    <a class="recipeButton button" href="/">Upload Photo</a>
+    
+    <div class="modal">
+        <form action="/addPhoto" method="post" enctype="multipart/form-data">
+            <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
+            <input type="file" name="img" accept="image/jpeg,image/png" required>
+            <a class="recipeButton button" onclick="this.closest('form').submit();">Submit Photo</a>
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+        </form>
+    </div>
+    <p><a class="recipeButton button" href="#ex1" rel="modal:open">Upload Photo</a></p>
     <a class="recipeButton button" href="/">Add a rating</a>
 
 </div>

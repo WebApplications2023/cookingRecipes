@@ -193,3 +193,20 @@ def bookmarks():
     )
     recipes = db.session.execute(query).scalars().all()
     return render_template("main/bookmarks.html", recipes=recipes)
+
+@bp.route("/addPhoto", methods=["POST"])
+@flask_login.login_required
+def addPhoto():
+    img = request.files["img"]  # Get the uploaded image file
+    user = flask_login.current_user
+    recipe_id = request.form.get("recipe_id")
+    if img:
+        # Ensure the image file has a safe filename
+        img_filename = secure_filename(img.filename)
+        img_data = img.read()  # Read the image data as binary
+        newPhoto = model.Photos(img=img_data, recipe_id=recipe_id, user_id=user.id)
+        db.session.add(newPhoto)
+        db.session.commit()
+    else:
+        flash("Please select a valid photo.")
+    return redirect(url_for('main.recipe', recipeID=recipe_id))
