@@ -188,7 +188,8 @@ def addBookmark():
 def bookmarks():
     user = flask_login.current_user
     query = (
-        db.select(model.Bookmarks)
+        db.select(model.Recipe)
+        .join(model.Bookmarks, model.Recipe.id == model.Bookmarks.recipe_id)
         .where(model.Bookmarks.user == user)
     )
     recipes = db.session.execute(query).scalars().all()
