@@ -150,6 +150,7 @@ def newRecipe():
             description=steps[i]
         )
         db.session.add(newStep)
+    user.points += 10
     db.session.commit()
 
     return redirect(url_for("main.recipe", recipeID=newRecipe.id))
@@ -162,6 +163,7 @@ def addRating():
     recipe_id = request.form.get("recipe_id") #hidden area of form?
     newRating = model.Rating(rating=rating, user_id=user.id, recipe_id=recipe_id)
     db.session.add(newRating)
+    user.points += 5
     db.session.commit()
     return redirect(url_for("main.recipe", recipeID=recipe_id)) #TODO: check if this works with query parameters
     #forward to recipe view
