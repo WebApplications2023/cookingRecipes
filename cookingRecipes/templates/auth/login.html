@@ -15,6 +15,11 @@
                 <div><input class = "button loginButton" type="submit" value="Login"/></div>
                 <div><a class = "button loginButton" href="/signup">Sign up</a></div>
             </form>
+            {% with messages = get_flashed_messages() %}
+                {% for message in messages %}
+                    <div class="notification">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
         </div>
     </body>
 </html>
