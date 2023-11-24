@@ -76,4 +76,6 @@ class Photos(db.Model):
      user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
      recipe = db.relationship('Recipe', back_populates='photos')
      user = db.relationship('User', back_populates='photos')
+     timestamp = db.Column(db.DateTime(), nullable=False)
+
 
