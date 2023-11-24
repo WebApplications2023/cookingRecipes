@@ -1,7 +1,7 @@
-<a href="/profile" class="recipeCardHref">
+<a href="/recipe/{{ recipe.id }}" class="recipeCardHref">
     <div class="recipeCard">
-        <img src="static/potato.jpg" alt="Avatar" class="recipePhoto">
-        <h1 class><b>Potatoes</b></h1>
-        <h2><em>Yummy rustic poatoes for any occasion, made with a whole bunch of delicious stuff</em></h2>    
+        <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipePhoto">
+        <h1 class><b>{{ recipe.title }}</b></h1>
+        <h2><em>{{ recipe.description }}</em></h2>    
     </div>
 </a>
