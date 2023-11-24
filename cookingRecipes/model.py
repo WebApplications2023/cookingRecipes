@@ -1,5 +1,6 @@
-from . import db
+from . import db, rankings
 import flask_login
+from sqlalchemy import Enum
 
 
 class User(flask_login.UserMixin, db.Model):
@@ -7,6 +8,8 @@ class User(flask_login.UserMixin, db.Model):
     email = db.Column(db.String(128), unique=True, nullable=False)
     name = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    points = db.Column(db.Integer, nullable=False)
+    rank = db.Column(db.Enum(rankings.Ranks), nullable=False)
     recipes = db.relationship('Recipe', back_populates='user')
     ratings = db.relationship('Ratings', back_populates='user')
     bookmarks = db.relationship('Bookmarks', back_populates='user')

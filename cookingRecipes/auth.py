@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename 
 from . import db, bcrypt
 import flask_login
-from . import model
+from . import model, rankings
 
 bp = Blueprint("auth", __name__)
 
@@ -49,7 +49,7 @@ def signup_post():
         flash("Sorry, the email you provided is already registered")
         return redirect(url_for("auth.signup"))
     password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
-    new_user = model.User(email=email, name=name, password=password_hash)
+    new_user = model.User(email=email, name=name, password=password_hash, points=0, rank=rankings.Ranks.Rookie)
     db.session.add(new_user)
     db.session.commit()
     flash("You've successfully signed up!")

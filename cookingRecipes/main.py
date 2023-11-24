@@ -7,7 +7,7 @@ from flask import Blueprint, abort, render_template, request, redirect, url_for,
 import flask_login
 from sqlalchemy.orm.exc import NoResultFound
 
-from . import model, db
+from . import model, db, rankings
 
 bp = Blueprint("main", __name__)
 
@@ -52,7 +52,8 @@ def recipe(recipeID):
          .where(model.Photos.recipe_id == recipe.id)
      )
     photos = db.session.execute(query_images).scalars().all()
-    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos)
+    user = flask_login.current_user
+    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos, rank=user.rank, ranks=rankings.Ranks)
 
 
 #SAVE FOR PROFILE PATH
@@ -211,3 +212,7 @@ def addPhoto():
     else:
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
+
+@bp.route("/pointsSystem")
+def pointsSystem():
+    return render_template("main/points.html")
