@@ -1,10 +1,5 @@
 <div class="multipleCards">
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
-    {% include 'recipeCard_template.html' %}
+    {% for recipe in recipes %}
+        {% include 'recipeCard_template.html' %}
+    {% endfor %}
 </div>
