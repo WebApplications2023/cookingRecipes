@@ -66,6 +66,12 @@ def profile(userID):
         .limit(10)
     )
     recipes = db.session.execute(query).scalars().all()
+    query_submitted_photos = (
+        db.select(model.Photos)
+        .where(model.Photos.user_id == userID)
+        .order_by(model.Recipe.timestamp.desc())
+    )
+    submitted_photos = db.session.execute(query_submitted_photos).scalars().all()
 
     #USE IF IMPLEMENTING FOLLOW FEATURE
     # if user is not None:
@@ -83,7 +89,7 @@ def profile(userID):
     # else:
     #     following = "follow"
 
-    return render_template("main/profile.html", recipes=recipes)
+    return render_template("main/profile.html", recipes=recipes, submitted_photos=submitted_photos)
 
 
 @bp.route("/newRecipe")
@@ -204,7 +210,8 @@ def addPhoto():
         # Ensure the image file has a safe filename
         img_filename = secure_filename(img.filename)
         img_data = img.read()  # Read the image data as binary
-        newPhoto = model.Photos(img=img_data, recipe_id=recipe_id, user_id=user.id)
+        newPhoto = model.Photos(img=img_data, recipe_id=recipe_id, 
+                                user_id=user.id, timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
         db.session.add(newPhoto)
         db.session.commit()
     else:
