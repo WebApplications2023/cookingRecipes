@@ -113,7 +113,7 @@ li a:hover{
     transition: transform 0.2s ease-in-out; 
 }
 
-.recipeCard h1{
+.cardHeader{
     font-size: 120%;
     margin-left: 2%;
     white-space: nowrap;
@@ -121,7 +121,7 @@ li a:hover{
     text-overflow: ellipsis;
 }
 
-.recipeCard h2{
+.cardSubHeader{
     font-size: 90%;
     margin-left: 2%;
     white-space: nowrap;
@@ -144,7 +144,6 @@ li a:hover{
 }
 
 .multipleCards {
-    margin-left: 300px;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -210,6 +209,7 @@ li a:hover{
     display: flex;
     overflow-x: auto;
 }
+
 
 .carouselItem{
     width: 350px;
@@ -437,6 +437,38 @@ li a:hover{
 .addIngredient:hover, .addStep:hover , .submitButton:hover{
     background-color: #555;
     color: white;
+}
+
+
+
+.profile{
+    margin-left: 260px;
+}
+
+.profileName{
+    font-size: 300%;
+    margin-top: 0px;
+    text-align: center;
+    color:#555;
+}
+
+.profileHeader{
+    padding-top: 40px;
+    background-color: #cbcbcb;
+    height: 150px;
+    background-image: linear-gradient(#cbcbcb, white);
+}
+
+.profileContent{
+    padding-left: 20px;
+}
+
+.profileCarousel{
+    margin-left: none;
+}
+
+.noValue{
+    text-align: center;
 }
 
 
