@@ -87,6 +87,11 @@
         </form>
     </div>
     <p><a class="recipeButton button" href="#ex1" rel="modal:open">Upload Photo</a></p>
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="notification">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
     <a class="recipeButton button" href="/">Add a rating</a>
 
 </div>
