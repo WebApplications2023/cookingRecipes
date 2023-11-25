@@ -1,7 +1,7 @@
 <a href="/recipe/{{ recipe.id }}" class="recipeCardHref">
     <div class="recipeCard">
         <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipePhoto">
-        <h1 class><b>{{ recipe.title }}</b></h1>
-        <h2><em>{{ recipe.description }}</em></h2>    
+        <h1 class="cardHeader"><b>{{ recipe.title }}</b></h1>
+        <h2 class="cardSubHeader"><em>{{ recipe.description }}</em></h2>    
     </div>
 </a>
