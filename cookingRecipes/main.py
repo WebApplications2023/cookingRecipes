@@ -52,15 +52,17 @@ def recipe(recipeID):
          .where(model.Photos.recipe_id == recipe.id)
      )
     photos = db.session.execute(query_images).scalars().all()
-    user = flask_login.current_user
-    check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipeID).where(model.Bookmarks.user == user).first()
-    bookmarked = True if check else False
+    if flask_login.current_user.is_authenticated:
+        user = flask_login.current_user
+        check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipeID).where(model.Bookmarks.user == user).first()
+        bookmarked = True if check else False
+    else:
+        bookmarked = None
     return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos, bookmarked=bookmarked)
 
 
 #SAVE FOR PROFILE PATH
 @bp.route("/profile/<int:userID>")
-@flask_login.login_required
 def profile(userID):
     user = db.session.get(model.User, userID)
     query = (
@@ -77,32 +79,18 @@ def profile(userID):
     )
     submitted_photos = db.session.execute(query_submitted_photos).scalars().all()
     if flask_login.current_user == user:
+        currUser = user
         query = (
             db.select(model.Recipe)
             .join(model.Bookmarks, model.Recipe.id == model.Bookmarks.recipe_id)
             .where(model.Bookmarks.user == user)
             .order_by(model.Recipe.timestamp)
         )
-        bookmarks = db.session.execute(query).scalars().all()
+        bookmarks = db.session.execute(query).scalars().all() or None
     else:
         bookmarks = None
-    #USE IF IMPLEMENTING FOLLOW FEATURE
-    # if user is not None:
-    #     numFollowers = len(user.followers)
-    #     numFollowing = len(user.following)
-    # else:
-    #     numFollowers = 0
-    #     numFollowing = 0
-    
-    
-    # if userID == flask_login.current_user.id:
-    #     following = "none"
-    # elif user in flask_login.current_user.following:
-    #     following = "unfollow"
-    # else:
-    #     following = "follow"
-
-    return render_template("main/profile.html", recipes=recipes, submitted_photos=submitted_photos, bookmarks=bookmarks, user=user)
+        currUser = None
+    return render_template("main/profile.html", recipes=recipes, submitted_photos=submitted_photos, bookmarks=bookmarks, user=user, currUser=currUser)
 
 
 @bp.route("/newRecipe")
