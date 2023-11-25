@@ -12,16 +12,9 @@
         <!--   ADD AUTHENTICATION FOR THIS  -->
         <form action="/addBookmark" method="post">
             <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
-            <a class="bookmark" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>Bookmark</h4></a>
+            <a class="bookmark" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>{{"Bookmarked!" if bookmarked else "Bookmark"}}</h4></a>
             <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         </form>
-    </span>
-    <span class="cookingInfo">
-        {% with messages = get_flashed_messages() %}
-            {% for message in messages %}
-            <div class="notification">{{ message }}</div>
-            {% endfor %}
-        {% endwith %}
     </span>
 
     <div class="rating">
@@ -115,11 +108,6 @@
         </form>
     </div>
     <a  class="recipeButton button" href="#modal_photo" rel="modal:open">Upload Photo</a>
-    {% with messages = get_flashed_messages() %}
-        {% for message in messages %}
-            <div class="notification">{{ message }}</div>
-        {% endfor %}
-    {% endwith %}
     <a class="recipeButton button" href="/">Add a rating</a>
 
 </div>
