@@ -177,10 +177,10 @@ def newRecipe():
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
 def addRating():
-    rating = request.form.get("rating")
+    rating = int(request.form.get("rating"))
     user = flask_login.current_user
     recipe_id = request.form.get("recipe_id") #hidden area of form?
-    newRating = model.Rating(rating=rating, user_id=user.id, recipe_id=recipe_id)
+    newRating = model.Ratings(rating=rating, user_id=user.id, recipe_id=recipe_id)
     db.session.add(newRating)
     db.session.commit()
     return redirect(url_for("main.recipe", recipeID=recipe_id)) #TODO: check if this works with query parameters

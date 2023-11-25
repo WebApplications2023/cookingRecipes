@@ -269,11 +269,7 @@ li a:hover{
 }
 
 .fa-star:hover{
-    color: gray;
-}
-
-.star5:hover{
-    color: gray;
+    color: gray
 }
 
 .star4:has(+ .star5:hover) {
@@ -289,10 +285,6 @@ li a:hover{
 }
 
 .star1:has(+ .star2:hover), .star1:has(~ .star3:hover), .star1:has(~ .star4:hover), .star1:has(~ .star5:hover) {
-    color: gray;
-}
-
-.star1:hover{
     color: gray;
 }
 
