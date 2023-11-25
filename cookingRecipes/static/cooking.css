@@ -147,6 +147,7 @@ li a:hover{
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    margin-left: 290px;
 }
 
 .recipePage{
