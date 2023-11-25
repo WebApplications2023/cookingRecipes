@@ -166,8 +166,12 @@ def addRating():
     rating = int(request.form.get("rating"))
     user = flask_login.current_user
     recipe_id = request.form.get("recipe_id") #hidden area of form?
-    newRating = model.Ratings(rating=rating, user_id=user.id, recipe_id=recipe_id)
-    db.session.add(newRating)
+    check = db.session.query(model.Ratings).filter(model.Ratings.recipe_id == recipe_id).filter(model.Ratings.user == user).first()
+    if check is None:
+        newRating = model.Ratings(rating=rating, user_id=user.id, recipe_id=recipe_id)
+        db.session.add(newRating)
+    else:
+        check.rating = rating
     db.session.commit()
     return redirect(url_for("main.recipe", recipeID=recipe_id)) #TODO: check if this works with query parameters
     #forward to recipe view
@@ -181,11 +185,10 @@ def addBookmark():
     if check is None:
         newBookmark = model.Bookmarks(recipe_id=recipe_id, user=user)
         db.session.add(newBookmark)
-        db.session.commit()
     else:
         delete = db.delete(model.Bookmarks).where(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user)
         db.session.execute(delete)
-        db.session.commit()
+    db.session.commit()
     return redirect(url_for('main.recipe', recipeID=recipe_id))
 
 
