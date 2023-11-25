@@ -25,11 +25,39 @@
     </span>
 
     <div class="rating">
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star checked"></span>
-        <span class="fa fa-star"></span>
+        {% if rating %}
+            {% if rating > 1 %}
+                <span class="fa fa-star checked"></span>
+            {% else %}
+                <span class="fa fa-star"></span>
+            {% endif %}
+            {% if rating > 2 %}
+                <span class="fa fa-star checked"></span>
+            {% else %}
+                <span class="fa fa-star"></span>
+            {% endif %}
+            {% if rating > 3 %}
+                <span class="fa fa-star checked"></span>
+            {% else %}
+                <span class="fa fa-star"></span>
+            {% endif %}
+            {% if rating > 4 %}
+                <span class="fa fa-star checked"></span>
+            {% else %}
+                <span class="fa fa-star"></span>
+            {% endif %}
+            {% if rating > 4.5 %}
+                <span class="fa fa-star checked"></span>
+            {% else %}
+                <span class="fa fa-star"></span>
+            {% endif %}
+        {% else %}
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        {% endif %}
         <span class="rating-value">
             {% if rating is none %}
                 No Ratings Yet
@@ -64,29 +92,29 @@
 
 
     <h3>Photos</h3>
-    <!--   CONDITIONAL IF THERE IS PHOTOS IF NOT DISPLAY <p> ELEMENT BELOW  -->
-    <div class="photoCarousel">
-        {% for photo in photos %}
-             <img src="data:image/{{ recipe.img_format }};base64,{{ photo|base64_encode }}" alt="Avatar" class="carouselItem">
-         {% endfor %}
-    </div>
-
-    <!-- TO BE DISPLAYED IF NO PHOTOS 
-        <p><em>No photos uploaded yet</em></p>
-    -->
+    {% if photos %}
+        <div class="photoCarousel">
+            {% for photo in photos %}
+                <img src="data:image/{{ recipe.img_format }};base64,{{ photo|base64_encode }}" alt="Avatar" class="carouselItem">
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="noPhotos"><em>No photos uploaded yet</em></p>
+    {% endif %}
 
     <!--   ADD AUTHENTICATION FOR THIS  -->
     
     <!-- https://www.jquerymodal.com -->
-    <div id="modal_photo" class="modal">
+    <div id="modal_photo" class="modal modalPopup">
+        <h1 class="uploadPhotoHeader">Upload Photo</h1>
         <form action="/addPhoto" method="post" enctype="multipart/form-data">
             <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
-            <input type="file" name="img" accept="image/jpeg,image/png" required>
-            <a class="recipeButton button" onclick="this.closest('form').submit();">Submit Photo</a>
+            <input class="uploadFile" type="file" name="img" accept="image/jpeg,image/png" required>
+            <a class="photoButton recipeButton button" onclick="this.closest('form').submit();">Submit Photo</a>
             <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         </form>
     </div>
-    <p><a class="recipeButton button" href="#modal_photo" rel="modal:open">Upload Photo</a></p>
+    <a  class="recipeButton button" href="#modal_photo" rel="modal:open">Upload Photo</a>
     {% with messages = get_flashed_messages() %}
         {% for message in messages %}
             <div class="notification">{{ message }}</div>

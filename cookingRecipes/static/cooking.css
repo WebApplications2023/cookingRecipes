@@ -34,7 +34,7 @@ li a:hover{
 }
 
 .button{
-    padding: 8px 16px ;
+    padding: 8px 16px;
     background-color:  #f1f1f1;
     color: black;
     border: 2px solid #555;
@@ -190,9 +190,6 @@ li a:hover{
 .recipeButton{
     text-decoration: none;
     font-size: 100%;
-    margin-right: 50px;
-    margin-left: 50px;
-
 }
 
 .uploadPhoto{
@@ -437,6 +434,25 @@ li a:hover{
 .addIngredient:hover, .addStep:hover , .submitButton:hover{
     background-color: #555;
     color: white;
+}
+
+.noPhotos{
+    padding-bottom: 20px;
+}
+
+.modalPopup{
+    height: 200px;
+}
+
+.uploadPhotoHeader{
+    font-size: 150%;
+    color:#555;
+    padding-left: 5%;
+}
+
+.uploadFile{
+    padding-bottom: 5%;
+    padding-left: 5%;
 }
 
 
