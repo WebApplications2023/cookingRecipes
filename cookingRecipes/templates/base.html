@@ -15,16 +15,15 @@
         <div class="navbar">
             <h1 href="/">Cooking Recipes</h1>
                 <ul>  
-                {% if current_user.is_authenticated: %}
                     <li><a href="/">Home</a></li>
-                    <li><a href="/profile/{{ current_user.id }}">Profile</a></li>
-                    <li><a href="/newRecipe">New Recipe</a></li>
-                    <li><a href="/bookmarks">Bookmarks</a></li>
-                    <li><a href="/logout">Log Out</a></li>
-                {% else %}
-                    <li><a href="/login">Log In</a></li>
-                {% endif %}
-                    
+                    {% if current_user.is_authenticated: %}
+                        <li><a href="/profile/{{ current_user.id }}">Profile</a></li>
+                        <li><a href="/newRecipe">New Recipe</a></li>
+                        <li><a href="/bookmarks">Bookmarks</a></li>
+                        <li><a href="/logout">Log Out</a></li>
+                    {% else %}
+                        <li><a href="/login">Log In</a></li>
+                    {% endif %} 
                 </ul>
 
         </div>
