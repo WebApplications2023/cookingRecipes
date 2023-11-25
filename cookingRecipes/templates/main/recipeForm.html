@@ -3,6 +3,8 @@
 {% block content %}
     <form action="{{ url_for('main.newRecipe') }}" method="POST" class="recipeForm" enctype="multipart/form-data">
         <h1>Create New Recipe</h1>
+        <input type="hidden" id="quantIngredients" value="{{ ingredients.quantified_ingredients }}">
+        <input type="hidden" id="ingredients" value="{{ ingredients }}">
         <label for="title">Title</label><br>
         <input type="text" name="title" placeholder="Enter Title" required> <br>
         <label for="description">Description</label><br>
