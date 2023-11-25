@@ -109,7 +109,7 @@ def createRecipe():
         db.select(model.Ingredients.ingredient)
         .order_by(model.Ingredients.ingredient.desc())
     )
-    ingredients = db.session.execute(query).scalars().all()
+    ingredients = db.session.execute(query).all()
     return render_template("main/recipeForm.html", ingredients=ingredients)
 
 
