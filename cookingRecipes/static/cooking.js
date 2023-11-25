@@ -3,7 +3,7 @@ var addIngredient = function(){
     var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
     var div = $("<div>")
         .addClass("ingredientList");
-    var quant = $("<div>")
+    /*var quant = $("<div>")
         .addClass("ingredientQuantContainer")
         .append(
             $("<select>")
@@ -16,12 +16,17 @@ var addIngredient = function(){
         quant.find(".ingredientQuant").append('<option value="' + quantList[i] + '">' + quantList[i] + '</option>');
     }
     quant.find(".ingredientQuant").append('<option value="other">Other</option>')
-
+    */
+    var quant = $("<input>")
+        .addClass("ingredientQuant")
+        .attr("type", "text")
+        .attr("placeholder", "Specify Quantity");
+    
     var val = $("<div>")
         .addClass("ingredientItemContainer")
-        .append(
-            $("<select>")
+        .append($("<select>")
             .addClass("ingredientItem")
+            .addClass("ingredientHeight")
             .attr("name", "ingredient")
             .append('<option value="" selected disabled>Select Ingredient</option>')
         );
@@ -43,7 +48,7 @@ var addIngredient = function(){
     
     $(".addIngredient").before(div);
 
-    quant.find(".ingredientQuant").on('change', function() {
+   /* quant.find(".ingredientQuant").on('change', function() {
         if ($(this).val() === 'other') {
             var newInput = $("<input>")
                 .addClass("ingredientQuant")
@@ -58,20 +63,22 @@ var addIngredient = function(){
             $(this).closest(".ingredientQuantContainer").find(".otherQuant").remove();
         }
     });
+    */
 
     val.find(".ingredientItem").on('change', function() {
         if ($(this).val() === 'other') {
+            $(this).closest(".ingredientItem").removeClass("ingredientHeight")
             var newInput = $("<input>")
                 .addClass("ingredientItem")
                 .addClass("otherIngredient")
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Ingredient");
             
-            //$(div).append(newInput);
             $(this).closest(".ingredientItemContainer").append(newInput);
         }
         else{
             $(this).closest(".ingredientItemContainer").find(".otherIngredient").remove();
+            $(this).closest(".ingredientItem").addClass("ingredientHeight")
         }
     });
 }

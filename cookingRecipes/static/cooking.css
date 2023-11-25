@@ -380,11 +380,16 @@ li a:hover{
 }
 
 .ingredientQuant{
-    width: 100%;
+    margin-right: 10px;
+    width: 35%;
 }
 
 .ingredientItem{
     width: 100%;
+}
+
+.ingredientHeight{
+    height: 100%;
 }
 
 .ingredientQuantContainer{
