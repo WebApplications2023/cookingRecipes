@@ -32,14 +32,19 @@
             <p class="noValue"><em>No photos uploaded yet</em></p>
         {% endif %}
 
-        {% if bookmarks is defined %}
-        <h2>Bookmarks</h2>
-            <div class="photoCarousel">
-                {% for recipe in bookmarks %}
-                    {% include 'recipeCard_template.html' %}
-                {% endfor %}
-            </div>   
+        {% if currUser %}
+            <h2>Bookmarks</h2>
+            {% if bookmarks %}
+                <div class="photoCarousel">
+                    {% for recipe in bookmarks %}
+                        {% include 'recipeCard_template.html' %}
+                    {% endfor %}
+                </div>  
+            {% else %}
+                <p class="noValue"><em>No bookmarks yet</em></p> 
+            {% endif %}
         {% endif %}
+        
         
     </div>
     

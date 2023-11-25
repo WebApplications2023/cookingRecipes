@@ -74,15 +74,17 @@ def profile(userID):
     )
     submitted_photos = db.session.execute(query_submitted_photos).scalars().all()
     if flask_login.current_user == user:
+        currUser = user
         query = (
             db.select(model.Recipe)
             .join(model.Bookmarks, model.Recipe.id == model.Bookmarks.recipe_id)
             .where(model.Bookmarks.user == user)
             .order_by(model.Recipe.timestamp)
         )
-        bookmarks = db.session.execute(query).scalars().all()
+        bookmarks = db.session.execute(query).scalars().all() or None
     else:
         bookmarks = None
+        currUser = None
     #USE IF IMPLEMENTING FOLLOW FEATURE
     # if user is not None:
     #     numFollowers = len(user.followers)
@@ -99,7 +101,7 @@ def profile(userID):
     # else:
     #     following = "follow"
 
-    return render_template("main/profile.html", recipes=recipes, submitted_photos=submitted_photos, bookmarks=bookmarks, user=user)
+    return render_template("main/profile.html", recipes=recipes, submitted_photos=submitted_photos, bookmarks=bookmarks, user=user, currUser=currUser)
 
 
 @bp.route("/newRecipe")
