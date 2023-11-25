@@ -52,7 +52,10 @@ def recipe(recipeID):
          .where(model.Photos.recipe_id == recipe.id)
      )
     photos = db.session.execute(query_images).scalars().all()
-    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos)
+    user = flask_login.current_user
+    check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipeID).where(model.Bookmarks.user == user).first()
+    bookmarked = True if check else False
+    return render_template("main/recipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos, bookmarked=bookmarked)
 
 
 #SAVE FOR PROFILE PATH
@@ -191,12 +194,10 @@ def addBookmark():
         newBookmark = model.Bookmarks(recipe_id=recipe_id, user=user)
         db.session.add(newBookmark)
         db.session.commit()
-        flash("Bookmark added!")
     else:
         delete = db.delete(model.Bookmarks).where(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user)
         db.session.execute(delete)
         db.session.commit()
-        flash("Bookmark removed!")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
 
 @bp.route("/bookmarks")
