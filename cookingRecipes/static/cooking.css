@@ -488,5 +488,10 @@ li a:hover{
     text-align: center;
 }
 
+.recipeCreatedBy{
+    font-size: 200%;
+    margin-left: 30px;
+}
+
 
 
