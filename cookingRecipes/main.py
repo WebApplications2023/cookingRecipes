@@ -200,17 +200,6 @@ def addBookmark():
         db.session.commit()
     return redirect(url_for('main.recipe', recipeID=recipe_id))
 
-@bp.route("/bookmarks")
-@flask_login.login_required
-def bookmarks():
-    user = flask_login.current_user
-    query = (
-        db.select(model.Recipe)
-        .join(model.Bookmarks, model.Recipe.id == model.Bookmarks.recipe_id)
-        .where(model.Bookmarks.user == user)
-    )
-    recipes = db.session.execute(query).scalars().all()
-    return render_template("main/bookmarks.html", recipes=recipes)
 
 @bp.route("/addPhoto", methods=["POST"])
 @flask_login.login_required
