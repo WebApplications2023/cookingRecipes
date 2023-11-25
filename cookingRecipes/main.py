@@ -70,7 +70,7 @@ def profile(userID):
     query_submitted_photos = (
         db.select(model.Photos)
         .where(model.Photos.user_id == userID)
-        .order_by(model.Recipe.timestamp.desc())
+        .order_by(model.Photos.timestamp.desc())
     )
     submitted_photos = db.session.execute(query_submitted_photos).scalars().all()
     if flask_login.current_user == user:
