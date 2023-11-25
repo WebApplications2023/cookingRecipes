@@ -11,11 +11,13 @@
         <h4 class="recipeInfo"><i class="material-icons">timer</i>{{ recipe.cooking_time }} minutes</h4>
         <h4 class="recipeInfo"><i class="material-icons">person</i>{{ recipe.num_people }} people</h4>
         <!--   ADD AUTHENTICATION FOR THIS  -->
+        {% if current_user.is_authenticated %}
         <form action="/addBookmark" method="post">
             <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
             <a class="bookmark" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>{{"Bookmarked!" if bookmarked else "Bookmark"}}</h4></a>
             <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         </form>
+        {% endif %}
     </span>
 
     <div class="rating">
