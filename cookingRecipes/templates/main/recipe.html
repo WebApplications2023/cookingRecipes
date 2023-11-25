@@ -5,6 +5,7 @@
     <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto">
     <h1 class><b>{{ recipe.title }}</b></h1>
     <h2><em>{{ recipe.description }}</em></h2> 
+    <h2>Created by <a href="/profile/{{recipe.user_id}}">{{recipe.user.name}}</a></h2>
 
     <span class="cookingInfo">
         <h4 class="recipeInfo"><i class="material-icons">timer</i>{{ recipe.cooking_time }} minutes</h4>
