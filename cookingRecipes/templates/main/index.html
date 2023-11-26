@@ -2,9 +2,13 @@
 
 {% block content %}
     <div class="home">
+        <form action="/searchIngredients" method="post">
+            <input type="text" placeholder="Search by ingredient...">
+            <a onclick="this.closest('form').submit();"><i class="material-icons">search</i></a>
+        </form>
         <h1><em>Recipes we think you might like...</em></h1>
     </div>
 
     {% include 'recipeCards_template.html' %}
-    
+
 {% endblock %}
