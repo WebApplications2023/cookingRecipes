@@ -163,12 +163,46 @@ def newRecipe():
 
     return redirect(url_for("main.recipe", recipeID=newRecipe.id))
 
+@bp.route("/editRecipe", methods=["POST"])
+@flask_login.login_required
+def editRecipe():
+    recipe_id = request.form.get("recipe_id")
+    recipe = db.session.get(model.Recipe, recipe_id)
+    rating = db.session.query(func.avg(model.Ratings.rating)).filter(model.Ratings.recipe_id == recipe_id).scalar()
+    if not recipe:
+        abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
+    query_steps = (
+        db.select(model.Steps.description)
+        .where(model.Steps.recipe_id == recipe.id)
+        .order_by(model.Steps.sequence_num)
+    )
+    steps = db.session.execute(query_steps).all()
+    query_ingredients = (
+        db.select(model.QuantifiedIngredients.quantity, model.Ingredients.ingredient)
+        .join(model.Ingredients, model.QuantifiedIngredients.ingredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipe_id)
+    )
+    ingredients = db.session.execute(query_ingredients).all()
+    query_images = (
+         db.select(model.Photos.img)
+         .where(model.Photos.recipe_id == recipe.id)
+     )
+    photos = db.session.execute(query_images).scalars().all()
+    if flask_login.current_user.is_authenticated:
+        user = flask_login.current_user
+        check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user).first()
+        bookmarked = True if check else False
+    else:
+        bookmarked = None
+    return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos, bookmarked=bookmarked)
+
+
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
 def addRating():
     rating = int(request.form.get("rating"))
     user = flask_login.current_user
-    recipe_id = request.form.get("recipe_id") #hidden area of form?
+    recipe_id = request.form.get("recipe_id")
     check = db.session.query(model.Ratings).filter(model.Ratings.recipe_id == recipe_id).filter(model.Ratings.user == user).first()
     if check is None:
         newRating = model.Ratings(rating=rating, user_id=user.id, recipe_id=recipe_id)
@@ -176,7 +210,7 @@ def addRating():
     else:
         check.rating = rating
     db.session.commit()
-    return redirect(url_for("main.recipe", recipeID=recipe_id)) #TODO: check if this works with query parameters
+    return redirect(url_for("main.recipe", recipeID=recipe_id))
     #forward to recipe view
 
 @bp.route("/addBookmark", methods=["POST"])

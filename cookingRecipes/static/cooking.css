@@ -555,5 +555,13 @@ li a:hover{
     font-size: 60%;
 }
 
+.numInput{
+    max-width: 30px;
+}
+
+.submitEdits{
+    height: 41px;
+}
+
 
 
