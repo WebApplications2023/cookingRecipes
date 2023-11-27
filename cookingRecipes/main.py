@@ -196,6 +196,15 @@ def editRecipe():
         bookmarked = None
     return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos, bookmarked=bookmarked)
 
+@bp.route("/updateRecipe", methods=["POST"])
+@flask_login.login_required
+def updateRecipe():
+    recipe_id = request.form.get("recipe_id")
+    recipe = db.session.get(model.Recipe, recipe_id)
+    user = flask_login.current_user
+    #update num_people, cooking_time, steps, pfp_picture and ingredients
+    cooking_time = request.form.get("cooking_time")
+    num_people = request.form.get("num_people")
 
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required

@@ -2,66 +2,55 @@
 
 {% block content %}
 <div class="recipePage">
-    <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto">
-    <h1><b><input type="text" value="{{ recipe.title }}" required></b></h1>
-    <h2><em><input type="text" value="{{ recipe.description }}" required></em></h2> 
+    <form action="/updateRecipe" method="post">
+        <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto" id="idPhoto">  
+        <h1><b><input type="text" value="{{ recipe.title }}" required></b></h1>
+        <h2><em><input type="text" value="{{ recipe.description }}" required></em></h2> 
+        <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
 
-    <span class="cookingInfo">
-        <h4 class="recipeInfo"><i class="material-icons">timer</i><input type="text" class="numInput" value="{{ recipe.cooking_time }}" required> minutes</h4>
-        <h4 class="recipeInfo"><i class="material-icons">person</i><input type="text" class="numInput" value="{{ recipe.num_people }}" required> people</h4>
-        <!--   ADD AUTHENTICATION FOR THIS  -->
-        <form action="/updateRecipe" method="post">
-            <a class="edit" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover submitEdits"><i class="material-icons">check</i>Submit</h4></a>
-            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-        </form>
-    </span>
+        <span class="cookingInfo">
+            <h4 class="recipeInfo"><i class="material-icons">timer</i><input type="text" class="numInput" name="cooking_time" value="{{ recipe.cooking_time }}" required> minutes</h4>
+            <h4 class="recipeInfo"><i class="material-icons">person</i><input type="text" class="numInput" name="num_people" value="{{ recipe.num_people }}" required> people</h4>
+            
+            <!--   ADD AUTHENTICATION FOR THIS  -->
+                <a class="edit" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover submitEdits"><i class="material-icons">check</i>Submit</h4></a>
+                <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+        </span>
 
-    <h4 class="recipeCreatedBy"><em>Created by <a href="/profile/{{recipe.user_id}}">{{recipe.user.name}}</em></a></h4>
+        <h4 class="recipeCreatedBy"><em>Created by <a href="/profile/{{recipe.user_id}}">{{recipe.user.name}}</em></a></h4>
 
-    <h3>Ingredients</h3>
-    <div class="recipeList">
-        {% for row in ingredients %}
-        <label class="container">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-            {{  row.quantity }} {{ row.ingredient }}
-        </label>
-        {% endfor %}
-    </div>
-
-    <h3>Steps</h3>
-    <ol class="recipeList">
-        {% for step in steps %}
-        <li>{{ step.description }}</li>
-        {% endfor %}
-    </ol>
-
-
-    <h3>Photos</h3>
-    {% if photos %}
-        <div class="photoCarousel">
-            {% for photo in photos %}
-                <img src="data:image/{{ recipe.img_format }};base64,{{ photo|base64_encode }}" alt="Avatar" class="carouselItem">
+        <h3>Ingredients</h3>
+        <div class="recipeList">
+            {% for row in ingredients %}
+                <input type="text" value="{{ row.quantity }}"> 
+                <input type="text" value="{{ row.ingredient }}">
+                <br>
             {% endfor %}
         </div>
-    {% else %}
-        <p class="noPhotos"><em>No photos uploaded yet</em></p>
-    {% endif %}
 
-    <!--   ADD AUTHENTICATION FOR THIS  -->
-    
-    <!-- https://www.jquerymodal.com -->
-    <div id="modal_photo" class="modal modalPopup">
-        <h1 class="uploadPhotoHeader">Upload Photo</h1>
-        <form action="/addPhoto" method="post" enctype="multipart/form-data">
-            <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
-            <input class="uploadFile" type="file" name="img" accept="image/jpeg,image/png" required>
-            <a class="photoButton recipeButton button" onclick="this.closest('form').submit();">Submit Photo</a>
-            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-        </form>
-    </div>
-    <a  class="recipeButton button" href="#modal_photo" rel="modal:open">Upload Photo</a>
+        <h3>Steps</h3>
+        <ol class="recipeList">
+            {% for step in steps %}
+            <li><input type="text" value="{{ step.description }}"></li>
+            {% endfor %}
+        </ol>
 
+
+        <h3>Photos</h3>
+        {% if photos %}
+            <div class="photoCarousel">
+                {% for photo in photos %}
+                    <img src="data:image/{{ recipe.img_format }};base64,{{ photo|base64_encode }}" alt="Avatar" class="carouselItem">
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="noPhotos"><em>No photos uploaded yet</em></p>
+        {% endif %}
+
+        <!--   ADD AUTHENTICATION FOR THIS  -->
+        
+        <!-- https://www.jquerymodal.com -->
+    </form>
 </div>
 
 {% endblock %}
