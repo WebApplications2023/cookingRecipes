@@ -212,12 +212,12 @@ def searchIngr():
     val = request.form.get("query")
     if val is not None and val != '':
         query = (
-            db.select(model.Recipe)
+            db.select(model.Recipe.id, model.Recipe.title)
             .join(model.QuantifiedIngredients, model.Recipe.id == model.QuantifiedIngredients.recipe_id)
             .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
             .where(model.Ingredients.ingredient.contains(val))
         )
         search = db.session.execute(query).scalars().all()
-        return search
+        return jsonify(search)
     else:
         return None
