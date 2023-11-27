@@ -2,9 +2,13 @@
 
 {% block content %}
     <div class="home">
+        <div class="dropdown">
+            <input name="searchVal" id="name_search" type="text" placeholder="Search by name...">
+            <div class="dropdown-content"></div>
+        </div>
         <h1><em>Recipes we think you might like...</em></h1>
     </div>
 
     {% include 'recipeCards_template.html' %}
-    
+
 {% endblock %}

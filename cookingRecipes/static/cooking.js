@@ -121,11 +121,44 @@ var remove = function(value){
     });
 }
 
+var get_results = function() {
+    $('.dropdown-content').empty();
+    let val = $("#name_search").val();
+    if (val !== '') {
+        $.post("/searchName", {query: val}, function(data, status) {
+            if (status === "success" && data !== undefined){
+                if (data.length > 0){
+                    for (let item of data){
+                        var new_search_card = $("<div>")
+                                        .attr("class", "recipeSearchCard")
+                        var img = $("<img>")
+                                        .attr("src", `data:image/jpeg;base64,${item.image}`)
+                                        .attr("alt", "searchPhoto")
+                                        .attr("class", "recipeSearchPhoto")
+                        var title = $("<a>")
+                                        .attr("href", `/recipe/${item.id}`)
+                                        .text(item.title)
+                                        .attr("class", "searchCardHeader")
+                        new_search_card.append(img)
+                        new_search_card.append(title)
+                        $('.dropdown-content').append(new_search_card);
+                    }
+                } else {
+                    $('.dropdown-content').append($('<div>').text("No results found"));
+                }
+            }
+        }).fail(function() {
+            console.log(val);
+        });
+    } else {
+        $('.dropdown-content').empty();
+    }
+};
+
 $(document).ready(function() {
     $(".addIngredient").click(addIngredient)
     $(".addStep").click(addStep);
     $(".recipeForm").submit(function(event){
-        event.preventDefault();
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
         var steps = getList(".step");
@@ -149,6 +182,7 @@ $(document).ready(function() {
 
         $(this).off('submit').submit();
     })
+    $("#name_search").on('keyup', get_results);
 });
 
 

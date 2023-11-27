@@ -518,5 +518,42 @@ li a:hover{
     margin-left: 30px;
 }
 
+.dropdown{
+    position: absolute;
+    display: inline-block;
+    right: 0;
+}
+
+.dropdown-content {
+    background-color: #f6f6f6;
+    min-width: 230px;
+    z-index: 1;
+}
+
+.recipeSearchCard{
+    margin-top: 3px;
+    height: 50px;
+    width: 230px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: transform 0.2s ease-in-out; 
+}
+
+.recipeSearchPhoto{
+    height: 100%;
+    width: 20%;
+    object-fit: cover;
+}
+
+.searchCardHeader{
+    font-size: 100%;
+    text-decoration: none;
+}
+
+.searchCardDescr{
+    font-size: 60%;
+}
+
 
 

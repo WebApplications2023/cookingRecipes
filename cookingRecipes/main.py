@@ -1,9 +1,10 @@
+import base64
 import datetime
 import json
 import dateutil.tz
 from werkzeug.utils import secure_filename 
 from sqlalchemy.sql import func
-from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
+from flask import Blueprint, abort, jsonify, render_template, request, redirect, url_for, flash
 import flask_login
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -211,3 +212,22 @@ def addPhoto():
     else:
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
+
+@bp.route("/searchName", methods=["POST"])
+def searchName():
+    val = request.form.get("query")
+    if val is not None and val != '':
+        query_name = (
+            db.select(model.Recipe.id, model.Recipe.title, model.Recipe.img)
+            .distinct()
+            .where(model.Recipe.title.contains(val))
+        )
+        search_name = db.session.execute(query_name).all()
+        search_list = []
+        for item in search_name:
+            img = base64.b64encode(item.img).decode("utf-8")
+            newObj = {"id": item.id, "title": item.title, "image": img}
+            search_list.append(newObj)
+        return search_list
+    else:
+        return None
