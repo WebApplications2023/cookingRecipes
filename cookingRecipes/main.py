@@ -1,3 +1,4 @@
+import base64
 import datetime
 import json
 import dateutil.tz
@@ -212,7 +213,7 @@ def searchIngr():
     val = request.form.get("query")
     if val is not None and val != '':
         query = (
-            db.select(model.Recipe.id, model.Recipe.title)
+            db.select(model.Recipe.id, model.Recipe.title, model.Recipe.img)
             .distinct()
             .join(model.QuantifiedIngredients, model.Recipe.id == model.QuantifiedIngredients.recipe_id)
             .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
@@ -221,7 +222,8 @@ def searchIngr():
         search = db.session.execute(query).all()
         search_list = []
         for item in search:
-            newObj = {"id": item.id, "title": item.title}
+            img = base64.b64encode(item.img).decode("utf-8")
+            newObj = {"id": item.id, "title": item.title, "image": img}
             search_list.append(newObj)
         return search_list
     else:

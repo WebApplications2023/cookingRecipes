@@ -124,7 +124,6 @@ var get_results = function() {
     $('.dropdown-content').empty();
     let val = $("#ingr_search").val();
     if (val !== '') {
-        console.log("AJAX Request Payload:", { query: val });
         $.post("/searchIngr", {query: val}, function(data, status) {
             // need checks for errors/nullvalues/etc
             console.log("AJAX Response Payload:", { data: data });
@@ -133,11 +132,18 @@ var get_results = function() {
                 if (data.length > 0){
                     console.log("Not empty");
                     for (let item of data){
-                        var new_search = $("<a>")
+                        var new_search_card = $("<div>")
+                                        .attr("class", "recipeSearchCard")
+                        var img = $("<img>")
+                                        .attr("src", `data:image/jpeg;base64,${item.image}`)
+                                        .attr("class", "recipeSearchPhoto")
+                                        .attr("alt", "searchPhoto")
+                        var title = $("<a>")
                                         .attr("href", `/recipe/${item.id}`)
                                         .text(item.title)
-                        $('.dropdown-content').append(new_search);
-                        $('.dropdown-content').append($("<br>"));
+                        new_search_card.append(img)
+                        new_search_card.append(title)
+                        $('.dropdown-content').append(new_search_card);
                     }
                 } else {
                     $('.dropdown-content').append($('<div>').text("No results found"));

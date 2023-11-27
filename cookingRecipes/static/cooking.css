@@ -510,7 +510,31 @@ li a:hover{
     background-color: #f6f6f6;
     min-width: 230px;
     z-index: 1;
-  }
+}
+
+.recipeSearchCard{
+    margin: 3px;
+    height: 30px;
+    width: 230px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: transform 0.2s ease-in-out; 
+}
+
+.recipeSearchPhoto{
+    height: 100%;
+    width: 20%;
+    object-fit: cover;
+}
+
+.searchCardHeader{
+    font-size: 120%;
+    margin-left: 2%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 
