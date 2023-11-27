@@ -3,7 +3,7 @@ import json
 import dateutil.tz
 from werkzeug.utils import secure_filename 
 from sqlalchemy.sql import func
-from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
+from flask import Blueprint, abort, jsonify, render_template, request, redirect, url_for, flash
 import flask_login
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -206,3 +206,16 @@ def addPhoto():
     else:
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
+
+@bp.route("/searchIngr", methods=["POST"])
+def searchIngr():
+    val = request.form.get("searchVal")
+    if val is not None and val != '':
+        query = (
+            db.select(model.Recipe)
+            .where(model.Recipe.quantified_ingredients.ingredients.ingredient == val)
+        )
+        search = db.session.execute(query).scalars().all()
+        return search
+    else:
+        return None

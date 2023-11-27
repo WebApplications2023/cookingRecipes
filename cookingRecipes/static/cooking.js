@@ -120,12 +120,27 @@ var remove = function(value){
     });
 }
 
-input.on('keyup', function() {
+var get_results = $("#ingr_search").on('keyup', function() {
     let val = $("#ingr_search").val();
     if (val !== '') {
-        $.post("/searchIngr", val, function() {
-            
-        })
+        $.post("/searchIngr", {query: val}, function(data, status) {
+            // need checks for errors/nullvalues/etc
+            $('.dropdown-content').empty();
+            if (status === "success"){
+                if (data.length > 0){
+                    for (let item of data){
+                        $('.dropdown-content').append($('<div>').text(item.title));
+                    }
+                } else {
+                    $('.dropdown-content').append($('<div>').text("No results found"));
+                }
+            }
+        }).fail(function(errorThrown) {
+            console.error("Error: " + errorThrown);
+        });
+    } else {
+        // Handle the case when the input is empty
+        //$('.dropdown-content').empty(); // Clear the container
     }
 })
 
@@ -156,6 +171,7 @@ $(document).ready(function() {
 
         $(this).off('submit').submit();
     })
+    $("#ingr_search").on('change', get_results);
 });
 
 

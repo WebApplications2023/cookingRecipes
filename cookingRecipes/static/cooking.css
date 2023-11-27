@@ -498,5 +498,19 @@ li a:hover{
     margin-left: 30px;
 }
 
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    z-index: 1;
+    float: right;
+    right: 0;
+  }
+
 
 
