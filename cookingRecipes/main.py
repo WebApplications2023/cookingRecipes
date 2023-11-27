@@ -213,6 +213,7 @@ def searchIngr():
     if val is not None and val != '':
         query = (
             db.select(model.Recipe.id, model.Recipe.title)
+            .distinct()
             .join(model.QuantifiedIngredients, model.Recipe.id == model.QuantifiedIngredients.recipe_id)
             .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
             .where(model.Ingredients.ingredient.contains(val))
@@ -222,6 +223,6 @@ def searchIngr():
         for item in search:
             newObj = {"id": item.id, "title": item.title}
             search_list.append(newObj)
-        return jsonify(search_list)
+        return search_list
     else:
         return None

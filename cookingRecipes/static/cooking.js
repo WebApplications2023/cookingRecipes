@@ -137,7 +137,7 @@ var get_results = function() {
                                         .attr("href", `/recipe/${item.id}`)
                                         .text(item.title)
                         $('.dropdown-content').append(new_search);
-
+                        $('.dropdown-content').append($("<br>"));
                     }
                 } else {
                     $('.dropdown-content').append($('<div>').text("No results found"));
@@ -147,8 +147,7 @@ var get_results = function() {
             console.log(val);
         });
     } else {
-        // Handle the case when the input is empty
-        $('.dropdown-content').empty(); // Clear the container
+        $('.dropdown-content').empty();
     }
 };
 
