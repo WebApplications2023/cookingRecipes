@@ -499,14 +499,12 @@ li a:hover{
 }
 
 .dropdown{
-    position: relative;
+    position: absolute;
     display: inline-block;
-    margin-left: 290px;
-    padding-top: 25px;
+    right: 0;
 }
 
 .dropdown-content {
-    position: absolute;
     background-color: #f6f6f6;
     min-width: 230px;
     z-index: 1;
