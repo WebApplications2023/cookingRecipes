@@ -120,11 +120,19 @@ var remove = function(value){
     });
 }
 
+input.on('keyup', function() {
+    let val = $("#ingr_search").val();
+    if (val !== '') {
+        $.post("/searchIngr", val, function() {
+            
+        })
+    }
+})
+
 $(document).ready(function() {
     $(".addIngredient").click(addIngredient)
     $(".addStep").click(addStep);
     $(".recipeForm").submit(function(event){
-        event.preventDefault();
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
         var steps = getList(".step");
