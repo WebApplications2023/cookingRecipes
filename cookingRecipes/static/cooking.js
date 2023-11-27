@@ -1,6 +1,4 @@
 var addIngredient = function(){
-    var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
-
     var ingredientList = $('#ingredients').val().split(',');
     var div = $("<div>")
         .addClass("ingredientList");
@@ -131,12 +129,12 @@ var get_results = function() {
                     for (let item of data){
                         var new_search_card = $("<div>")
                                         .attr("class", "recipeSearchCard")
+                                        .on("click", function() {go_recipe(item.id);})
                         var img = $("<img>")
                                         .attr("src", `data:image/jpeg;base64,${item.image}`)
                                         .attr("alt", "searchPhoto")
                                         .attr("class", "recipeSearchPhoto")
-                        var title = $("<a>")
-                                        .attr("href", `/recipe/${item.id}`)
+                        var title = $("<b>")
                                         .text(item.title)
                                         .attr("class", "searchCardHeader")
                         new_search_card.append(img)
@@ -154,6 +152,10 @@ var get_results = function() {
         $('.dropdown-content').empty();
     }
 };
+
+var go_recipe = function(recipeID) {
+    window.location.href = `recipe/${recipeID}`;
+}
 
 $(document).ready(function() {
     $(".addIngredient").click(addIngredient)
