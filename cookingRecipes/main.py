@@ -101,7 +101,9 @@ def createRecipe():
         .order_by(model.Ingredients.ingredient.desc())
     )
     ingredients = db.session.execute(query).all()
-    return render_template("main/recipeForm.html", ingredients=ingredients)
+    ingredients_list = [item[0] for item in ingredients]
+    ingredients_string = ', '.join(ingredients_list)
+    return render_template("main/recipeForm.html", ingredients=ingredients_string)
 
 
 #SAVE FOR NEW RECIPE
