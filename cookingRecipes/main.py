@@ -213,7 +213,9 @@ def searchIngr():
     if val is not None and val != '':
         query = (
             db.select(model.Recipe)
-            .where(model.Recipe.quantified_ingredients.ingredients.ingredient.contains(val))
+            .join(model.QuantifiedIngredients, model.Recipe.id == model.QuantifiedIngredients.recipe_id)
+            .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
+            .where(model.Ingredients.ingredient.contains(val))
         )
         search = db.session.execute(query).scalars().all()
         return search

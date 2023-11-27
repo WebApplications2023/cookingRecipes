@@ -137,13 +137,12 @@ var get_results = function() {
                     $('.dropdown-content').append($('<div>').text("No results found"));
                 }
             }
-        }).fail(function(jqXHR, textStatus, errorThrown) {
-            // Handle AJAX errors more explicitly
-            console.error("AJAX Error:", textStatus, errorThrown);
+        }).fail(function() {
+            console.log(val);
         });
     } else {
         // Handle the case when the input is empty
-        //$('.dropdown-content').empty(); // Clear the container
+        $('.dropdown-content').empty(); // Clear the container
     }
 };
 
