@@ -120,13 +120,14 @@ var remove = function(value){
     });
 }
 
-var get_results = $("#ingr_search").on('keyup', function() {
+var get_results = function() {
     $('.dropdown-content').empty();
     let val = $("#ingr_search").val();
     if (val !== '') {
         console.log("AJAX Request Payload:", { query: val });
         $.post("/searchIngr", {query: val}, function(data, status) {
             // need checks for errors/nullvalues/etc
+            console.log("AJAX Response Payload:", { data: data });
             if (status === "success" && data !== undefined){
                 if (data.length > 0){
                     for (let item of data){
@@ -136,14 +137,15 @@ var get_results = $("#ingr_search").on('keyup', function() {
                     $('.dropdown-content').append($('<div>').text("No results found"));
                 }
             }
-        }).fail(function(errorThrown) {
-            console.error("Error: " + errorThrown);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            // Handle AJAX errors more explicitly
+            console.error("AJAX Error:", textStatus, errorThrown);
         });
     } else {
         // Handle the case when the input is empty
         //$('.dropdown-content').empty(); // Clear the container
     }
-})
+};
 
 $(document).ready(function() {
     $(".addIngredient").click(addIngredient)
@@ -172,7 +174,7 @@ $(document).ready(function() {
 
         $(this).off('submit').submit();
     })
-    $("#ingr_search").on('change', get_results);
+    $("#ingr_search").on('keyup', get_results);
 });
 
 
