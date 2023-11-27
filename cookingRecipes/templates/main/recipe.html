@@ -22,37 +22,65 @@
     <div class="rating">
         <form action="/addRating" method="post">
         {% if rating %}
-            {% if rating >= 1 %}
-                <span onclick="document.getElementById('rating').value=1; this.closest('form').submit();" class="fa fa-star checked star1"></span>
+            {% if current_user.is_authenticated %}
+                {% if rating >= 1 %}
+                    <span onclick="document.getElementById('rating').value=1; this.closest('form').submit();" class="fa fa-star checked star1 starHover"></span>
+                {% else %}
+                    <span onclick="document.getElementById('rating').value=1; this.closest('form').submit();" class="fa fa-star star1 starHover"></span>
+                {% endif %}
+                {% if rating >= 2 %}
+                    <span onclick="document.getElementById('rating').value=2; this.closest('form').submit();" class="fa fa-star checked star2 starHover"></span>
+                {% else %}
+                    <span onclick="document.getElementById('rating').value=2; this.closest('form').submit();" class="fa fa-star star2 starHover"></span>
+                {% endif %}
+                {% if rating >= 3 %}
+                    <span onclick="document.getElementById('rating').value=3; this.closest('form').submit();" class="fa fa-star checked star3 starHover"></span>
+                {% else %}
+                    <span onclick="document.getElementById('rating').value=3; this.closest('form').submit();" class="fa fa-star star3 starHover"></span>
+                {% endif %}
+                {% if rating >= 4 %}
+                    <span onclick="document.getElementById('rating').value=4; this.closest('form').submit();" class="fa fa-star checked star4 starHover"></span>
+                {% else %}
+                    <span onclick="document.getElementById('rating').value=4; this.closest('form').submit();" class="fa fa-star star4 starHover"></span>
+                {% endif %}
+                {% if rating > 4.5 %}
+                    <span onclick="document.getElementById('rating').value=5; this.closest('form').submit();" class="fa fa-star checked star5 starHover"></span>
+                {% else %}
+                    <span onclick="document.getElementById('rating').value=5; this.closest('form').submit();" class="fa fa-star star5 starHover"></span>
+                {% endif %}
             {% else %}
-                <span onclick="document.getElementById('rating').value=1; this.closest('form').submit();" class="fa fa-star star1"></span>
-            {% endif %}
-            {% if rating >= 2 %}
-                <span onclick="document.getElementById('rating').value=2; this.closest('form').submit();" class="fa fa-star checked star2"></span>
-            {% else %}
-                <span onclick="document.getElementById('rating').value=2; this.closest('form').submit();" class="fa fa-star star2"></span>
-            {% endif %}
-            {% if rating >= 3 %}
-                <span onclick="document.getElementById('rating').value=3; this.closest('form').submit();" class="fa fa-star checked star3"></span>
-            {% else %}
-                <span onclick="document.getElementById('rating').value=3; this.closest('form').submit();" class="fa fa-star star3"></span>
-            {% endif %}
-            {% if rating >= 4 %}
-                <span onclick="document.getElementById('rating').value=4; this.closest('form').submit();" class="fa fa-star checked star4"></span>
-            {% else %}
-                <span onclick="document.getElementById('rating').value=4; this.closest('form').submit();" class="fa fa-star star4"></span>
-            {% endif %}
-            {% if rating > 4.5 %}
-                <span onclick="document.getElementById('rating').value=5; this.closest('form').submit();" class="fa fa-star checked star5"></span>
-            {% else %}
-                <span onclick="document.getElementById('rating').value=5; this.closest('form').submit();" class="fa fa-star star5"></span>
+                {% if rating >= 1 %}
+                    <span class="fa fa-star checked"></span>
+                {% else %}
+                    <span class="fa fa-star "></span>
+                {% endif %}
+                {% if rating >= 2 %}
+                    <span class="fa fa-star checked"></span>
+                {% else %}
+                    <span class="fa fa-star "></span>
+                {% endif %}
+                {% if rating >= 3 %}
+                    <span class="fa fa-star checked"></span>
+                {% else %}
+                    <span class="fa fa-star "></span>
+                {% endif %}
+                {% if rating >= 4 %}
+                    <span class="fa fa-star checked"></span>
+                {% else %}
+                    <span class="fa fa-star "></span>
+                {% endif %}
+                {% if rating > 4.5 %}
+                    <span class="fa fa-star checked"></span>
+                {% else %}
+                    <span class="fa fa-star"></span>
+                {% endif %}
             {% endif %}
         {% else %}
-            <span onclick="document.getElementById('rating').value=1; this.closest('form').submit();" class="fa fa-star star1"></span>
-            <span onclick="document.getElementById('rating').value=2; this.closest('form').submit();" class="fa fa-star star2"></span>
-            <span onclick="document.getElementById('rating').value=3; this.closest('form').submit();" class="fa fa-star star3"></span>
-            <span onclick="document.getElementById('rating').value=4; this.closest('form').submit();" class="fa fa-star star4"></span>
-            <span onclick="document.getElementById('rating').value=5; this.closest('form').submit();" class="fa fa-star star5"></span>
+            <span onclick="document.getElementById('rating').value=1; this.closest('form').submit();" class="fa fa-star star1 starHover"></span>
+            <span onclick="document.getElementById('rating').value=2; this.closest('form').submit();" class="fa fa-star star2 starHover"></span>
+            <span onclick="document.getElementById('rating').value=3; this.closest('form').submit();" class="fa fa-star star3 starHover"></span>
+            <span onclick="document.getElementById('rating').value=4; this.closest('form').submit();" class="fa fa-star star4 starHover"></span>
+            <span onclick="document.getElementById('rating').value=5; this.closest('form').submit();" class="fa fa-star star5 starHover"></span>
         {% endif %}
         <span class="rating-value">
             {% if rating is none %}

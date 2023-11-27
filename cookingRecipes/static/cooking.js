@@ -1,23 +1,7 @@
 var addIngredient = function(){
-    var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
-
     var ingredientList = $('#ingredients').val().split(',');
     var div = $("<div>")
         .addClass("ingredientList");
-    /*var quant = $("<div>")
-        .addClass("ingredientQuantContainer")
-        .append(
-            $("<select>")
-            .addClass("ingredientQuant")
-            .attr("name", "quant")
-            .append('<option value="" selected disabled>Select Quantity</option>')
-        );
-
-    for (var i = 0; i < quantList.length; i++) {
-        quant.find(".ingredientQuant").append('<option value="' + quantList[i] + '">' + quantList[i] + '</option>');
-    }
-    quant.find(".ingredientQuant").append('<option value="other">Other</option>')
-    */
     var quant = $("<input>")
         .addClass("ingredientQuant")
         .attr("type", "text")
@@ -48,23 +32,6 @@ var addIngredient = function(){
     $(div).append(button);
     
     $(".addIngredient").before(div);
-
-   /* quant.find(".ingredientQuant").on('change', function() {
-        if ($(this).val() === 'other') {
-            var newInput = $("<input>")
-                .addClass("ingredientQuant")
-                .addClass("otherQuant")
-                .attr("type", "text")
-                .attr("placeholder", "Specify Other Quantity");
-
-            //$(div).append(newInput);
-            $(this).closest(".ingredientQuantContainer").append(newInput);
-        }
-        else{
-            $(this).closest(".ingredientQuantContainer").find(".otherQuant").remove();
-        }
-    });
-    */
 
     val.find(".ingredientItem").on('change', function() {
         if ($(this).val() === 'other') {
