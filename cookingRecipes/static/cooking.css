@@ -501,6 +501,8 @@ li a:hover{
 .dropdown{
     position: relative;
     display: inline-block;
+    margin-left: 290px;
+    padding-top: 25px;
 }
 
 .dropdown-content {
@@ -508,8 +510,6 @@ li a:hover{
     background-color: #f6f6f6;
     min-width: 230px;
     z-index: 1;
-    float: right;
-    right: 0;
   }
 
 

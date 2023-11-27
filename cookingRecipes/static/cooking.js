@@ -121,12 +121,13 @@ var remove = function(value){
 }
 
 var get_results = $("#ingr_search").on('keyup', function() {
+    $('.dropdown-content').empty();
     let val = $("#ingr_search").val();
     if (val !== '') {
+        console.log("AJAX Request Payload:", { query: val });
         $.post("/searchIngr", {query: val}, function(data, status) {
             // need checks for errors/nullvalues/etc
-            $('.dropdown-content').empty();
-            if (status === "success"){
+            if (status === "success" && data !== undefined){
                 if (data.length > 0){
                     for (let item of data){
                         $('.dropdown-content').append($('<div>').text(item.title));

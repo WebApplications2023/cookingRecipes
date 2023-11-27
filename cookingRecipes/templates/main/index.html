@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="home dropdown">
-        <form action="/searchIngredients" method="post">
-            <input name="searchVal" id="ingr_search" type="text" placeholder="Search by ingredient...">
-            <div class="dropdown-content"></div>
-                <!-- {% for item in seach %}
-                    <a href="">{{ item.title }}</a>
-                {% endfor %} -->
-        </form>
+    <div class="dropdown">
+        <input name="searchVal" id="ingr_search" type="text" placeholder="Search by ingredient...">
+        <div class="dropdown-content"></div>
+    </div>
+    <div class="home">
         <h1><em>Recipes we think you might like...</em></h1>
     </div>
 

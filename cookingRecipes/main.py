@@ -209,11 +209,11 @@ def addPhoto():
 
 @bp.route("/searchIngr", methods=["POST"])
 def searchIngr():
-    val = request.form.get("searchVal")
+    val = request.form.get("query")
     if val is not None and val != '':
         query = (
             db.select(model.Recipe)
-            .where(model.Recipe.quantified_ingredients.ingredients.ingredient == val)
+            .where(model.Recipe.quantified_ingredients.ingredients.ingredient.contains(val))
         )
         search = db.session.execute(query).scalars().all()
         return search
