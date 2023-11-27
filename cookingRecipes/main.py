@@ -217,7 +217,11 @@ def searchIngr():
             .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
             .where(model.Ingredients.ingredient.contains(val))
         )
-        search = db.session.execute(query).scalars().all()
-        return jsonify(search)
+        search = db.session.execute(query).all()
+        search_list = []
+        for item in search:
+            newObj = {"id": item.id, "title": item.title}
+            search_list.append(newObj)
+        return jsonify(search_list)
     else:
         return None

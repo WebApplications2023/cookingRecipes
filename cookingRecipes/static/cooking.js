@@ -129,9 +129,15 @@ var get_results = function() {
             // need checks for errors/nullvalues/etc
             console.log("AJAX Response Payload:", { data: data });
             if (status === "success" && data !== undefined){
+                console.log("Success");
                 if (data.length > 0){
+                    console.log("Not empty");
                     for (let item of data){
-                        $('.dropdown-content').append($('<div>').text(item.title));
+                        var new_search = $("<a>")
+                                        .attr("href", `/recipe/${item.id}`)
+                                        .text(item.title)
+                        $('.dropdown-content').append(new_search);
+
                     }
                 } else {
                     $('.dropdown-content').append($('<div>').text("No results found"));
