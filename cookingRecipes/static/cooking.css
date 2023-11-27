@@ -563,5 +563,17 @@ li a:hover{
     height: 41px;
 }
 
+.updateRecipe{
+    border: 1px solid #000; 
+    display: inline-flex;
+    align-items: center;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    padding: 3px;
+    height: 35px;
+}
+
 
 
