@@ -208,20 +208,18 @@ def addPhoto():
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
 
-@bp.route("/searchIngr", methods=["POST"])
-def searchIngr():
+@bp.route("/searchName", methods=["POST"])
+def searchName():
     val = request.form.get("query")
     if val is not None and val != '':
-        query = (
+        query_name = (
             db.select(model.Recipe.id, model.Recipe.title, model.Recipe.img)
             .distinct()
-            .join(model.QuantifiedIngredients, model.Recipe.id == model.QuantifiedIngredients.recipe_id)
-            .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
-            .where(model.Ingredients.ingredient.contains(val))
+            .where(model.Recipe.title.contains(val))
         )
-        search = db.session.execute(query).all()
+        search_name = db.session.execute(query_name).all()
         search_list = []
-        for item in search:
+        for item in search_name:
             img = base64.b64encode(item.img).decode("utf-8")
             newObj = {"id": item.id, "title": item.title, "image": img}
             search_list.append(newObj)
