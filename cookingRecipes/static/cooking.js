@@ -1,8 +1,6 @@
 var addIngredient = function(){
     var quantList = ["1/2 tsp", "1 cup", "1/2 tbsp", "30g"]
 
-    console.log("Ingredients:" + $('#ingredients').val());
-
     var ingredientList = $('#ingredients').val().split(',');
     var div = $("<div>")
         .addClass("ingredientList");
