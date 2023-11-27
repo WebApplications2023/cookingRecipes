@@ -268,6 +268,26 @@ li a:hover{
     color: white;
 }
 
+.fa-star:hover{
+    color: gray
+}
+
+.star4:has(+ .star5:hover) {
+    color: gray;
+}
+
+.star3:has(+ .star4:hover), .star3:has(~ .star5:hover) {
+    color: gray;
+}
+
+.star2:has(+ .star3:hover), .star2:has(~ .star4:hover), .star2:has(~ .star5:hover) {
+    color: gray;
+}
+
+.star1:has(+ .star2:hover), .star1:has(~ .star3:hover), .star1:has(~ .star4:hover), .star1:has(~ .star5:hover) {
+    color: gray;
+}
+
 .recipeInfo{
     border: 1px solid #000; 
     padding: 5px; 
