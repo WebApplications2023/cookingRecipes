@@ -231,3 +231,20 @@ def searchName():
         return search_list
     else:
         return None
+    
+
+@bp.route("/deleteRecipe/<int:recipeID>", methods=["DELETE"])
+@flask_login.login_required
+def deleteRecipe(recipeID):
+    recipe = db.session.get(model.Recipe, recipeID)
+    if not recipe:
+        abort(404, "Recipe id {} doesn't exist.".format(recipeID))
+    if flask_login.current_user != recipe.user:
+        abort(403, "Deleting this recipe not permitted")
+    
+    db.session.delete(recipe)
+    db.session.commit()
+
+    return redirect("/")
+    
+
