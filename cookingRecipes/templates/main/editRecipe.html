@@ -3,9 +3,9 @@
 {% block content %}
 <div class="recipePage">
     <form action="/updateRecipe" method="post">
-        <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto" id="idPhoto">  
-        <h1><b><input type="text" value="{{ recipe.title }}" required></b></h1>
-        <h2><em><input type="text" value="{{ recipe.description }}" required></em></h2> 
+        <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto clickPhoto" id="idPhoto">
+        <h1><b><input class="textInput" type="text" value="{{ recipe.title }}" required></b></h1>
+        <h2><em><input class="textInput" type="text" value="{{ recipe.description }}" required></em></h2> 
         <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
 
         <span class="cookingInfo">

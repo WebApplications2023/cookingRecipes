@@ -184,6 +184,9 @@ $(document).ready(function() {
     $(".editRemove").click(function() {
         $(this).closest(".itemsAlready").remove();
     });
+    $(".clickPhoto").click(function() {
+        
+    })
 });
 
 
