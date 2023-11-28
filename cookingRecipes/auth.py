@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename 
 from . import db, bcrypt
 import flask_login
+from flask_login import current_user
 from . import model
 
 bp = Blueprint("auth", __name__)
@@ -26,6 +27,14 @@ def login_post():
         # Flash a message and redirect to the login form
         flash("Wrong email and/or password")
         return redirect(url_for("auth.login"))
+
+@bp.route("/getLoginStatus", methods=["GET"])
+def get_login_status():
+    if current_user.is_authenticated:
+        return jsonify(status=200)
+    else:
+        return jsonify(status=401)
+
 
 
 @bp.route("/signup")
