@@ -572,7 +572,12 @@ li a:hover{
     border: 2px solid #555;
     font-size: 25px;
     padding: 3px;
-    height: 35px;
+    height: 35;
+    margin-left: 5px;
+}
+
+.editInputs{
+    margin: 5px;
 }
 
 

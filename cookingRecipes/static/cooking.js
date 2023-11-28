@@ -45,7 +45,7 @@ var addIngredient = function(){
     $(div).append(val);
     $(div).append(button);
     
-    $(".addIngredient").before(div);
+    $("#addIngredient").before(div);
 
    /* quant.find(".ingredientQuant").on('change', function() {
         if ($(this).val() === 'other') {
@@ -99,7 +99,7 @@ var addStep = function(){
     $(div).append(newStep);
     $(div).append(button);
     
-    $(".addStep").before(div);
+    $("#addStep").before(div);
 }
 
 var getList = function(type){
@@ -154,8 +154,8 @@ var get_results = function() {
 };
 
 $(document).ready(function() {
-    $(".addIngredient").click(addIngredient)
-    $(".addStep").click(addStep);
+    $("#addIngredient").click(addIngredient)
+    $("#addStep").click(addStep);
     $(".recipeForm").submit(function(event){
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
@@ -181,6 +181,7 @@ $(document).ready(function() {
         $(this).off('submit').submit();
     })
     $("#name_search").on('keyup', get_results);
+    $(".editRemove").on('click', remove(".editInputs"));
 });
 
 
