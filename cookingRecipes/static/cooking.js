@@ -181,7 +181,9 @@ $(document).ready(function() {
         $(this).off('submit').submit();
     })
     $("#name_search").on('keyup', get_results);
-    $(".editRemove").on('click', remove(".editInputs"));
+    $(".editRemove").click(function() {
+        $(this).closest(".itemsAlready").remove();
+    });
 });
 
 

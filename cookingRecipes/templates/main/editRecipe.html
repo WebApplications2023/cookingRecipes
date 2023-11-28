@@ -23,10 +23,12 @@
         <div class="recipeList">
             <div id="ingredients">
             {% for row in ingredients %}
-                <input class="editInputs" type="text" value="{{ row.quantity }}"> 
-                <input class="editInputs" type="text" value="{{ row.ingredient }}">
+                <span class="itemsAlready">
+                    <input class="editInputs" type="text" value="{{ row.quantity }}"> 
+                    <input class="editInputs" type="text" value="{{ row.ingredient }}">
                 <button type="button" class="remove editRemove">Remove</button> 
                 <br>
+                </span>
             {% endfor %}
             </div>
             <a id="addIngredient"><h4 class="bookmarkHover updateRecipe"><i class="material-icons">add</i>Add Ingredients</h4></a>   
@@ -36,7 +38,9 @@
         <ol class="recipeList">
             <div id="steps">
                 {% for step in steps %}
+                <span class="itemsAlready">
                 <li><input class="editInputs" type="text" value="{{ step.description }}"><button type="button" class="remove editRemove">Remove</button></li>
+                </span>
                 {% endfor %}
             </div>
             <a id="addStep"><h4 class="bookmarkHover updateRecipe"><i class="material-icons">add</i>Add Steps</h4></a>
