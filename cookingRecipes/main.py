@@ -168,7 +168,6 @@ def newRecipe():
 def editRecipe():
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
-    rating = db.session.query(func.avg(model.Ratings.rating)).filter(model.Ratings.recipe_id == recipe_id).scalar()
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipe_id))
     query_steps = (
@@ -188,14 +187,11 @@ def editRecipe():
          .where(model.Photos.recipe_id == recipe.id)
      )
     photos = db.session.execute(query_images).scalars().all()
-    if flask_login.current_user.is_authenticated:
-        user = flask_login.current_user
-        check = db.session.query(model.Bookmarks.id).filter(model.Bookmarks.recipe_id == recipe_id).where(model.Bookmarks.user == user).first()
-        bookmarked = True if check else False
-    else:
-        bookmarked = None
-    return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredients=ingredients, rating=rating, photos=photos, bookmarked=bookmarked)
+    image = base64.b64encode(recipe.img).decode("utf-8")
+    imgObj = {"image": image}
+    return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredients=ingredients, photos=photos, imgObj=imgObj)
 
+#TODO: FINISH
 @bp.route("/updateRecipe", methods=["POST"])
 @flask_login.login_required
 def updateRecipe():
@@ -255,6 +251,26 @@ def addPhoto():
     else:
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
+
+#TODO: Complete this - need to get all other values to put back into edit recipe page
+@bp.route("/editPhoto", methods=["POST"])
+@flask_login.login_required
+def editPhoto():
+    recipe_id = request.form.get("recipe_id")
+    recipe = db.session.get(model.Recipe, recipe_id)
+    img = request.files["img"]  # Get the uploaded image file
+    if img:
+        # Ensure the image file has a safe filename
+        img_filename = secure_filename(img.filename)
+        img_data = img.read()  # Read the image data as binary
+        recipe.img = img_data
+        db.session.commit()
+    else:
+        img_data = None
+    image = base64.b64encode(img_data).decode("utf-8")
+    imgObj = {"image": image}
+    return imgObj
+
 
 @bp.route("/searchName", methods=["POST"])
 def searchName():

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="recipePage">
     <form action="/updateRecipe" method="post">
-        <img src="data:image/{{ recipe.img_format }};base64,{{ recipe.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto clickPhoto" id="idPhoto">
+        <a href="#modal_photo" rel="modal:open"><img src="data:image/{{ recipe.img_format }};base64,{{ imgObj.img|base64_encode }}" alt="Avatar" class="recipeCoverPhoto clickPhoto" id="idPhoto"></a>
         <h1><b><input class="textInput" type="text" value="{{ recipe.title }}" required></b></h1>
         <h2><em><input class="textInput" type="text" value="{{ recipe.description }}" required></em></h2> 
         <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
@@ -16,6 +16,16 @@
                 <a class="edit" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover submitEdits"><i class="material-icons">check</i>Submit</h4></a>
                 <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         </span>
+
+        <div id="modal_photo" class="modal modalPopup">
+            <h1 class="uploadPhotoHeader">Upload Photo</h1>
+            <form action="/updatePhoto" method="post" enctype="multipart/form-data">
+                <!-- onlick help: https://stackoverflow.com/questions/4286466/use-a-normal-link-to-submit-a-form -->
+                <input class="uploadFile" type="file" name="img" accept="image/jpeg,image/png" required>
+                <a class="photoButton recipeButton button" onclick="this.closest('form').submit();">Submit Photo</a>
+                <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+            </form>
+        </div>
 
         <h4 class="recipeCreatedBy"><em>Created by <a href="/profile/{{recipe.user_id}}">{{recipe.user.name}}</em></a></h4>
 
