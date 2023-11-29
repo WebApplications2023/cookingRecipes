@@ -153,6 +153,21 @@ var get_results = function() {
     }
 };
 
+var change_pfp = function() {
+    console.log("got to js");
+    var img = document.getElementById('imgFile');
+    var img_file = img.files[0];
+    if (img_file) {
+        //https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+        var reader = new FileReader();
+        reader.readAsDataURL(img_file);
+        reader.onload = function(img_file) {
+            var base64_img = img_file.target.result.split(',')[1];
+            $("#idPhoto").attr("src", `data:image/{{ recipe.img_format }};base64,${base64_img}`)
+        }
+    }
+}
+
 $(document).ready(function() {
     $("#addIngredient").click(addIngredient)
     $("#addStep").click(addStep);
@@ -184,6 +199,7 @@ $(document).ready(function() {
     $(".editRemove").click(function() {
         $(this).closest(".itemsAlready").remove();
     });
+    $("#newPFP").click(function() {change_pfp()});
 });
 
 

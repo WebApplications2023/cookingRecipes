@@ -106,7 +106,6 @@ def createRecipe():
     ingredients_string = ', '.join(ingredients_list)
     return render_template("main/recipeForm.html", ingredients=ingredients_string)
 
-
 #SAVE FOR NEW RECIPE
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
@@ -252,24 +251,25 @@ def addPhoto():
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
 
-#TODO: Complete this - need to get all other values to put back into edit recipe page
-@bp.route("/editPhoto", methods=["POST"])
-@flask_login.login_required
-def editPhoto():
-    recipe_id = request.form.get("recipe_id")
-    recipe = db.session.get(model.Recipe, recipe_id)
-    img = request.files["img"]  # Get the uploaded image file
-    if img:
-        # Ensure the image file has a safe filename
-        img_filename = secure_filename(img.filename)
-        img_data = img.read()  # Read the image data as binary
-        recipe.img = img_data
-        db.session.commit()
-    else:
-        img_data = None
-    image = base64.b64encode(img_data).decode("utf-8")
-    imgObj = {"image": image}
-    return imgObj
+# #TODO: Complete this - need to get all other values to put back into edit recipe page
+# @bp.route("/editPhoto", methods=["POST"])
+# @flask_login.login_required
+# def editPhoto():
+#     recipe_id = request.form.get("recipe_id")
+#     recipe = db.session.get(model.Recipe, recipe_id)
+#     img = request.files["img"]  # Get the uploaded image file
+#     if img:
+#         # Ensure the image file has a safe filename
+#         img_filename = secure_filename(img.filename)
+#         img_data = img.read()  # Read the image data as binary
+#         recipe.img = img_data
+#         db.session.commit()
+#     else:
+#         img_data = None
+#     image = base64.b64encode(img_data).decode("utf-8")
+#     imgObj = {"image": image}
+#     return imgObj
+#     #do it all on frontend using js and then submit when submit button is done - do not use controller
 
 
 @bp.route("/searchName", methods=["POST"])
