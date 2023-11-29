@@ -3,7 +3,7 @@
     height: 100%;
     position: fixed;
     background-color: #f1f1f1;
-    
+
     padding-right: 0.5%;
 }
 
@@ -522,6 +522,7 @@ li a:hover{
     position: absolute;
     display: inline-block;
     right: 0;
+    margin-right: 15px;
 }
 
 .dropdown-content {
@@ -554,6 +555,22 @@ li a:hover{
 .searchCardDescr{
     font-size: 60%;
 }
+
+.searchTerm{
+    border-color: #555;
+    border-radius: 5px;
+}
+
+.search{
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.searchButton{
+    color: white;
+    padding-left: 4px;
+}
+
 
 
 
