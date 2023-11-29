@@ -7,6 +7,7 @@ from sqlalchemy.sql import func
 from flask import Blueprint, abort, jsonify, render_template, request, redirect, url_for, flash
 import flask_login
 from sqlalchemy.orm.exc import NoResultFound
+import logging
 
 from . import model, db
 
@@ -236,11 +237,14 @@ def searchName():
 @bp.route("/deleteRecipe/<int:recipeID>", methods=["DELETE"])
 @flask_login.login_required
 def deleteRecipe(recipeID):
+    logging.debug("ID" + str(recipeID))
     recipe = db.session.get(model.Recipe, recipeID)
     if not recipe:
         abort(404, "Recipe id {} doesn't exist.".format(recipeID))
     if flask_login.current_user != recipe.user:
         abort(403, "Deleting this recipe not permitted")
+
+    logging.debug("DELETING")
     
     db.session.delete(recipe)
     db.session.commit()

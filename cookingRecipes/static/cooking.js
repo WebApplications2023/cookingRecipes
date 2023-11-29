@@ -157,6 +157,20 @@ var go_recipe = function(recipeID) {
     window.location.href = `recipe/${recipeID}`;
 }
 
+var deleteRecipe = function(recipeID){
+    console.log(`/deleteRecipe/` + recipeID);
+    $.ajax({
+        url: `/deleteRecipe/` + recipeID,
+        type: 'DELETE',
+        success: function(data) {
+            window.location.href = "/";  
+        },
+        error: function(error) {
+            console.error('Error:', error);
+        }
+    });  
+}
+
 $(document).ready(function() {
     $(".addIngredient").click(addIngredient)
     $(".addStep").click(addStep);

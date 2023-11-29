@@ -66,7 +66,8 @@
         </form>
     </div>
 
-    <a class="bookmark" href="/deleteRecipe/{{ recipe.id }}"><h4 class="recipeInfo bookmarkHover">Delete Recipe</h4></a>
+    <a class="bookmark" onclick="deleteRecipe('{{ recipe.id }}');"><h4 class="recipeInfo bookmarkHover">Delete</h4></a>
+    
 
     <h4 class="recipeCreatedBy"><em>Created by <a href="/profile/{{recipe.user_id}}">{{recipe.user.name}}</em></a></h4>
 
