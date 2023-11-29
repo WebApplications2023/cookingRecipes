@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="recipePage">
-    <form action="/updateRecipe" method="post">
-        <a id="imgModalButton" href="#modal_photo" rel="modal:open"><img src="data:image/{{ recipe.img_format }};base64,{{ imgObj.image }}" alt="Avatar" class="recipeCoverPhoto clickPhoto" id="idPhoto"></a>
+    <form action="/updateRecipe" class="recipeFormEdit" method="post">
+        <a id="imgModalButton" href="#modal_photo" rel="modal:open"><img src="data:image/{{ recipe.img_format }};base64,{{ imgObj.image }}" alt="Avatar" class="recipeCoverPhoto clickPhoto" id="idPhoto" name="img"></a>
         <h1><b><input class="textInput" type="text" value="{{ recipe.title }}" required></b></h1>
         <h2><em><input class="textInput" type="text" value="{{ recipe.description }}" required></em></h2> 
         <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
@@ -12,7 +12,6 @@
             <h4 class="recipeInfo"><i class="material-icons">timer</i><input type="text" class="numInput" name="cooking_time" value="{{ recipe.cooking_time }}" required> minutes</h4>
             <h4 class="recipeInfo"><i class="material-icons">person</i><input type="text" class="numInput" name="num_people" value="{{ recipe.num_people }}" required> people</h4>
             <a class="edit" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover submitEdits"><i class="material-icons">check</i>Submit</h4></a>
-            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         </span>
 
         <h4 class="recipeCreatedBy"><em>Created by <a href="/profile/{{recipe.user_id}}">{{recipe.user.name}}</em></a></h4>
@@ -22,8 +21,8 @@
             <div id="ingredients">
             {% for row in ingredients %}
                 <span class="itemsAlready">
-                    <input class="editInputs" type="text" value="{{ row.quantity }}"> 
-                    <input class="editInputs" type="text" value="{{ row.ingredient }}">
+                    <input class="editInputs quantIngr" type="text" value="{{ row.quantity }}"> 
+                    <input class="editInputs ingr" type="text" value="{{ row.ingredient }}">
                 <button type="button" class="remove editRemove">Remove</button> 
                 <br>
                 </span>
@@ -37,7 +36,7 @@
             <div id="steps">
                 {% for step in steps %}
                 <span class="itemsAlready">
-                <li><input class="editInputs" type="text" value="{{ step.description }}"><button type="button" class="remove editRemove">Remove</button></li>
+                <li><input class="editInputs alrStep" type="text" value="{{ step.description }}"><button type="button" class="remove editRemove">Remove</button></li>
                 </span>
                 {% endfor %}
             </div>

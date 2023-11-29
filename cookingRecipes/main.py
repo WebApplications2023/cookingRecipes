@@ -148,9 +148,6 @@ def newRecipe():
             recipe_id=newRecipe.id, ingredient_id = ingredient.id, quantity=quantified_ingredients_list[i]
         )
         db.session.add(newQuantIngredient)
-        #TODO: need to check whether this also adds to recipe quantified ingredients list
-        # or if I also need to append/if its better to just append
-        #TODO: do I need a commit here?
     steps = json.loads(request.form.get("steps"))
     for i in range(len(steps)):
         newStep = model.Steps(
@@ -197,9 +194,16 @@ def updateRecipe():
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
     user = flask_login.current_user
-    #update num_people, cooking_time, steps, pfp_picture and ingredients
+    #update num_people, cooking_time, steps, img and ingredients IF DIFFERENT
     cooking_time = request.form.get("cooking_time")
     num_people = request.form.get("num_people")
+    #img = request.files["img"]  # Check if this is base64 or actual image
+    img = request.form.get("img") #should be already in base64
+    quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
+    ingredients_list = json.loads(request.form.get("ingredients"))
+    steps = json.loads(request.form.get("steps"))
+    return redirect(url_for("main.recipe", recipeID=recipe_id))
+
 
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
@@ -250,26 +254,6 @@ def addPhoto():
     else:
         flash("Please select a valid photo.")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
-
-# #TODO: Complete this - need to get all other values to put back into edit recipe page
-# @bp.route("/editPhoto", methods=["POST"])
-# @flask_login.login_required
-# def editPhoto():
-#     recipe_id = request.form.get("recipe_id")
-#     recipe = db.session.get(model.Recipe, recipe_id)
-#     img = request.files["img"]  # Get the uploaded image file
-#     if img:
-#         # Ensure the image file has a safe filename
-#         img_filename = secure_filename(img.filename)
-#         img_data = img.read()  # Read the image data as binary
-#         recipe.img = img_data
-#         db.session.commit()
-#     else:
-#         img_data = None
-#     image = base64.b64encode(img_data).decode("utf-8")
-#     imgObj = {"image": image}
-#     return imgObj
-#     #do it all on frontend using js and then submit when submit button is done - do not use controller
 
 
 @bp.route("/searchName", methods=["POST"])

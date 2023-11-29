@@ -195,6 +195,37 @@ $(document).ready(function() {
 
         $(this).off('submit').submit();
     })
+    $(".recipeFormEdit").submit(function(event){
+        var alrQuant = getList(".quantIngr");
+        var alrIngr = getList(".ingr");
+        var alrStep = getList(".alrStep");
+        var quant = getList(".ingredientQuant");
+        var ingredient = getList(".ingredientItem");
+        var steps = getList(".step");
+        alrQuant.concat(quant);
+        console.log(alrQuant)
+        alrIngr.concat(ingredient)
+        alrStep.concat(steps);
+
+        var hiddenQuant = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "quantified_ingredients")
+            .attr("value", JSON.stringify(alrQuant));
+        var hiddenIngredient = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "ingredients")
+            .attr("value", JSON.stringify(alrIngr));
+        var hiddenSteps = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "steps")
+            .attr("value", JSON.stringify(alrSteps));
+
+        $(".recipeFormEdit").append(hiddenIngredient);
+        $(".recipeFormEdit").append(hiddenQuant);
+        $(".recipeFormEdit").append(hiddenSteps);
+
+        $(this).off('submit').submit();
+    })
     $("#name_search").on('keyup', get_results);
     $(".editRemove").click(function() {
         $(this).closest(".itemsAlready").remove();
