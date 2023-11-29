@@ -9,7 +9,7 @@
     
     <div class="profileContent">
         <h2>Recipes</h2>
-            {% if recipes is defined %}
+            {% if recipes %}
                 <div class="photoCarousel">
                     {% for recipe in recipes %}
                         {% include 'recipeCard_template.html' %}
@@ -22,10 +22,10 @@
 
         <h2>Photos</h2>
        
-        {% if photos is defined %}
-            {% for photo in photos %}
-            <div class="photoCarousel">
-                <img src="data:image/{{ recipe.img_format }};base64,{{ photo|base64_encode }}" alt="Avatar" class="carouselItem">
+        {% if submitted_photos %}
+            {% for photo in submitted_photos %}
+            <div class="photoCarousel photoProfile">
+                <img src="data:image/{{ photo.img_format }};base64,{{ photo.img|base64_encode }}" alt="Avatar" class="carouselItem">
             </div>
             {% endfor %}
         {% else %}
@@ -44,6 +44,9 @@
                 <p class="noValue"><em>No bookmarks yet</em></p> 
             {% endif %}
         {% endif %}
+
+        <br>
+        <br>
         
         
     </div>
