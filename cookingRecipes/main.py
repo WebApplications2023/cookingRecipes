@@ -191,6 +191,7 @@ def editRecipe():
 @bp.route("/updateRecipe", methods=["POST"])
 @flask_login.login_required
 def updateRecipe():
+    print(request.form) #imgData is empty, no hidden form values either
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
     #update num_people, cooking_time, steps, img and ingredients IF DIFFERENT
@@ -202,9 +203,9 @@ def updateRecipe():
     if img_data and img_data != '':
         if img_data != recipe.img:
             recipe.img = img_data
-    quantified_ingredients_list = request.form.get("quantified_ingredients")
-    ingredients_list = request.form.get("ingredients")
-    steps = request.form.get("steps")
+    quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
+    ingredients_list = json.loads(request.form.get("ingredients"))
+    steps = json.loads(request.form.get("steps"))
     if recipe.title != title:
         recipe.title = title
     if recipe.description != description:
@@ -218,7 +219,7 @@ def updateRecipe():
         .where(model.Steps.recipe_id == recipe_id)
         .order_by(model.Steps.sequence_num.desc())
     )
-    alrSteps = db.session.execute(query_alrSteps)
+    alrSteps = db.session.execute(query_alrSteps).scalars().all()
     for i in range(len(steps)):
         if (i >= len(alrSteps)):
             break
@@ -228,7 +229,7 @@ def updateRecipe():
     if (len(steps) > len(alrSteps)):
         for i in range(len(alrSteps), len(steps)):
             newStep = model.Steps(
-                recipe_id=newRecipe.id, sequence_num=i+1,
+                recipe_id=recipe_id, sequence_num=i+1,
                 description=steps[i]
             )
             db.session.add(newStep)
@@ -237,11 +238,11 @@ def updateRecipe():
         db.select(model.QuantifiedIngredients)
         .where(model.QuantifiedIngredients.recipe_id == recipe_id)
     )
-    alrQuant = db.session.execute(query_alrQuant)
+    alrQuant = db.session.execute(query_alrQuant).scalars().all()
     #need to not only check if the alrQuants are the same but also need to 
     #check if their associated ingredients are the same
     db.session.commit()
-    return redirect(url_for("main.recipe", recipeID=recipe_id))
+    return {"recipe_id": recipe_id}
 
 
 @bp.route("/addRating", methods=["POST"])

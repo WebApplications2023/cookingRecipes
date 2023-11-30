@@ -169,6 +169,48 @@ var change_pfp = function() {
     }
 }
 
+var handle_submit = function () {
+    var alrQuant = getList(".quantIngr");
+    var alrIngr = getList(".ingr");
+    var alrStep = getList(".alrStep");
+    var quant = getList(".ingredientQuant");
+    var ingredient = getList(".ingredientItem");
+    var steps = getList(".step");
+    alrQuant = alrQuant.concat(quant);
+    alrIngr = alrIngr.concat(ingredient);
+    alrStep = alrStep.concat(steps);
+
+    var hiddenQuant = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "quantified_ingredients")
+        .attr("value", JSON.stringify(alrQuant))
+        .attr("id", "quantified_ingredients");
+    var hiddenIngredient = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "ingredients")
+        .attr("value", JSON.stringify(alrIngr))
+        .attr("id", "ingredients");
+    var hiddenSteps = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "steps")
+        .attr("value", JSON.stringify(alrStep))
+        .attr("id", "steps");
+
+    $(".recipeFormEdit").append(hiddenIngredient);
+    $(".recipeFormEdit").append(hiddenQuant);
+    $(".recipeFormEdit").append(hiddenSteps);
+    $.post("/updateRecipe", {
+        imgData: $("#imgDataInput").val(), title: $("#title").val(), description: $("#description").val(),
+                    recipe_id: $("#recipe_id").val(), cooking_time: $("#cooking_time").val(),
+                    num_people: $("#num_people").val(), ingredients: $("#ingredients").val(),
+                    quantified_ingredients: $("#quantified_ingredients").val(), steps: $("#steps").val()
+    }, function(data, status) {
+        if (status === "success" && data !== undefined) {
+            window.location.href = `/recipe/${data.recipe_id}`;
+        }
+    })
+}
+
 $(document).ready(function() {
     $("#addIngredient").click(addIngredient)
     $("#addStep").click(addStep);
@@ -196,41 +238,12 @@ $(document).ready(function() {
 
         $(this).off('submit').submit();
     })
-    $(".recipeFormEdit").submit(function(event){
-        var alrQuant = getList(".quantIngr");
-        var alrIngr = getList(".ingr");
-        var alrStep = getList(".alrStep");
-        var quant = getList(".ingredientQuant");
-        var ingredient = getList(".ingredientItem");
-        var steps = getList(".step");
-        alrQuant.concat(quant);
-        alrIngr.concat(ingredient);
-        alrStep.concat(steps);
-
-        var hiddenQuant = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "quantified_ingredients")
-            .attr("value", JSON.stringify(alrQuant));
-        var hiddenIngredient = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "ingredients")
-            .attr("value", JSON.stringify(alrIngr));
-        var hiddenSteps = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "steps")
-            .attr("value", JSON.stringify(alrSteps));
-
-        $(".recipeFormEdit").append(hiddenIngredient);
-        $(".recipeFormEdit").append(hiddenQuant);
-        $(".recipeFormEdit").append(hiddenSteps);
-
-        $(this).off('submit').submit();
-    })
     $("#name_search").on('keyup', get_results);
     $(".editRemove").click(function() {
         $(this).closest(".itemsAlready").remove();
     });
     $("#newPFP").click(function() {change_pfp()});
+    $("#submitButtonEdit").click(function() {handle_submit()});
 });
 
 
