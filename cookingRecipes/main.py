@@ -214,7 +214,33 @@ def updateRecipe():
         recipe.cooking_time = cooking_time
     if recipe.num_people != num_people:
         recipe.num_people = num_people
-    
+    query_alrSteps = (
+        db.select(model.Steps)
+        .where(model.Steps.recipe_id == recipe_id)
+        .order_by(model.Steps.sequence_num.desc())
+    )
+    alrSteps = db.session.execute(query_alrSteps).scalars().all()
+    for i in range(len(steps)):
+        if (i >= len(alrSteps)):
+            break
+        if alrSteps[i].description != steps[i]:
+            alrSteps[i].description = steps[i]
+    if (len(steps) > len(alrSteps)):
+        for i in range(len(alrSteps), len(steps)):
+            newStep = model.Steps(
+                recipe_id=recipe_id, sequence_num=i+1,
+                description=steps[i]
+            )
+            db.session.add(newStep)
+    else:
+        #deleting all old steps that aren't in new steps
+        for i in range(len(steps), len(alrSteps)):
+            db.session.delete(alrSteps[i])
+    query_alrQuant = (
+        db.select(model.QuantifiedIngredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipe_id)
+    )
+    alrQuant = db.session.execute(query_alrQuant).scalars().all()
     #need to not only check if the alrQuants are the same but also need to 
     #check if their associated ingredients are the same
     db.session.commit()
