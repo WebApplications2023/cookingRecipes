@@ -236,11 +236,19 @@ def updateRecipe():
         #deleting all old steps that aren't in new steps
         for i in range(len(steps), len(alrSteps)):
             db.session.delete(alrSteps[i])
-    query_alrQuant = (
-        db.select(model.QuantifiedIngredients)
+    query_alrQuant_names = (
+        db.select(model.QuantifiedIngredients.quantity)
         .where(model.QuantifiedIngredients.recipe_id == recipe_id)
     )
-    alrQuant = db.session.execute(query_alrQuant).scalars().all()
+    alrQuants = db.session.execute(query_alrQuant_names).all()
+    #strat: go through each alrQuant, check if name is in list of quants
+    #       if in list, leave it and remove from list of quants,
+    #           then need to check if ingredient has changed
+    #       if not in list delete it from quant table at the end,
+    #       all the quants left in list need to be created into quantities
+    for alrQuant in alrQuants:
+        if alrQuant in quantified_ingredients_list:
+            
     #need to not only check if the alrQuants are the same but also need to 
     #check if their associated ingredients are the same
     db.session.commit()
