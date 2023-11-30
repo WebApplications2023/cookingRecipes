@@ -200,7 +200,6 @@ li a:hover{
 }   
 
 .photoCarousel{
-    
     margin-left: 50px;
     margin-right: 50px;
     overflow: scroll;
@@ -573,7 +572,7 @@ li a:hover{
 }
 
 .photoProfile{
-    padding-left: 15px;
+    padding-left: 20px;
 }
 
 
