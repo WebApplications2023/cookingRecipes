@@ -9,28 +9,29 @@
     
     <div class="profileContent">
         <h2>Recipes</h2>
-            {% if recipes %}
-                <div class="photoCarousel">
-                    {% for recipe in recipes %}
-                        {% include 'recipeCard_template.html' %}
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p class="noValue">No recipes yet</p>
-            {% endif %}
+        {% if recipes %}
+            <div class="photoCarousel">
+                {% for recipe in recipes %}
+                    {% include 'recipeCard_template.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="noValue">No recipes yet</p>
+        {% endif %}
         
 
         <h2>Photos</h2>
-       
         {% if submitted_photos %}
-            {% for photo in submitted_photos %}
             <div class="photoCarousel photoProfile">
-                <img src="data:image/{{ photo.img_format }};base64,{{ photo.img|base64_encode }}" alt="Avatar" class="carouselItem">
+                {% for photo in submitted_photos %}
+                    <img src="data:image/{{ photo.img_format }};base64,{{ photo.img|base64_encode }}" alt="Avatar" class="carouselItem">
+                {% endfor %}
             </div>
-            {% endfor %}
         {% else %}
             <p class="noValue"><em>No photos uploaded yet</em></p>
         {% endif %}
+
+
 
         {% if currUser %}
             <h2>Bookmarks</h2>
