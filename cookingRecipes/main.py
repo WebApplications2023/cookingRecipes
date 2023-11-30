@@ -193,15 +193,54 @@ def editRecipe():
 def updateRecipe():
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
-    user = flask_login.current_user
     #update num_people, cooking_time, steps, img and ingredients IF DIFFERENT
+    title = request.form.get("title")
+    description = request.form.get("description")
     cooking_time = request.form.get("cooking_time")
     num_people = request.form.get("num_people")
-    #img = request.files["img"]  # Check if this is base64 or actual image
-    img = request.form.get("img") #should be already in base64
-    quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
-    ingredients_list = json.loads(request.form.get("ingredients"))
-    steps = json.loads(request.form.get("steps"))
+    img_data = request.form.get("imgData")
+    if img_data and img_data != '':
+        if img_data != recipe.img:
+            recipe.img = img_data
+    quantified_ingredients_list = request.form.get("quantified_ingredients")
+    ingredients_list = request.form.get("ingredients")
+    steps = request.form.get("steps")
+    if recipe.title != title:
+        recipe.title = title
+    if recipe.description != description:
+        recipe.description = description
+    if recipe.cooking_time != cooking_time:
+        recipe.cooking_time = cooking_time
+    if recipe.num_people != num_people:
+        recipe.num_people = num_people
+    query_alrSteps = (
+        db.select(model.Steps)
+        .where(model.Steps.recipe_id == recipe_id)
+        .order_by(model.Steps.sequence_num.desc())
+    )
+    alrSteps = db.session.execute(query_alrSteps)
+    for i in range(len(steps)):
+        if (i >= len(alrSteps)):
+            break
+        if alrSteps[i].description != steps[i]:
+            alrSteps[i].description = steps[i]
+            db.session.flush()
+    if (len(steps) > len(alrSteps)):
+        for i in range(len(alrSteps), len(steps)):
+            newStep = model.Steps(
+                recipe_id=newRecipe.id, sequence_num=i+1,
+                description=steps[i]
+            )
+            db.session.add(newStep)
+            db.session.flush()
+    query_alrQuant = (
+        db.select(model.QuantifiedIngredients)
+        .where(model.QuantifiedIngredients.recipe_id == recipe_id)
+    )
+    alrQuant = db.session.execute(query_alrQuant)
+    #need to not only check if the alrQuants are the same but also need to 
+    #check if their associated ingredients are the same
+    db.session.commit()
     return redirect(url_for("main.recipe", recipeID=recipe_id))
 
 

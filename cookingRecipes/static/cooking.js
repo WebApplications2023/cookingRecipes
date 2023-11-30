@@ -55,7 +55,7 @@ var addIngredient = function(){
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Quantity");
 
-            //$(div).append(newInput);
+            $(div).append(newInput);
             $(this).closest(".ingredientQuantContainer").append(newInput);
         }
         else{
@@ -163,7 +163,8 @@ var change_pfp = function() {
         reader.readAsDataURL(img_file);
         reader.onload = function(img_file) {
             var base64_img = img_file.target.result.split(',')[1];
-            $("#idPhoto").attr("src", `data:image/{{ recipe.img_format }};base64,${base64_img}`)
+            $("#idPhoto").attr("src", `data:image/{{ recipe.img_format }};base64,${base64_img}`);
+            $("#imgDataInput").val(base64_img);
         }
     }
 }
@@ -203,8 +204,7 @@ $(document).ready(function() {
         var ingredient = getList(".ingredientItem");
         var steps = getList(".step");
         alrQuant.concat(quant);
-        console.log(alrQuant)
-        alrIngr.concat(ingredient)
+        alrIngr.concat(ingredient);
         alrStep.concat(steps);
 
         var hiddenQuant = $("<input>")
