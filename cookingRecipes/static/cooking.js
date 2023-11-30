@@ -120,6 +120,7 @@ var remove = function(value){
 }
 
 var get_results = function() {
+    $(document).off("click.searchResults");
     $('.dropdown-content').empty();
     let val = $("#name_search").val();
     if (val !== '') {
@@ -151,6 +152,12 @@ var get_results = function() {
     } else {
         $('.dropdown-content').empty();
     }
+
+    $(document).on("click.searchResults", function (e) {
+        if (!$(e.target).closest('.dropdown').length) {
+          $('.dropdown-content').empty();
+        }
+      });
 };
 
 var go_recipe = function(recipeID) {
