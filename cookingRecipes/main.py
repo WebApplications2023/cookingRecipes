@@ -208,8 +208,9 @@ def updateRecipe():
     num_people = request.form.get("num_people")
     img_data = request.form.get("imgData")
     if img_data and img_data != '':
-        if img_data != recipe.img:
-            recipe.img = img_data
+        decoded = base64.b64decode(img_data)
+        if decoded != recipe.img:
+            recipe.img = decoded
     quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
     ingredients_list = json.loads(request.form.get("ingredientsNew"))
     oldQuants = json.loads(request.form.get("oldQuants"))
