@@ -5,6 +5,7 @@
     <form action="/updateRecipe" class="recipeFormEdit" method="post">
         <a id="imgModalButton" href="#modal_photo" rel="modal:open"><img src="data:image/{{ recipe.img_format }};base64,{{ imgObj.image }}" alt="Avatar" class="recipeCoverPhoto clickPhoto" id="idPhoto" name="img"></a>
         <input type="hidden" name="imgData" id="imgDataInput">
+        <input type="hidden" id="ingredients" value="{{ ingredients }}">
         <h1><b><input name="title" id="title" class="textInput" type="text" value="{{ recipe.title }}" required></b></h1>
         <h2><em><input name="description" id="description" class="textInput" type="text" value="{{ recipe.description }}" required></em></h2> 
         <input type="hidden" id="recipe_id" name="recipe_id" value="{{ recipe.id }}">
@@ -20,11 +21,11 @@
         <h3>Ingredients</h3>
         <div class="recipeList">
             <div id="ingredientsList">
-            {% for row in ingredients %}
+            {% for row in ingredientsAlr %}
                 <span class="itemsAlready">
                     <!-- need to be in ingredients div -->
                     <input class="editInputs quantIngr" type="text" value="{{ row.quantity }}"> 
-                    <input class="editInputs ingr" type="text" value="{{ row.ingredient }}">
+                    <input class="editInputs ingr" type="text" readonly value="{{ row.ingredient }}">
                 <button type="button" class="remove editRemove">Remove</button> 
                 <br>
                 </span>

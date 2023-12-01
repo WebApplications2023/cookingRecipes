@@ -177,21 +177,28 @@ def editRecipe():
         .join(model.Ingredients, model.QuantifiedIngredients.ingredients)
         .where(model.QuantifiedIngredients.recipe_id == recipe_id)
     )
-    ingredients = db.session.execute(query_ingredients).all()
+    ingredientsAlr = db.session.execute(query_ingredients).all()
+    query = (
+        db.select(model.Ingredients.ingredient)
+        .order_by(model.Ingredients.ingredient.desc())
+    )
+    ingredients = db.session.execute(query).all()
+    ingredients_list = [item[0] for item in ingredients]
+    ingredients_string = ', '.join(ingredients_list)
     query_images = (
          db.select(model.Photos.img)
          .where(model.Photos.recipe_id == recipe.id)
-     )
+    )
     photos = db.session.execute(query_images).scalars().all()
     image = base64.b64encode(recipe.img).decode("utf-8")
     imgObj = {"image": image}
-    return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredients=ingredients, photos=photos, imgObj=imgObj)
+    return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredientsAlr=ingredientsAlr, photos=photos, imgObj=imgObj, ingredients=ingredients_string)
 
 #TODO: FINISH
 @bp.route("/updateRecipe", methods=["POST"])
 @flask_login.login_required
 def updateRecipe():
-    print(request.form) #imgData is empty, no hidden form values either
+    print(request.form)
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
     #update num_people, cooking_time, steps, img and ingredients IF DIFFERENT
@@ -204,7 +211,9 @@ def updateRecipe():
         if img_data != recipe.img:
             recipe.img = img_data
     quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
-    ingredients_list = json.loads(request.form.get("ingredients"))
+    ingredients_list = json.loads(request.form.get("ingredientsNew"))
+    oldQuants = json.loads(request.form.get("oldQuants"))
+    oldIngrs = json.loads(request.form.get("oldIngrs"))
     steps = json.loads(request.form.get("steps"))
     if recipe.title != title:
         recipe.title = title
@@ -236,21 +245,46 @@ def updateRecipe():
         #deleting all old steps that aren't in new steps
         for i in range(len(steps), len(alrSteps)):
             db.session.delete(alrSteps[i])
-    query_alrQuant_names = (
-        db.select(model.QuantifiedIngredients.quantity)
+    query_ingr = (
+        db.select(model.QuantifiedIngredients.quantity, model.Ingredients.ingredient, model.QuantifiedIngredients.ingredient_id)
+        .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
         .where(model.QuantifiedIngredients.recipe_id == recipe_id)
     )
-    alrQuants = db.session.execute(query_alrQuant_names).all()
-    #strat: go through each alrQuant, check if name is in list of quants
-    #       if in list, leave it and remove from list of quants,
-    #           then need to check if ingredient has changed
-    #       if not in list delete it from quant table at the end,
-    #       all the quants left in list need to be created into quantities
-    for alrQuant in alrQuants:
-        if alrQuant in quantified_ingredients_list:
-            
-    #need to not only check if the alrQuants are the same but also need to 
-    #check if their associated ingredients are the same
+    prevQuantsAndIngrs = db.session.execute(query_ingr).all()
+    print(prevQuantsAndIngrs)
+    for prev in prevQuantsAndIngrs:
+        if prev.ingredient in oldIngrs:
+            i = oldIngrs.index(prev.ingredient)
+            if prev.quantity != oldQuants[i]:
+                prev.quantiy = oldQuants[i]
+        else:
+            query_tbdel = (
+                db.select(model.QuantifiedIngredients)
+                .where(model.QuantifiedIngredients.quantity == prev.quantity)
+                .where(model.QuantifiedIngredients.ingredient_id == prev.ingredient_id)
+            )
+            tbdel = db.session.execute(query_tbdel).scalars().first()
+            db.session.delete(tbdel)
+            db.session.flush()
+            query_any = (
+                db.select(model.QuantifiedIngredients)
+                .where(model.QuantifiedIngredients.ingredient_id == prev.ingredient_id)
+            )
+            if db.session.execute(query_any).first() is None:
+                ingr = db.session.get(model.Ingredients, prev.ingredient_id)
+                db.session.delete(ingr)
+                db.session.flush()
+    for i in range(len(quantified_ingredients_list)):
+        try:
+            ingredient = db.session.query(model.Ingredients).filter(model.Ingredients.ingredient==ingredients_list[i]).one()
+        except NoResultFound:
+            ingredient = model.Ingredients(ingredient=ingredients_list[i])
+            db.session.add(ingredient)
+            db.session.flush()
+        newQuantIngredient = model.QuantifiedIngredients(
+            recipe_id=recipe_id, ingredient_id=ingredient.id, quantity=quantified_ingredients_list[i]
+        )
+        db.session.add(newQuantIngredient)
     db.session.commit()
     return {"recipe_id": recipe_id}
 

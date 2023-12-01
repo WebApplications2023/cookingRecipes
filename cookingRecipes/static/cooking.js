@@ -176,34 +176,47 @@ var handle_submit = function () {
     var quant = getList(".ingredientQuant");
     var ingredient = getList(".ingredientItem");
     var steps = getList(".step");
-    alrQuant = alrQuant.concat(quant);
-    alrIngr = alrIngr.concat(ingredient);
+    // alrQuant = alrQuant.concat(quant);
+    // alrIngr = alrIngr.concat(ingredient);
     alrStep = alrStep.concat(steps);
 
     var hiddenQuant = $("<input>")
         .attr("type", "hidden")
         .attr("name", "quantified_ingredients")
-        .attr("value", JSON.stringify(alrQuant))
+        .attr("value", JSON.stringify(quant))
         .attr("id", "quantified_ingredients");
     var hiddenIngredient = $("<input>")
         .attr("type", "hidden")
-        .attr("name", "ingredients")
-        .attr("value", JSON.stringify(alrIngr))
-        .attr("id", "ingredients");
+        .attr("name", "ingredientsNew")
+        .attr("value", JSON.stringify(ingredient))
+        .attr("id", "ingredientsNew");
     var hiddenSteps = $("<input>")
         .attr("type", "hidden")
         .attr("name", "steps")
         .attr("value", JSON.stringify(alrStep))
         .attr("id", "steps");
+    var oldQuant = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "oldQuants")
+        .attr("value", JSON.stringify(alrQuant))
+        .attr("id", "oldQuants");
+    var oldIngr = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "oldIngrs")
+        .attr("value", JSON.stringify(alrIngr))
+        .attr("id", "oldIngrs");
 
     $(".recipeFormEdit").append(hiddenIngredient);
     $(".recipeFormEdit").append(hiddenQuant);
     $(".recipeFormEdit").append(hiddenSteps);
+    $(".recipeFormEdit").append(oldQuant);
+    $(".recipeFormEdit").append(oldIngr);
     $.post("/updateRecipe", {
         imgData: $("#imgDataInput").val(), title: $("#title").val(), description: $("#description").val(),
                     recipe_id: $("#recipe_id").val(), cooking_time: $("#cooking_time").val(),
-                    num_people: $("#num_people").val(), ingredients: $("#ingredients").val(),
-                    quantified_ingredients: $("#quantified_ingredients").val(), steps: $("#steps").val()
+                    num_people: $("#num_people").val(), ingredientsNew: $("#ingredientsNew").val(),
+                    quantified_ingredients: $("#quantified_ingredients").val(), steps: $("#steps").val(),
+                    oldQuants: $("#oldQuants").val(), oldIngrs: $("#oldIngrs").val()
     }, function(data, status) {
         if (status === "success" && data !== undefined) {
             window.location.href = `/recipe/${data.recipe_id}`;
