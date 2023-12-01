@@ -247,25 +247,18 @@ def updateRecipe():
         for i in range(len(steps), len(alrSteps)):
             db.session.delete(alrSteps[i])
     query_ingr = (
-        db.select(model.QuantifiedIngredients.quantity, model.Ingredients.ingredient, model.QuantifiedIngredients.ingredient_id)
+        db.select(model.QuantifiedIngredients.id, model.QuantifiedIngredients.quantity, model.Ingredients.ingredient, model.QuantifiedIngredients.ingredient_id)
         .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
         .where(model.QuantifiedIngredients.recipe_id == recipe_id)
     )
     prevQuantsAndIngrs = db.session.execute(query_ingr).all()
-    print(prevQuantsAndIngrs)
     for prev in prevQuantsAndIngrs:
         if prev.ingredient in oldIngrs:
             i = oldIngrs.index(prev.ingredient)
             if prev.quantity != oldQuants[i]:
                 prev.quantiy = oldQuants[i]
         else:
-            query_tbdel = (
-                db.select(model.QuantifiedIngredients)
-                .where(model.QuantifiedIngredients.quantity == prev.quantity)
-                .where(model.QuantifiedIngredients.ingredient_id == prev.ingredient_id)
-            )
-            tbdel = db.session.execute(query_tbdel).scalars().first()
-            db.session.delete(tbdel)
+            db.session.delete(db.session.get(model.QuantifiedIngredients, prev.id))
             db.session.flush()
             query_any = (
                 db.select(model.QuantifiedIngredients)
