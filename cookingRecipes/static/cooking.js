@@ -154,7 +154,6 @@ var get_results = function() {
 };
 
 var change_pfp = function() {
-    console.log("got to js");
     var img = document.getElementById('imgFile');
     var img_file = img.files[0];
     if (img_file) {

@@ -198,7 +198,6 @@ def editRecipe():
 @bp.route("/updateRecipe", methods=["POST"])
 @flask_login.login_required
 def updateRecipe():
-    print(request.form)
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
     #update num_people, cooking_time, steps, img and ingredients IF DIFFERENT
