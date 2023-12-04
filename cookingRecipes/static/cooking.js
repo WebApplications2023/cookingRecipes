@@ -120,6 +120,7 @@ var remove = function(value){
 }
 
 var get_results = function() {
+    $(document).off("click.searchResults");
     $('.dropdown-content').empty();
     let val = $("#name_search").val();
     if (val !== '') {
@@ -129,12 +130,12 @@ var get_results = function() {
                     for (let item of data){
                         var new_search_card = $("<div>")
                                         .attr("class", "recipeSearchCard")
+                                        .on("click", function() {go_recipe(item.id);})
                         var img = $("<img>")
                                         .attr("src", `data:image/jpeg;base64,${item.image}`)
                                         .attr("alt", "searchPhoto")
                                         .attr("class", "recipeSearchPhoto")
-                        var title = $("<a>")
-                                        .attr("href", `/recipe/${item.id}`)
+                        var title = $("<b>")
                                         .text(item.title)
                                         .attr("class", "searchCardHeader")
                         new_search_card.append(img)
@@ -151,6 +152,12 @@ var get_results = function() {
     } else {
         $('.dropdown-content').empty();
     }
+
+    $(document).on("click.searchResults", function (e) {
+        if (!$(e.target).closest('.dropdown').length) {
+          $('.dropdown-content').empty();
+        }
+      });
 };
 
 var change_pfp = function() {
@@ -223,7 +230,79 @@ var handle_submit = function () {
     })
 }
 
+
+var go_recipe = function(recipeID) {
+    window.location.href = `recipe/${recipeID}`;
+}
+
+var updateLoginStatus = function() {
+    $.ajax({
+        url: "/getLoginStatus",  
+        method: "GET",
+        dataType: "json",
+        success: function(response) {
+            if (response.status === 200) {
+                isLoggedIn = true;
+                $("#one").addClass("star1");
+                $("#two").addClass("star2");
+                $("#three").addClass("star3");
+                $("#four").addClass("star4");
+                $("#five").addClass("star5");
+
+                $("#one").addClass("starHover");
+                $("#two").addClass("starHover");
+                $("#three").addClass("starHover");
+                $("#four").addClass("starHover");
+                $("#five").addClass("starHover");
+
+                $("#one").on("click", function() {
+                    document.getElementById('rating').value=1; this.closest('form').submit();
+                });
+                $("#two").on("click", function() {
+                    document.getElementById('rating').value=2; this.closest('form').submit();
+                });
+                $("#three").on("click", function() {
+                    document.getElementById('rating').value=3; this.closest('form').submit();
+                });
+                $("#four").on("click", function() {
+                    document.getElementById('rating').value=4; this.closest('form').submit();
+                });
+                $("#five").on("click", function() {
+                    document.getElementById('rating').value=5; this.closest('form').submit();
+                });
+                
+                console.log("User is logged in");
+            } else if (response.status === 401) {
+
+                $(".starHover").removeClass("starHover");
+                $(".star1").removeClass("star1");
+                $(".star2").removeClass("star2");
+                $(".star3").removeClass("star3");
+                $(".star4").removeClass("star4");
+                $(".star5").removeClass("star5");
+
+                $("#one").prop("onclick", null).off("click");
+                $("#two").prop("onclick", null).off("click");
+                $("#three").prop("onclick", null).off("click");
+                $("#four").prop("onclick", null).off("click");
+                $("#five").prop("onclick", null).off("click");
+
+                isLoggedIn = false;
+                console.log("User is not logged in");
+            } else {
+                console.error("Unexpected status code:", response.status);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error checking login status:", status, error);
+        }
+    });
+}
+
+
 $(document).ready(function() {
+    var isLoggedIn = false;
+    updateLoginStatus();
     $("#addIngredient").click(addIngredient)
     $("#addStep").click(addStep);
     $(".recipeForm").submit(function(event){
