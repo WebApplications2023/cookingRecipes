@@ -45,7 +45,7 @@ var addIngredient = function(){
     $(div).append(val);
     $(div).append(button);
     
-    $(".addIngredient").before(div);
+    $("#addIngredient").before(div);
 
    /* quant.find(".ingredientQuant").on('change', function() {
         if ($(this).val() === 'other') {
@@ -55,7 +55,7 @@ var addIngredient = function(){
                 .attr("type", "text")
                 .attr("placeholder", "Specify Other Quantity");
 
-            //$(div).append(newInput);
+            $(div).append(newInput);
             $(this).closest(".ingredientQuantContainer").append(newInput);
         }
         else{
@@ -99,7 +99,7 @@ var addStep = function(){
     $(div).append(newStep);
     $(div).append(button);
     
-    $(".addStep").before(div);
+    $("#addStep").before(div);
 }
 
 var getList = function(type){
@@ -159,6 +159,77 @@ var get_results = function() {
         }
       });
 };
+
+var change_pfp = function() {
+    var img = document.getElementById('imgFile');
+    var img_file = img.files[0];
+    if (img_file) {
+        //https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+        var reader = new FileReader();
+        reader.readAsDataURL(img_file);
+        reader.onload = function(img_file) {
+            var base64_img = img_file.target.result.split(',')[1];
+            $("#idPhoto").attr("src", `data:image/{{ recipe.img_format }};base64,${base64_img}`);
+            $("#imgDataInput").val(base64_img);
+        }
+    }
+}
+
+var handle_submit = function () {
+    var alrQuant = getList(".quantIngr");
+    var alrIngr = getList(".ingr");
+    var alrStep = getList(".alrStep");
+    var quant = getList(".ingredientQuant");
+    var ingredient = getList(".ingredientItem");
+    var steps = getList(".step");
+    // alrQuant = alrQuant.concat(quant);
+    // alrIngr = alrIngr.concat(ingredient);
+    alrStep = alrStep.concat(steps);
+
+    var hiddenQuant = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "quantified_ingredients")
+        .attr("value", JSON.stringify(quant))
+        .attr("id", "quantified_ingredients");
+    var hiddenIngredient = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "ingredientsNew")
+        .attr("value", JSON.stringify(ingredient))
+        .attr("id", "ingredientsNew");
+    var hiddenSteps = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "steps")
+        .attr("value", JSON.stringify(alrStep))
+        .attr("id", "steps");
+    var oldQuant = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "oldQuants")
+        .attr("value", JSON.stringify(alrQuant))
+        .attr("id", "oldQuants");
+    var oldIngr = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "oldIngrs")
+        .attr("value", JSON.stringify(alrIngr))
+        .attr("id", "oldIngrs");
+
+    $(".recipeFormEdit").append(hiddenIngredient);
+    $(".recipeFormEdit").append(hiddenQuant);
+    $(".recipeFormEdit").append(hiddenSteps);
+    $(".recipeFormEdit").append(oldQuant);
+    $(".recipeFormEdit").append(oldIngr);
+    $.post("/updateRecipe", {
+        imgData: $("#imgDataInput").val(), title: $("#title").val(), description: $("#description").val(),
+                    recipe_id: $("#recipe_id").val(), cooking_time: $("#cooking_time").val(),
+                    num_people: $("#num_people").val(), ingredientsNew: $("#ingredientsNew").val(),
+                    quantified_ingredients: $("#quantified_ingredients").val(), steps: $("#steps").val(),
+                    oldQuants: $("#oldQuants").val(), oldIngrs: $("#oldIngrs").val()
+    }, function(data, status) {
+        if (status === "success" && data !== undefined) {
+            window.location.href = `/recipe/${data.recipe_id}`;
+        }
+    })
+}
+
 
 var go_recipe = function(recipeID) {
     window.location.href = `recipe/${recipeID}`;
@@ -232,8 +303,8 @@ var updateLoginStatus = function() {
 $(document).ready(function() {
     var isLoggedIn = false;
     updateLoginStatus();
-    $(".addIngredient").click(addIngredient)
-    $(".addStep").click(addStep);
+    $("#addIngredient").click(addIngredient)
+    $("#addStep").click(addStep);
     $(".recipeForm").submit(function(event){
         var quant = getList(".ingredientQuant");
         var ingredient = getList(".ingredientItem");
@@ -259,6 +330,11 @@ $(document).ready(function() {
         $(this).off('submit').submit();
     })
     $("#name_search").on('keyup', get_results);
+    $(".editRemove").click(function() {
+        $(this).closest(".itemsAlready").remove();
+    });
+    $("#newPFP").click(function() {change_pfp()});
+    $("#submitButtonEdit").click(function() {handle_submit()});
 });
 
 

@@ -556,6 +556,41 @@ li a:hover{
     font-size: 60%;
 }
 
+ 
+.numInput{
+    max-width: 30px;
+}
+
+.submitEdits{
+    height: 41px;
+}
+
+.updateRecipe{
+    border: 1px solid #000; 
+    display: inline-flex;
+    align-items: center;
+    background-color:  #f1f1f1;
+    color: black;
+    border: 2px solid #555;
+    font-size: 25px;
+    padding: 3px;
+    height: 35;
+    margin-left: 5px;
+}
+
+.editInputs{
+    margin: 5px;
+}
+
+.textInput{
+    background-color:  #f1f1f1;
+}
+
+.clickPhoto:hover{
+    filter: brightness(70%);
+}
+
+
 .searchTerm{
     border-color: #555;
     border-radius: 5px;
@@ -574,5 +609,6 @@ li a:hover{
 .photoProfile{
     padding-left: 20px;
 }
+
 
 

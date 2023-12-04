@@ -16,6 +16,12 @@
             <a class="bookmark" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">bookmark</i>{{"Bookmarked" if bookmarked else "Bookmark"}}</h4></a>
             <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         </form>
+            {% if current_user == recipe.user %}
+            <form action="/editRecipe" method="post">
+                <a class="edit" onclick="this.closest('form').submit();"><h4 class="recipeInfo bookmarkHover"><i class="material-icons">edit</i>Edit</h4></a>
+                <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+            </form>
+            {% endif %}
         {% endif %}
     </span>
 
