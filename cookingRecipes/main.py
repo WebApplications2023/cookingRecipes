@@ -255,7 +255,7 @@ def updateRecipe():
         if prev.ingredient in oldIngrs:
             i = oldIngrs.index(prev.ingredient)
             if prev.quantity != oldQuants[i]:
-                prev.quantiy = oldQuants[i]
+                db.session.query(model.QuantifiedIngredients).filter_by(id=prev.id).update({"quantity": oldQuants[i]})
         else:
             db.session.delete(db.session.get(model.QuantifiedIngredients, prev.id))
             db.session.flush()
