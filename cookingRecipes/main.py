@@ -303,15 +303,16 @@ def deleteRecipe(recipeID):
             db.session.delete(ingr)
             db.session.flush()
     #deleting steps
-    db.session.query(model.Steps).filter_by(model.Steps.recipe_id == recipeID).delete()
+    db.session.query(model.Steps).filter(model.Steps.recipe_id == recipeID).delete()
     #delete ratings
-    db.session.query(model.Ratings).filter_by(model.Ratings.recipe_id == recipeID).delete()
+    db.session.query(model.Ratings).filter(model.Ratings.recipe_id == recipeID).delete()
     #delete bookmarks
-    db.session.query(model.Bookmarks).filter_by(model.Bookmarks.recipe_id == recipeID).delete()
+    db.session.query(model.Bookmarks).filter(model.Bookmarks.recipe_id == recipeID).delete()
     #delete photos
-    db.session.query(model.Photos).filter_by(model.Photos.recipe_id == recipeID).delete()
+    db.session.query(model.Photos).filter(model.Photos.recipe_id == recipeID).delete()
     #deleting recipe
-    db.session.query(model.Recipe).filter_by(model.Recipe.id == recipeID).delete()
+    db.session.query(model.Recipe).filter(model.Recipe.id == recipeID).delete()
+    db.session.commit()
     return redirect(url_for("main.index"))
 
 
