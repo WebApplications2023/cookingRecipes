@@ -332,6 +332,7 @@ $(document).ready(function() {
     $("#name_search").on('keyup', get_results);
     $(".editRemove").click(function() {
         $(this).closest(".itemsAlready").remove();
+        
     });
     $("#newPFP").click(function() {change_pfp()});
     $("#submitButtonEdit").click(function() {handle_submit()});
