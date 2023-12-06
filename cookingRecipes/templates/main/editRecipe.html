@@ -41,7 +41,9 @@
             <div id="stepsList">
                 {% for step in steps %}
                 <span class="itemsAlready">
-                <li><input class="editInputs alrStep" type="text" value="{{ step.description }}"><button type="button" class="remove editRemove">Remove</button></li>
+                    <div class="stepList">
+                    <li><input class="editInputsStep alrStep step" type="text" value="{{ step.description }}"><button type="button" class="remove editRemove">Remove</button></li>
+                </div>
                 </span>
                 {% endfor %}
             </div>
