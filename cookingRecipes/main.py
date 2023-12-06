@@ -194,7 +194,6 @@ def editRecipe():
     imgObj = {"image": image}
     return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredientsAlr=ingredientsAlr, photos=photos, imgObj=imgObj, ingredients=ingredients_string)
 
-#TODO: FINISH
 @bp.route("/updateRecipe", methods=["POST"])
 @flask_login.login_required
 def updateRecipe():
@@ -281,6 +280,27 @@ def updateRecipe():
     db.session.commit()
     return {"recipe_id": recipe_id}
 
+
+@bp.route("/deleteRecipe/<int:recipeID>")
+@flask_login.login_required
+def deleteRecipe(recipeID):
+    query_ingr = (
+        db.select(model.QuantifiedIngredients.id, model.QuantifiedIngredients.ingredient_id)
+        .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
+        .where(model.QuantifiedIngredients.recipe_id == recipeID)
+    )
+    quantsAndIngrs = db.session.execute(query_ingr).all()
+    for quant in quantsAndIngrs:
+        db.session.delete(db.session.get(model.QuantifiedIngredients, quant.id))
+        db.session.flush()
+        query_any = (
+            db.select(model.QuantifiedIngredients)
+            .where(model.QuantifiedIngredients.ingredient_id == quant.ingredient_id)
+        )
+        if db.session.execute(query_any).first() is None:
+            ingr = db.session.get(model.Ingredients, quant.ingredient_id)
+            db.session.delete(ingr)
+            db.session.flush()
 
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
