@@ -14,7 +14,7 @@ def create_app(test_config=None):
 
 
     # A secret for signing session cookies
-    app.config["SECRET_KEY"] = ""
+    app.config["SECRET_KEY"] = "93220d9b340cf9a6c39bac99cce7daf220167498f91fa"
     
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cookingRecipes.db"
     # Register blueprints
