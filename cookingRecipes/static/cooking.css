@@ -579,7 +579,12 @@ li a:hover{
 }
 
 .editInputs{
-    margin: 5px;
+    margin: 5px 10px 5px 0px;
+}
+
+.editRemove{
+    margin-top: 5px;
+    margin-left: 10px;
 }
 
 .textInput{

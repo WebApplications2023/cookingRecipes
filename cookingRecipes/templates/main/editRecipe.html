@@ -24,10 +24,12 @@
             {% for row in ingredientsAlr %}
                 <span class="itemsAlready">
                     <!-- need to be in ingredients div -->
-                    <input class="editInputs quantIngr" type="text" value="{{ row.quantity }}"> 
-                    <input class="editInputs ingr" type="text" readonly value="{{ row.ingredient }}">
-                <button type="button" class="remove editRemove">Remove</button> 
-                <br>
+                    <div class="ingredientList">
+                        <input class="editInputs quantIngr ingredientQuant" type="text" value="{{ row.quantity }}"> 
+                        <input class="editInputs ingr ingredientQuant" type="text" readonly value="{{ row.ingredient }}">
+                
+                        <button type="button" class="remove editRemove">Remove</button> 
+                    </div>
                 </span>
             {% endfor %}
             </div>
