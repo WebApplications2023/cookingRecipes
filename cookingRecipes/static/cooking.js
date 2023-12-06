@@ -152,9 +152,7 @@ var get_results = function() {
                     $('.dropdown-content').append($('<div>').text("No results found"));
                 }
             }
-        }).fail(function() {
-            console.error(val);
-        });
+        }).fail(function() {});
     } else {
         $('.dropdown-content').empty();
     }

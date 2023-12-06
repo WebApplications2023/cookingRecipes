@@ -110,7 +110,7 @@ def createRecipe():
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
 def newRecipe():
-    title = request.form.get("title") #TODO: update text identitiers to reflect frontend forms
+    title = request.form.get("title")
     user = flask_login.current_user
     description = request.form.get("description")
     num_people = request.form.get("num_people")
@@ -194,7 +194,6 @@ def editRecipe():
     imgObj = {"image": image}
     return render_template("main/editRecipe.html", recipe=recipe, steps=steps, ingredientsAlr=ingredientsAlr, photos=photos, imgObj=imgObj, ingredients=ingredients_string)
 
-#TODO: FINISH
 @bp.route("/updateRecipe", methods=["POST"])
 @flask_login.login_required
 def updateRecipe():
@@ -255,7 +254,7 @@ def updateRecipe():
         if prev.ingredient in oldIngrs:
             i = oldIngrs.index(prev.ingredient)
             if prev.quantity != oldQuants[i]:
-                prev.quantiy = oldQuants[i]
+                db.session.query(model.QuantifiedIngredients).filter_by(id=prev.id).update({"quantity": oldQuants[i]})
         else:
             db.session.delete(db.session.get(model.QuantifiedIngredients, prev.id))
             db.session.flush()
@@ -280,6 +279,41 @@ def updateRecipe():
         db.session.add(newQuantIngredient)
     db.session.commit()
     return {"recipe_id": recipe_id}
+
+
+@bp.route("/deleteRecipe/<int:recipeID>")
+@flask_login.login_required
+def deleteRecipe(recipeID):
+    #deleting quants and ingredients
+    query_ingr = (
+        db.select(model.QuantifiedIngredients.id, model.QuantifiedIngredients.ingredient_id)
+        .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
+        .where(model.QuantifiedIngredients.recipe_id == recipeID)
+    )
+    quantsAndIngrs = db.session.execute(query_ingr).all()
+    for quant in quantsAndIngrs:
+        db.session.delete(db.session.get(model.QuantifiedIngredients, quant.id))
+        db.session.flush()
+        query_any = (
+            db.select(model.QuantifiedIngredients)
+            .where(model.QuantifiedIngredients.ingredient_id == quant.ingredient_id)
+        )
+        if db.session.execute(query_any).first() is None:
+            ingr = db.session.get(model.Ingredients, quant.ingredient_id)
+            db.session.delete(ingr)
+            db.session.flush()
+    #deleting steps
+    db.session.query(model.Steps).filter(model.Steps.recipe_id == recipeID).delete()
+    #delete ratings
+    db.session.query(model.Ratings).filter(model.Ratings.recipe_id == recipeID).delete()
+    #delete bookmarks
+    db.session.query(model.Bookmarks).filter(model.Bookmarks.recipe_id == recipeID).delete()
+    #delete photos
+    db.session.query(model.Photos).filter(model.Photos.recipe_id == recipeID).delete()
+    #deleting recipe
+    db.session.query(model.Recipe).filter(model.Recipe.id == recipeID).delete()
+    db.session.commit()
+    return redirect(url_for("main.index"))
 
 
 @bp.route("/addRating", methods=["POST"])
