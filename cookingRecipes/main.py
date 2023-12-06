@@ -110,7 +110,7 @@ def createRecipe():
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
 def newRecipe():
-    title = request.form.get("title") #TODO: update text identitiers to reflect frontend forms
+    title = request.form.get("title")
     user = flask_login.current_user
     description = request.form.get("description")
     num_people = request.form.get("num_people")
@@ -284,6 +284,7 @@ def updateRecipe():
 @bp.route("/deleteRecipe/<int:recipeID>")
 @flask_login.login_required
 def deleteRecipe(recipeID):
+    #deleting quants and ingredients
     query_ingr = (
         db.select(model.QuantifiedIngredients.id, model.QuantifiedIngredients.ingredient_id)
         .join(model.Ingredients, model.QuantifiedIngredients.ingredient_id == model.Ingredients.id)
@@ -301,6 +302,18 @@ def deleteRecipe(recipeID):
             ingr = db.session.get(model.Ingredients, quant.ingredient_id)
             db.session.delete(ingr)
             db.session.flush()
+    #deleting steps
+    db.session.query(model.Steps).filter_by(model.Steps.recipe_id == recipeID).delete()
+    #delete ratings
+    db.session.query(model.Ratings).filter_by(model.Ratings.recipe_id == recipeID).delete()
+    #delete bookmarks
+    db.session.query(model.Bookmarks).filter_by(model.Bookmarks.recipe_id == recipeID).delete()
+    #delete photos
+    db.session.query(model.Photos).filter_by(model.Photos.recipe_id == recipeID).delete()
+    #deleting recipe
+    db.session.query(model.Recipe).filter_by(model.Recipe.id == recipeID).delete()
+    return redirect(url_for("main.index"))
+
 
 @bp.route("/addRating", methods=["POST"])
 @flask_login.login_required
