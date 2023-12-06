@@ -1,5 +1,8 @@
 var addIngredient = function(){
     var ingredientList = $('#ingredients').val().split(',');
+    if(ingredientList.length === 1 && ingredientList[0] === ""){
+        ingredientList = null;
+    }
     var div = $("<div>")
         .addClass("ingredientList");
     /*var quant = $("<div>")
@@ -30,9 +33,12 @@ var addIngredient = function(){
             .append('<option value="" selected disabled>Select Ingredient</option>')
         );
 
-    for (var i = 0; i < ingredientList.length; i++) {
-        val.find(".ingredientItem").append('<option value="' + ingredientList[i] + '">' + ingredientList[i] + '</option>');
+    if(ingredientList){
+        for (var i = 0; i < ingredientList.length; i++) {
+            val.find(".ingredientItem").append('<option value="' + ingredientList[i] + '">' + ingredientList[i] + '</option>');
+        }
     }
+    
 
     val.find(".ingredientItem").append('<option value="other">Other</option>')
 
@@ -146,9 +152,7 @@ var get_results = function() {
                     $('.dropdown-content').append($('<div>').text("No results found"));
                 }
             }
-        }).fail(function() {
-            
-        });
+        }).fail(function() {});
     } else {
         $('.dropdown-content').empty();
     }
