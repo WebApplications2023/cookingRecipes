@@ -147,7 +147,7 @@ var get_results = function() {
                 }
             }
         }).fail(function() {
-            console.log(val);
+            
         });
     } else {
         $('.dropdown-content').empty();
@@ -271,7 +271,6 @@ var updateLoginStatus = function() {
                     document.getElementById('rating').value=5; this.closest('form').submit();
                 });
                 
-                console.log("User is logged in");
             } else if (response.status === 401) {
 
                 $(".starHover").removeClass("starHover");
@@ -288,7 +287,6 @@ var updateLoginStatus = function() {
                 $("#five").prop("onclick", null).off("click");
 
                 isLoggedIn = false;
-                console.log("User is not logged in");
             } else {
                 console.error("Unexpected status code:", response.status);
             }
