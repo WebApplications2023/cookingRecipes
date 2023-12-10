@@ -392,14 +392,14 @@ li a:hover{
     margin-top: 5px;
 }
 
-.ingredientList{
+.ingredientList, .listOfIngredients{
     margin-top: 10px;
     margin-bottom: 20px;
     width: 90%;
     display: flex;
 }
 
-.ingredientQuant{
+.ingredientQuant, .quantIngr, .ingr{
     margin-right: 10px;
     width: 35%;
 }
@@ -437,13 +437,13 @@ li a:hover{
     color: white;
 }
 
-.stepList{
+.stepList, .listOfSteps{
     width: 90%;
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.step{
+.step, .alrStep{
     margin-right: 30px;
     width: 70%;
 }
@@ -579,11 +579,20 @@ li a:hover{
 }
 
 .editInputs{
-    margin: 5px;
+    margin: 0px 10px 5px 0px;
+}
+
+.editInputsStep{
+    margin: 0px 20px 5px 0px;
+}
+
+.editRemove{
+    margin-left: 10px;
 }
 
 .textInput{
     background-color:  #f1f1f1;
+    width: 75%;
 }
 
 .clickPhoto:hover{
