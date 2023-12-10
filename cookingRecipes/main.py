@@ -115,13 +115,18 @@ def newRecipe():
     description = request.form.get("description")
     num_people = request.form.get("num_people")
     cooking_time = request.form.get("cooking_time")
-    img = request.files["img"]  # Get the uploaded image file
-    if img:
-        # Ensure the image file has a safe filename
-        img_filename = secure_filename(img.filename)
-        img_data = img.read()  # Read the image data as binary
-    else:
-        img_data = None
+    try:
+        img = request.files["img"]  # Get the uploaded image file
+        if img:
+            # Ensure the image file has a safe filename
+            img_filename = secure_filename(img.filename)
+            img_data = img.read()  # Read the image data as binary
+        else:
+            abort(404, "No Image")
+    except:
+        flash("Image too large")
+        with open("./static/missingPFP.jpg", 'rb') as image_file:
+            img_data = image_file.read()
     newRecipe = model.Recipe(
         title=title, user=user, description=description,
         num_people=num_people, cooking_time=cooking_time, img=img_data,
