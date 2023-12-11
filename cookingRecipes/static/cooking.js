@@ -155,8 +155,6 @@ var handle_submit = function () {
     var quant = getList(".ingredientQuant");
     var ingredient = getList(".ingredientItem");
     var steps = getList(".step");
-    // alrQuant = alrQuant.concat(quant);
-    // alrIngr = alrIngr.concat(ingredient);
     alrStep = alrStep.concat(steps);
 
     var hiddenQuant = $("<input>")

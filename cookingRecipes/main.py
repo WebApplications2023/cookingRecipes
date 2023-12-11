@@ -4,7 +4,7 @@ import json
 import dateutil.tz
 from werkzeug.utils import secure_filename 
 from sqlalchemy.sql import func
-from flask import Blueprint, abort, jsonify, render_template, request, redirect, url_for, flash
+from flask import Blueprint, abort, render_template, request, redirect, url_for, flash
 import flask_login
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -22,12 +22,6 @@ def index():
     )
     recipes = db.session.execute(query).scalars().all()
     return render_template("main/index.html", recipes=recipes)
-
-
-#TEMP
-@bp.route("/recipe")
-def example():
-    return render_template("main/recipe.html")
 
 #SAVE FOR VIEWING ONE RECIPE
 @bp.route("/recipe/<int:recipeID>")
@@ -134,10 +128,8 @@ def newRecipe():
     )
 
     db.session.add(newRecipe)
-    db.session.commit() #should now be able to access newRecipe.id
+    db.session.commit()
 
-    # ingredients will be dropdown menu, will have to be the same 
-    # length as quantified ingredient
     quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
     ingredients_list = json.loads(request.form.get("ingredients"))
 

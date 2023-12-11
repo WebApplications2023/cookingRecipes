@@ -36,10 +36,6 @@ class Steps(db.Model):
     sequence_num = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(512), nullable=False)
 
-# Ingredients holds just the names of common ingredients
-# while Quantified ingredients holds the specific quantities of those per recipe.
-# To query, get all quantified ingredients from recipe and from there get the 
-# ingedient values from ingredients table
 class Ingredients(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantified_ingredients = db.relationship('QuantifiedIngredients', back_populates='ingredients')
