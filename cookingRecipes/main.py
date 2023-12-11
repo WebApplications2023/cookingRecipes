@@ -110,9 +110,9 @@ def createRecipe():
 @bp.route("/newRecipe", methods=["POST"])
 @flask_login.login_required
 def newRecipe():
-    title = request.form.get("title")
+    title = request.form.get("title").strip()
     user = flask_login.current_user
-    description = request.form.get("description")
+    description = request.form.get("description").strip()
     num_people = request.form.get("num_people")
     cooking_time = request.form.get("cooking_time")
     try:
@@ -142,6 +142,8 @@ def newRecipe():
     ingredients_list = json.loads(request.form.get("ingredients"))
 
     for i in range(len(quantified_ingredients_list)):
+        quantified_ingredients_list[i] = quantified_ingredients_list[i].strip().lower()
+        ingredients_list[i] = ingredients_list[i].strip().lower()
         try:
             ingredient =  db.session.query(model.Ingredients).filter(model.Ingredients.ingredient==ingredients_list[i]).one()
         except NoResultFound:
@@ -155,6 +157,7 @@ def newRecipe():
         db.session.add(newQuantIngredient)
     steps = json.loads(request.form.get("steps"))
     for i in range(len(steps)):
+        steps[i] = steps[i].strip()
         newStep = model.Steps(
             recipe_id=newRecipe.id, sequence_num=i+1,
             description=steps[i]
@@ -205,8 +208,8 @@ def updateRecipe():
     recipe_id = request.form.get("recipe_id")
     recipe = db.session.get(model.Recipe, recipe_id)
     #update num_people, cooking_time, steps, img and ingredients IF DIFFERENT
-    title = request.form.get("title")
-    description = request.form.get("description")
+    title = request.form.get("title").strip()
+    description = request.form.get("description").strip()
     cooking_time = request.form.get("cooking_time")
     num_people = request.form.get("num_people")
     img_data = request.form.get("imgData")
@@ -218,6 +221,8 @@ def updateRecipe():
     ingredients_list = json.loads(request.form.get("ingredientsNew"))
     oldQuants = json.loads(request.form.get("oldQuants"))
     oldIngrs = json.loads(request.form.get("oldIngrs"))
+    for i in range(len(oldQuants)):
+        oldQuants[i] = oldQuants[i].strip().lower()
     steps = json.loads(request.form.get("steps"))
     if recipe.title != title:
         recipe.title = title
@@ -234,12 +239,14 @@ def updateRecipe():
     )
     alrSteps = db.session.execute(query_alrSteps).scalars().all()
     for i in range(len(steps)):
+        steps[i] = steps[i].strip()
         if (i >= len(alrSteps)):
             break
         if alrSteps[i].description != steps[i]:
             alrSteps[i].description = steps[i]
     if (len(steps) > len(alrSteps)):
         for i in range(len(alrSteps), len(steps)):
+            steps[i] = steps[i].strip()
             newStep = model.Steps(
                 recipe_id=recipe_id, sequence_num=i+1,
                 description=steps[i]
@@ -272,6 +279,8 @@ def updateRecipe():
                 db.session.delete(ingr)
                 db.session.flush()
     for i in range(len(quantified_ingredients_list)):
+        quantified_ingredients_list[i] = quantified_ingredients_list[i].strip().lower()
+        ingredients_list[i] = ingredients_list[i].strip().lower()
         try:
             ingredient = db.session.query(model.Ingredients).filter(model.Ingredients.ingredient==ingredients_list[i]).one()
         except NoResultFound:
