@@ -212,11 +212,14 @@ def updateRecipe():
     description = request.form.get("description").strip()
     cooking_time = request.form.get("cooking_time")
     num_people = request.form.get("num_people")
-    img_data = request.form.get("imgData")
-    if img_data and img_data != '':
-        decoded = base64.b64decode(img_data)
-        if decoded != recipe.img:
-            recipe.img = decoded
+    try:
+        img_data = request.form.get("imgData")
+        if img_data and img_data != '':
+            decoded = base64.b64decode(img_data)
+            if decoded != recipe.img:
+                recipe.img = decoded
+    except:
+        flash("Image too large")
     quantified_ingredients_list = json.loads(request.form.get("quantified_ingredients"))
     ingredients_list = json.loads(request.form.get("ingredientsNew"))
     oldQuants = json.loads(request.form.get("oldQuants"))
@@ -371,19 +374,22 @@ def addBookmark():
 @bp.route("/addPhoto", methods=["POST"])
 @flask_login.login_required
 def addPhoto():
-    img = request.files["img"]  # Get the uploaded image file
     user = flask_login.current_user
     recipe_id = request.form.get("recipe_id")
-    if img:
+    try:
+        img = request.files["img"]  # Get the uploaded image file
+        if img:
         # Ensure the image file has a safe filename
-        img_filename = secure_filename(img.filename)
-        img_data = img.read()  # Read the image data as binary
-        newPhoto = model.Photos(img=img_data, recipe_id=recipe_id, 
-                                user_id=user.id, timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
-        db.session.add(newPhoto)
-        db.session.commit()
-    else:
-        flash("Please select a valid photo.")
+            img_filename = secure_filename(img.filename)
+            img_data = img.read()  # Read the image data as binary
+            newPhoto = model.Photos(img=img_data, recipe_id=recipe_id,
+                                    user_id=user.id, timestamp=datetime.datetime.now(dateutil.tz.tzlocal()))
+            db.session.add(newPhoto)
+            db.session.commit()
+        else:
+            flash("Please select a valid photo.")
+    except:
+        flash("Image too large")
     return redirect(url_for('main.recipe', recipeID=recipe_id))
 
 
